@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B923C9B6C0A17F961F1F552 /* EnjoyableCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2715054C463ED9F0DCA9BBB3 /* EnjoyableCore */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		D594BF000FAE7397007A85F2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D594BEFF0FAE7397007A85F2 /* IOKit.framework */; };
 		EE1F3CEA16EF4182008C6426 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EE1F3CE816EF4182008C6426 /* Localizable.strings */; };
@@ -15,44 +16,12 @@
 		EE3D897C16EA806E00596D1F /* Status Menu Icon Disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EE3D897B16EA806E00596D1F /* Status Menu Icon Disabled@2x.png */; };
 		EE3D897F16EA817E00596D1F /* Status Menu Icon Disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = EE3D897D16EA817E00596D1F /* Status Menu Icon Disabled.png */; };
 		EE3D898016EA817E00596D1F /* Status Menu Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EE3D897E16EA817E00596D1F /* Status Menu Icon.png */; };
-		EE52145F16F404D500E3C574 /* NJDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE52145E16F404D500E3C574 /* NJDeviceViewController.swift */; };
 		EE6A122E16E8F46300EDBD32 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = EE6A122D16E8F46300EDBD32 /* Icon.icns */; };
-		EE83ACEC16F545EA00083E94 /* NJMappingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE83ACEB16F545EA00083E94 /* NJMappingsViewController.swift */; };
-		F0A100000000000000000111 /* NSRunningApplication+LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A100000000000000000112 /* NSRunningApplication+LoginItem.swift */; };
-		EED4CE6E16ED692400C65AA8 /* NJMappingMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED4CE6D16ED692400C65AA8 /* NJMappingMenuController.swift */; };
-		EEE703DC16F089FE002FDD69 /* NJHIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE703DB16F089FE002FDD69 /* NJHIDManager.swift */; };
-		EEE703DE16F0B3F6002FDD69 /* NJInputPathElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE703DD16F0B3F6002FDD69 /* NJInputPathElement.swift */; };
-		EEE73B1616EA42E5009D9D99 /* NSRunningApplication+NJPossibleNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE73B1516EA42E5009D9D99 /* NSRunningApplication+NJPossibleNames.swift */; };
 		EEF17D1916E8E21A00D7DC4D /* com.yukkurigames.Enjoyable.mapping.icns in Resources */ = {isa = PBXBuildFile; fileRef = EEF17D1716E8E21A00D7DC4D /* com.yukkurigames.Enjoyable.mapping.icns */; };
 		EEF17D1F16E8E23A00D7DC4D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EEF17D1B16E8E23A00D7DC4D /* InfoPlist.strings */; };
 		EEF17D2016E8E23A00D7DC4D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = EEF17D1D16E8E23A00D7DC4D /* MainMenu.xib */; };
 		EEF17D2216E8E24400D7DC4D /* Help in Resources */ = {isa = PBXBuildFile; fileRef = EEF17D2116E8E24400D7DC4D /* Help */; };
 		EEF17D2616E8E2D800D7DC4D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D2416E8E2D800D7DC4D /* main.swift */; };
-		EEF17D5C16E8E2EF00D7DC4D /* EnjoyableApplicationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D3A16E8E2EF00D7DC4D /* EnjoyableApplicationDelegate.swift */; };
-		EEF17D5D16E8E2EF00D7DC4D /* NJDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D3C16E8E2EF00D7DC4D /* NJDevice.swift */; };
-		EEF17D5E16E8E2EF00D7DC4D /* NJInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D3E16E8E2EF00D7DC4D /* NJInputController.swift */; };
-		EEF17D5F16E8E2EF00D7DC4D /* NJInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D4016E8E2EF00D7DC4D /* NJInput.swift */; };
-		EEF17D6016E8E2EF00D7DC4D /* NJInputAnalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D4216E8E2EF00D7DC4D /* NJInputAnalog.swift */; };
-		EEF17D6116E8E2EF00D7DC4D /* NJInputButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D4416E8E2EF00D7DC4D /* NJInputButton.swift */; };
-		EEF17D6216E8E2EF00D7DC4D /* NJInputHat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D4616E8E2EF00D7DC4D /* NJInputHat.swift */; };
-		EEF17D6316E8E2EF00D7DC4D /* NJKeyInputField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D4916E8E2EF00D7DC4D /* NJKeyInputField.swift */; };
-		EEF17D6416E8E2EF00D7DC4D /* NJMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D4B16E8E2EF00D7DC4D /* NJMapping.swift */; };
-		EEF17D6616E8E2EF00D7DC4D /* NJOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D4F16E8E2EF00D7DC4D /* NJOutput.swift */; };
-		EEF17D6716E8E2EF00D7DC4D /* NJOutputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D5116E8E2EF00D7DC4D /* NJOutputViewController.swift */; };
-		EEF17D6816E8E2EF00D7DC4D /* NJOutputKeyPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D5316E8E2EF00D7DC4D /* NJOutputKeyPress.swift */; };
-		EEF17D6916E8E2EF00D7DC4D /* NJOutputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D5516E8E2EF00D7DC4D /* NJOutputMapping.swift */; };
-		EEF17D6A16E8E2EF00D7DC4D /* NJOutputMouseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D5716E8E2EF00D7DC4D /* NJOutputMouseButton.swift */; };
-		EEF17D6B16E8E2EF00D7DC4D /* NJOutputMouseMove.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D5916E8E2EF00D7DC4D /* NJOutputMouseMove.swift */; };
-		EEF17D6C16E8E2EF00D7DC4D /* NJOutputMouseScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF17D5B16E8E2EF00D7DC4D /* NJOutputMouseScroll.swift */; };
-		F0A100000000000000000001 /* SwiftMigrationMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A100000000000000000002 /* SwiftMigrationMarker.swift */; };
-		F0A100000000000000000101 /* NSError+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A100000000000000000102 /* NSError+Description.swift */; };
-		F0A100000000000000000103 /* NSFileManager+UniqueNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A100000000000000000104 /* NSFileManager+UniqueNames.swift */; };
-		F0A100000000000000000105 /* NSMenu+RepresentedObjectAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A100000000000000000106 /* NSMenu+RepresentedObjectAccessors.swift */; };
-		F0A100000000000000000107 /* NSMutableArray+MoveObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A100000000000000000108 /* NSMutableArray+MoveObject.swift */; };
-		F0A100000000000000000109 /* NSString+FixFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A10000000000000000010A /* NSString+FixFilename.swift */; };
-		F0A10000000000000000010B /* NSView+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A10000000000000000010C /* NSView+FirstResponder.swift */; };
-		F0A10000000000000000010D /* NSOutlineView+ItemAccessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A10000000000000000010E /* NSOutlineView+ItemAccessors.swift */; };
-		F0A10000000000000000010F /* NSProcessInfo+Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A100000000000000000110 /* NSProcessInfo+Debugging.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -81,86 +50,33 @@
 		EE3D897B16EA806E00596D1F /* Status Menu Icon Disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Status Menu Icon Disabled@2x.png"; path = "Resources/Status Menu Icon Disabled@2x.png"; sourceTree = "<group>"; };
 		EE3D897D16EA817E00596D1F /* Status Menu Icon Disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Status Menu Icon Disabled.png"; path = "Resources/Status Menu Icon Disabled.png"; sourceTree = "<group>"; };
 		EE3D897E16EA817E00596D1F /* Status Menu Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Status Menu Icon.png"; path = "Resources/Status Menu Icon.png"; sourceTree = "<group>"; };
-		EE48262E16F6680D001B0C64 /* NSProcessInfo+Debugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSProcessInfo+Debugging.h"; path = "Categories/NSProcessInfo+Debugging.h"; sourceTree = "<group>"; };
-		EE48262F16F6680D001B0C64 /* NSProcessInfo+Debugging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSProcessInfo+Debugging.m"; path = "Categories/NSProcessInfo+Debugging.m"; sourceTree = "<group>"; };
-		EE52145A16F3E8BD00E3C574 /* NSOutlineView+ItemAccessors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOutlineView+ItemAccessors.h"; path = "Categories/NSOutlineView+ItemAccessors.h"; sourceTree = "<group>"; };
-		EE52145B16F3E8BD00E3C574 /* NSOutlineView+ItemAccessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOutlineView+ItemAccessors.m"; path = "Categories/NSOutlineView+ItemAccessors.m"; sourceTree = "<group>"; };
-		EE52145D16F404D500E3C574 /* NJDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJDeviceViewController.h; path = Classes/NJDeviceViewController.h; sourceTree = "<group>"; };
-		EE52145E16F404D500E3C574 /* NJDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJDeviceViewController.swift; path = Classes/NJDeviceViewController.swift; sourceTree = "<group>"; };
+		EE52145E16F404D500E3C574 /* NJDeviceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJDeviceViewController.swift; path = NJDeviceViewController.swift; sourceTree = "<group>"; };
 		EE6A122D16E8F46300EDBD32 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
-		EE83ACEA16F545EA00083E94 /* NJMappingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJMappingsViewController.h; path = Classes/NJMappingsViewController.h; sourceTree = "<group>"; };
-		EE83ACEB16F545EA00083E94 /* NJMappingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJMappingsViewController.swift; path = Classes/NJMappingsViewController.swift; sourceTree = "<group>"; };
-		EE8455DB16F0E46B00F32A01 /* NSRunningApplication+LoginItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSRunningApplication+LoginItem.h"; path = "Categories/NSRunningApplication+LoginItem.h"; sourceTree = "<group>"; };
-		EE8455DC16F0E46B00F32A01 /* NSRunningApplication+LoginItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSRunningApplication+LoginItem.m"; path = "Categories/NSRunningApplication+LoginItem.m"; sourceTree = "<group>"; };
-		F0A100000000000000000112 /* NSRunningApplication+LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSRunningApplication+LoginItem.swift"; sourceTree = "<group>"; };
-		EED4CE6C16ED692400C65AA8 /* NJMappingMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJMappingMenuController.h; path = Classes/NJMappingMenuController.h; sourceTree = "<group>"; };
-		EED4CE6D16ED692400C65AA8 /* NJMappingMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJMappingMenuController.swift; path = Classes/NJMappingMenuController.swift; sourceTree = "<group>"; };
-		EEE703DA16F089FE002FDD69 /* NJHIDManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJHIDManager.h; path = Classes/NJHIDManager.h; sourceTree = "<group>"; };
-		EEE703DB16F089FE002FDD69 /* NJHIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJHIDManager.swift; path = Classes/NJHIDManager.swift; sourceTree = "<group>"; };
-		EEE703DD16F0B3F6002FDD69 /* NJInputPathElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputPathElement.swift; path = Classes/NJInputPathElement.swift; sourceTree = "<group>"; };
-		EEE73B1416EA42E5009D9D99 /* NSRunningApplication+NJPossibleNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSRunningApplication+NJPossibleNames.h"; path = "Categories/NSRunningApplication+NJPossibleNames.h"; sourceTree = "<group>"; };
-		EEE73B1516EA42E5009D9D99 /* NSRunningApplication+NJPossibleNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSRunningApplication+NJPossibleNames.swift"; path = "Categories/NSRunningApplication+NJPossibleNames.swift"; sourceTree = "<group>"; };
+		EE83ACEB16F545EA00083E94 /* NJMappingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJMappingsViewController.swift; path = NJMappingsViewController.swift; sourceTree = "<group>"; };
+		EED4CE6D16ED692400C65AA8 /* NJMappingMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJMappingMenuController.swift; path = NJMappingMenuController.swift; sourceTree = "<group>"; };
+		EEE703DB16F089FE002FDD69 /* NJHIDManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJHIDManager.swift; path = NJHIDManager.swift; sourceTree = "<group>"; };
+		EEE703DD16F0B3F6002FDD69 /* NJInputPathElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputPathElement.swift; path = NJInputPathElement.swift; sourceTree = "<group>"; };
 		EEF17D1716E8E21A00D7DC4D /* com.yukkurigames.Enjoyable.mapping.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = com.yukkurigames.Enjoyable.mapping.icns; path = Resources/com.yukkurigames.Enjoyable.mapping.icns; sourceTree = "<group>"; };
 		EEF17D1C16E8E23A00D7DC4D /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EEF17D1E16E8E23A00D7DC4D /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		EEF17D2116E8E24400D7DC4D /* Help */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Help; path = Resources/Help; sourceTree = "<group>"; };
 		EEF17D2316E8E2D800D7DC4D /* Enjoyable_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Enjoyable_Prefix.pch; path = "Other Sources/Enjoyable_Prefix.pch"; sourceTree = "<group>"; };
 		EEF17D2416E8E2D800D7DC4D /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = main.swift; path = "Other Sources/main.swift"; sourceTree = "<group>"; };
-		EEF17D2516E8E2D800D7DC4D /* NJEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJEvents.h; path = "Other Sources/NJEvents.h"; sourceTree = "<group>"; };
-		EEF17D2716E8E2E100D7DC4D /* NSError+Description.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSError+Description.h"; path = "Categories/NSError+Description.h"; sourceTree = "<group>"; };
-		EEF17D2816E8E2E100D7DC4D /* NSError+Description.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+Description.m"; path = "Categories/NSError+Description.m"; sourceTree = "<group>"; };
-		EEF17D2916E8E2E100D7DC4D /* NSFileManager+UniqueNames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+UniqueNames.h"; path = "Categories/NSFileManager+UniqueNames.h"; sourceTree = "<group>"; };
-		EEF17D2A16E8E2E100D7DC4D /* NSFileManager+UniqueNames.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+UniqueNames.m"; path = "Categories/NSFileManager+UniqueNames.m"; sourceTree = "<group>"; };
-		EEF17D2B16E8E2E100D7DC4D /* NSMenu+RepresentedObjectAccessors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMenu+RepresentedObjectAccessors.h"; path = "Categories/NSMenu+RepresentedObjectAccessors.h"; sourceTree = "<group>"; };
-		EEF17D2C16E8E2E100D7DC4D /* NSMenu+RepresentedObjectAccessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMenu+RepresentedObjectAccessors.m"; path = "Categories/NSMenu+RepresentedObjectAccessors.m"; sourceTree = "<group>"; };
-		EEF17D2D16E8E2E100D7DC4D /* NSMutableArray+MoveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+MoveObject.h"; path = "Categories/NSMutableArray+MoveObject.h"; sourceTree = "<group>"; };
-		EEF17D2E16E8E2E100D7DC4D /* NSMutableArray+MoveObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMutableArray+MoveObject.m"; path = "Categories/NSMutableArray+MoveObject.m"; sourceTree = "<group>"; };
-		EEF17D2F16E8E2E100D7DC4D /* NSString+FixFilename.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+FixFilename.h"; path = "Categories/NSString+FixFilename.h"; sourceTree = "<group>"; };
-		EEF17D3016E8E2E100D7DC4D /* NSString+FixFilename.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+FixFilename.m"; path = "Categories/NSString+FixFilename.m"; sourceTree = "<group>"; };
-		EEF17D3116E8E2E100D7DC4D /* NSView+FirstResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+FirstResponder.h"; path = "Categories/NSView+FirstResponder.h"; sourceTree = "<group>"; };
-		EEF17D3216E8E2E100D7DC4D /* NSView+FirstResponder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+FirstResponder.m"; path = "Categories/NSView+FirstResponder.m"; sourceTree = "<group>"; };
-		EEF17D3916E8E2EF00D7DC4D /* EnjoyableApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnjoyableApplicationDelegate.h; path = Classes/EnjoyableApplicationDelegate.h; sourceTree = "<group>"; };
-		EEF17D3A16E8E2EF00D7DC4D /* EnjoyableApplicationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnjoyableApplicationDelegate.swift; path = Classes/EnjoyableApplicationDelegate.swift; sourceTree = "<group>"; };
-		EEF17D3B16E8E2EF00D7DC4D /* NJDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJDevice.h; path = Classes/NJDevice.h; sourceTree = "<group>"; };
-		EEF17D3C16E8E2EF00D7DC4D /* NJDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJDevice.swift; path = Classes/NJDevice.swift; sourceTree = "<group>"; };
-		EEF17D3D16E8E2EF00D7DC4D /* NJInputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJInputController.h; path = Classes/NJInputController.h; sourceTree = "<group>"; };
-		EEF17D3E16E8E2EF00D7DC4D /* NJInputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputController.swift; path = Classes/NJInputController.swift; sourceTree = "<group>"; };
-		EEF17D3F16E8E2EF00D7DC4D /* NJInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJInput.h; path = Classes/NJInput.h; sourceTree = "<group>"; };
-		EEF17D4016E8E2EF00D7DC4D /* NJInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInput.swift; path = Classes/NJInput.swift; sourceTree = "<group>"; };
-		EEF17D4116E8E2EF00D7DC4D /* NJInputAnalog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJInputAnalog.h; path = Classes/NJInputAnalog.h; sourceTree = "<group>"; };
-		EEF17D4216E8E2EF00D7DC4D /* NJInputAnalog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputAnalog.swift; path = Classes/NJInputAnalog.swift; sourceTree = "<group>"; };
-		EEF17D4316E8E2EF00D7DC4D /* NJInputButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJInputButton.h; path = Classes/NJInputButton.h; sourceTree = "<group>"; };
-		EEF17D4416E8E2EF00D7DC4D /* NJInputButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputButton.swift; path = Classes/NJInputButton.swift; sourceTree = "<group>"; };
-		EEF17D4516E8E2EF00D7DC4D /* NJInputHat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJInputHat.h; path = Classes/NJInputHat.h; sourceTree = "<group>"; };
-		EEF17D4616E8E2EF00D7DC4D /* NJInputHat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputHat.swift; path = Classes/NJInputHat.swift; sourceTree = "<group>"; };
-		EEF17D4716E8E2EF00D7DC4D /* NJInputPathElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJInputPathElement.h; path = Classes/NJInputPathElement.h; sourceTree = "<group>"; };
-		EEF17D4816E8E2EF00D7DC4D /* NJKeyInputField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJKeyInputField.h; path = Classes/NJKeyInputField.h; sourceTree = "<group>"; };
-		EEF17D4916E8E2EF00D7DC4D /* NJKeyInputField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJKeyInputField.swift; path = Classes/NJKeyInputField.swift; sourceTree = "<group>"; };
-		EEF17D4A16E8E2EF00D7DC4D /* NJMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJMapping.h; path = Classes/NJMapping.h; sourceTree = "<group>"; };
-		EEF17D4B16E8E2EF00D7DC4D /* NJMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJMapping.swift; path = Classes/NJMapping.swift; sourceTree = "<group>"; };
-		EEF17D4E16E8E2EF00D7DC4D /* NJOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJOutput.h; path = Classes/NJOutput.h; sourceTree = "<group>"; };
-		EEF17D4F16E8E2EF00D7DC4D /* NJOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutput.swift; path = Classes/NJOutput.swift; sourceTree = "<group>"; };
-		EEF17D5016E8E2EF00D7DC4D /* NJOutputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJOutputViewController.h; path = Classes/NJOutputViewController.h; sourceTree = "<group>"; };
-		EEF17D5116E8E2EF00D7DC4D /* NJOutputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputViewController.swift; path = Classes/NJOutputViewController.swift; sourceTree = "<group>"; };
-		EEF17D5216E8E2EF00D7DC4D /* NJOutputKeyPress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJOutputKeyPress.h; path = Classes/NJOutputKeyPress.h; sourceTree = "<group>"; };
-		EEF17D5316E8E2EF00D7DC4D /* NJOutputKeyPress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputKeyPress.swift; path = Classes/NJOutputKeyPress.swift; sourceTree = "<group>"; };
-		EEF17D5416E8E2EF00D7DC4D /* NJOutputMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJOutputMapping.h; path = Classes/NJOutputMapping.h; sourceTree = "<group>"; };
-		EEF17D5516E8E2EF00D7DC4D /* NJOutputMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputMapping.swift; path = Classes/NJOutputMapping.swift; sourceTree = "<group>"; };
-		EEF17D5616E8E2EF00D7DC4D /* NJOutputMouseButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJOutputMouseButton.h; path = Classes/NJOutputMouseButton.h; sourceTree = "<group>"; };
-		EEF17D5716E8E2EF00D7DC4D /* NJOutputMouseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputMouseButton.swift; path = Classes/NJOutputMouseButton.swift; sourceTree = "<group>"; };
-		EEF17D5816E8E2EF00D7DC4D /* NJOutputMouseMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJOutputMouseMove.h; path = Classes/NJOutputMouseMove.h; sourceTree = "<group>"; };
-		EEF17D5916E8E2EF00D7DC4D /* NJOutputMouseMove.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputMouseMove.swift; path = Classes/NJOutputMouseMove.swift; sourceTree = "<group>"; };
-		EEF17D5A16E8E2EF00D7DC4D /* NJOutputMouseScroll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NJOutputMouseScroll.h; path = Classes/NJOutputMouseScroll.h; sourceTree = "<group>"; };
-		EEF17D5B16E8E2EF00D7DC4D /* NJOutputMouseScroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputMouseScroll.swift; path = Classes/NJOutputMouseScroll.swift; sourceTree = "<group>"; };
-		F0A100000000000000000002 /* SwiftMigrationMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes/SwiftMigrationMarker.swift; sourceTree = "<group>"; };
-		F0A100000000000000000102 /* NSError+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSError+Description.swift"; sourceTree = "<group>"; };
-		F0A100000000000000000104 /* NSFileManager+UniqueNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSFileManager+UniqueNames.swift"; sourceTree = "<group>"; };
-		F0A100000000000000000106 /* NSMenu+RepresentedObjectAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSMenu+RepresentedObjectAccessors.swift"; sourceTree = "<group>"; };
-		F0A100000000000000000108 /* NSMutableArray+MoveObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSMutableArray+MoveObject.swift"; sourceTree = "<group>"; };
-		F0A10000000000000000010A /* NSString+FixFilename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSString+FixFilename.swift"; sourceTree = "<group>"; };
-		F0A10000000000000000010C /* NSView+FirstResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSView+FirstResponder.swift"; sourceTree = "<group>"; };
-		F0A10000000000000000010E /* NSOutlineView+ItemAccessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSOutlineView+ItemAccessors.swift"; sourceTree = "<group>"; };
-		F0A100000000000000000110 /* NSProcessInfo+Debugging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Categories/NSProcessInfo+Debugging.swift"; sourceTree = "<group>"; };
+		EEF17D3C16E8E2EF00D7DC4D /* NJDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJDevice.swift; path = NJDevice.swift; sourceTree = "<group>"; };
+		EEF17D3E16E8E2EF00D7DC4D /* NJInputController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputController.swift; path = NJInputController.swift; sourceTree = "<group>"; };
+		EEF17D4016E8E2EF00D7DC4D /* NJInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInput.swift; path = NJInput.swift; sourceTree = "<group>"; };
+		EEF17D4216E8E2EF00D7DC4D /* NJInputAnalog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputAnalog.swift; path = NJInputAnalog.swift; sourceTree = "<group>"; };
+		EEF17D4416E8E2EF00D7DC4D /* NJInputButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputButton.swift; path = NJInputButton.swift; sourceTree = "<group>"; };
+		EEF17D4616E8E2EF00D7DC4D /* NJInputHat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJInputHat.swift; path = NJInputHat.swift; sourceTree = "<group>"; };
+		EEF17D4916E8E2EF00D7DC4D /* NJKeyInputField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJKeyInputField.swift; path = NJKeyInputField.swift; sourceTree = "<group>"; };
+		EEF17D4B16E8E2EF00D7DC4D /* NJMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJMapping.swift; path = NJMapping.swift; sourceTree = "<group>"; };
+		EEF17D4F16E8E2EF00D7DC4D /* NJOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutput.swift; path = NJOutput.swift; sourceTree = "<group>"; };
+		EEF17D5116E8E2EF00D7DC4D /* NJOutputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputViewController.swift; path = NJOutputViewController.swift; sourceTree = "<group>"; };
+		EEF17D5316E8E2EF00D7DC4D /* NJOutputKeyPress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputKeyPress.swift; path = NJOutputKeyPress.swift; sourceTree = "<group>"; };
+		EEF17D5516E8E2EF00D7DC4D /* NJOutputMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputMapping.swift; path = NJOutputMapping.swift; sourceTree = "<group>"; };
+		EEF17D5716E8E2EF00D7DC4D /* NJOutputMouseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputMouseButton.swift; path = NJOutputMouseButton.swift; sourceTree = "<group>"; };
+		EEF17D5916E8E2EF00D7DC4D /* NJOutputMouseMove.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputMouseMove.swift; path = NJOutputMouseMove.swift; sourceTree = "<group>"; };
+		EEF17D5B16E8E2EF00D7DC4D /* NJOutputMouseScroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NJOutputMouseScroll.swift; path = NJOutputMouseScroll.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,26 +87,13 @@
 				EE35A6E417BBCC9500413995 /* CoreVideo.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				D594BF000FAE7397007A85F2 /* IOKit.framework in Frameworks */,
+				7B923C9B6C0A17F961F1F552 /* EnjoyableCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				EEF17D3916E8E2EF00D7DC4D /* EnjoyableApplicationDelegate.h */,
-				EEF17D3A16E8E2EF00D7DC4D /* EnjoyableApplicationDelegate.swift */,
-				F0A100000000000000000002 /* SwiftMigrationMarker.swift */,
-				EEDB86A216FA4C42000E91C3 /* Input */,
-				EEDB86A316FA4C5C000E91C3 /* Output */,
-				EEDB86A516FA4CE4000E91C3 /* Views */,
-				EEDB86A416FA4CD1000E91C3 /* View Controllers */,
-			);
-			name = Classes;
-			sourceTree = "<group>";
-		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,12 +121,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* Enjoy */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				8D1107310486CEB800E47090 /* Info.plist */,
-				080E96DDFE201D6D7F000001 /* Classes */,
-				EE1D5F8B16E403D600749C36 /* Categories */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -237,7 +138,6 @@
 			children = (
 				EEF17D2316E8E2D800D7DC4D /* Enjoyable_Prefix.pch */,
 				EEF17D2416E8E2D800D7DC4D /* main.swift */,
-				EEF17D2516E8E2D800D7DC4D /* NJEvents.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -268,102 +168,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		EE1D5F8B16E403D600749C36 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				EE8455DB16F0E46B00F32A01 /* NSRunningApplication+LoginItem.h */,
-				EE8455DC16F0E46B00F32A01 /* NSRunningApplication+LoginItem.m */,
-				F0A100000000000000000112 /* NSRunningApplication+LoginItem.swift */,
-				EEF17D2716E8E2E100D7DC4D /* NSError+Description.h */,
-				EEF17D2816E8E2E100D7DC4D /* NSError+Description.m */,
-				EEF17D2916E8E2E100D7DC4D /* NSFileManager+UniqueNames.h */,
-				EEF17D2A16E8E2E100D7DC4D /* NSFileManager+UniqueNames.m */,
-				EEF17D2B16E8E2E100D7DC4D /* NSMenu+RepresentedObjectAccessors.h */,
-				EEF17D2C16E8E2E100D7DC4D /* NSMenu+RepresentedObjectAccessors.m */,
-				EEF17D2D16E8E2E100D7DC4D /* NSMutableArray+MoveObject.h */,
-				EEF17D2E16E8E2E100D7DC4D /* NSMutableArray+MoveObject.m */,
-				EEF17D2F16E8E2E100D7DC4D /* NSString+FixFilename.h */,
-				EEF17D3016E8E2E100D7DC4D /* NSString+FixFilename.m */,
-				EEF17D3116E8E2E100D7DC4D /* NSView+FirstResponder.h */,
-				EEF17D3216E8E2E100D7DC4D /* NSView+FirstResponder.m */,
-				EEE73B1416EA42E5009D9D99 /* NSRunningApplication+NJPossibleNames.h */,
-				EEE73B1516EA42E5009D9D99 /* NSRunningApplication+NJPossibleNames.swift */,
-				EE52145A16F3E8BD00E3C574 /* NSOutlineView+ItemAccessors.h */,
-				EE52145B16F3E8BD00E3C574 /* NSOutlineView+ItemAccessors.m */,
-				EE48262E16F6680D001B0C64 /* NSProcessInfo+Debugging.h */,
-				EE48262F16F6680D001B0C64 /* NSProcessInfo+Debugging.m */,
-			);
-			name = Categories;
-			sourceTree = "<group>";
-		};
-		EEDB86A216FA4C42000E91C3 /* Input */ = {
-			isa = PBXGroup;
-			children = (
-				EEE703DA16F089FE002FDD69 /* NJHIDManager.h */,
-				EEE703DB16F089FE002FDD69 /* NJHIDManager.swift */,
-				EEF17D3D16E8E2EF00D7DC4D /* NJInputController.h */,
-				EEF17D3E16E8E2EF00D7DC4D /* NJInputController.swift */,
-				EEF17D4716E8E2EF00D7DC4D /* NJInputPathElement.h */,
-				EEE703DD16F0B3F6002FDD69 /* NJInputPathElement.swift */,
-				EEF17D4A16E8E2EF00D7DC4D /* NJMapping.h */,
-				EEF17D4B16E8E2EF00D7DC4D /* NJMapping.swift */,
-				EEF17D3B16E8E2EF00D7DC4D /* NJDevice.h */,
-				EEF17D3C16E8E2EF00D7DC4D /* NJDevice.swift */,
-				EEF17D3F16E8E2EF00D7DC4D /* NJInput.h */,
-				EEF17D4016E8E2EF00D7DC4D /* NJInput.swift */,
-				EEF17D4116E8E2EF00D7DC4D /* NJInputAnalog.h */,
-				EEF17D4216E8E2EF00D7DC4D /* NJInputAnalog.swift */,
-				EEF17D4316E8E2EF00D7DC4D /* NJInputButton.h */,
-				EEF17D4416E8E2EF00D7DC4D /* NJInputButton.swift */,
-				EEF17D4516E8E2EF00D7DC4D /* NJInputHat.h */,
-				EEF17D4616E8E2EF00D7DC4D /* NJInputHat.swift */,
-			);
-			name = Input;
-			sourceTree = "<group>";
-		};
-		EEDB86A316FA4C5C000E91C3 /* Output */ = {
-			isa = PBXGroup;
-			children = (
-				EEF17D4E16E8E2EF00D7DC4D /* NJOutput.h */,
-				EEF17D4F16E8E2EF00D7DC4D /* NJOutput.swift */,
-				EEF17D5216E8E2EF00D7DC4D /* NJOutputKeyPress.h */,
-				EEF17D5316E8E2EF00D7DC4D /* NJOutputKeyPress.swift */,
-				EEF17D5416E8E2EF00D7DC4D /* NJOutputMapping.h */,
-				EEF17D5516E8E2EF00D7DC4D /* NJOutputMapping.swift */,
-				EEF17D5616E8E2EF00D7DC4D /* NJOutputMouseButton.h */,
-				EEF17D5716E8E2EF00D7DC4D /* NJOutputMouseButton.swift */,
-				EEF17D5816E8E2EF00D7DC4D /* NJOutputMouseMove.h */,
-				EEF17D5916E8E2EF00D7DC4D /* NJOutputMouseMove.swift */,
-				EEF17D5A16E8E2EF00D7DC4D /* NJOutputMouseScroll.h */,
-				EEF17D5B16E8E2EF00D7DC4D /* NJOutputMouseScroll.swift */,
-			);
-			name = Output;
-			sourceTree = "<group>";
-		};
-		EEDB86A416FA4CD1000E91C3 /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				EEF17D5016E8E2EF00D7DC4D /* NJOutputViewController.h */,
-				EEF17D5116E8E2EF00D7DC4D /* NJOutputViewController.swift */,
-				EED4CE6C16ED692400C65AA8 /* NJMappingMenuController.h */,
-				EED4CE6D16ED692400C65AA8 /* NJMappingMenuController.swift */,
-				EE52145D16F404D500E3C574 /* NJDeviceViewController.h */,
-				EE52145E16F404D500E3C574 /* NJDeviceViewController.swift */,
-				EE83ACEA16F545EA00083E94 /* NJMappingsViewController.h */,
-				EE83ACEB16F545EA00083E94 /* NJMappingsViewController.swift */,
-			);
-			name = "View Controllers";
-			sourceTree = "<group>";
-		};
-		EEDB86A516FA4CE4000E91C3 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				EEF17D4816E8E2EF00D7DC4D /* NJKeyInputField.h */,
-				EEF17D4916E8E2EF00D7DC4D /* NJKeyInputField.swift */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -383,6 +187,9 @@
 			dependencies = (
 			);
 			name = Enjoyable;
+			packageProductDependencies = (
+				2715054C463ED9F0DCA9BBB3 /* EnjoyableCore */,
+			);
 			productInstallPath = "$(HOME)/Applications";
 			productName = Enjoy;
 			productReference = 8D1107320486CEB800E47090 /* Enjoyable.app */;
@@ -406,7 +213,11 @@
 				French,
 				German,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* Enjoy */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
+			packageReferences = (
+				F8B32D740C75F7C0EF7763D0 /* XCLocalSwiftPackageReference "EnjoyableCore" */,
+			);
+			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -472,38 +283,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEF17D2616E8E2D800D7DC4D /* main.swift in Sources */,
-				F0A100000000000000000101 /* NSError+Description.swift in Sources */,
-				F0A100000000000000000103 /* NSFileManager+UniqueNames.swift in Sources */,
-				F0A100000000000000000105 /* NSMenu+RepresentedObjectAccessors.swift in Sources */,
-				F0A100000000000000000107 /* NSMutableArray+MoveObject.swift in Sources */,
-				F0A100000000000000000109 /* NSString+FixFilename.swift in Sources */,
-				F0A10000000000000000010B /* NSView+FirstResponder.swift in Sources */,
-				EEF17D5C16E8E2EF00D7DC4D /* EnjoyableApplicationDelegate.swift in Sources */,
-				EEF17D5D16E8E2EF00D7DC4D /* NJDevice.swift in Sources */,
-				EEF17D5E16E8E2EF00D7DC4D /* NJInputController.swift in Sources */,
-				EEF17D5F16E8E2EF00D7DC4D /* NJInput.swift in Sources */,
-				EEF17D6016E8E2EF00D7DC4D /* NJInputAnalog.swift in Sources */,
-				EEF17D6116E8E2EF00D7DC4D /* NJInputButton.swift in Sources */,
-				EEF17D6216E8E2EF00D7DC4D /* NJInputHat.swift in Sources */,
-				EEF17D6316E8E2EF00D7DC4D /* NJKeyInputField.swift in Sources */,
-				EEF17D6416E8E2EF00D7DC4D /* NJMapping.swift in Sources */,
-				EEF17D6616E8E2EF00D7DC4D /* NJOutput.swift in Sources */,
-				EEF17D6716E8E2EF00D7DC4D /* NJOutputViewController.swift in Sources */,
-				EEF17D6816E8E2EF00D7DC4D /* NJOutputKeyPress.swift in Sources */,
-				EEF17D6916E8E2EF00D7DC4D /* NJOutputMapping.swift in Sources */,
-				EEF17D6A16E8E2EF00D7DC4D /* NJOutputMouseButton.swift in Sources */,
-				EEF17D6B16E8E2EF00D7DC4D /* NJOutputMouseMove.swift in Sources */,
-				EEF17D6C16E8E2EF00D7DC4D /* NJOutputMouseScroll.swift in Sources */,
-				EEE73B1616EA42E5009D9D99 /* NSRunningApplication+NJPossibleNames.swift in Sources */,
-				EED4CE6E16ED692400C65AA8 /* NJMappingMenuController.swift in Sources */,
-				EEE703DC16F089FE002FDD69 /* NJHIDManager.swift in Sources */,
-				EEE703DE16F0B3F6002FDD69 /* NJInputPathElement.swift in Sources */,
-				F0A100000000000000000111 /* NSRunningApplication+LoginItem.swift in Sources */,
-				F0A10000000000000000010D /* NSOutlineView+ItemAccessors.swift in Sources */,
-				EE52145F16F404D500E3C574 /* NJDeviceViewController.swift in Sources */,
-				EE83ACEC16F545EA00083E94 /* NJMappingsViewController.swift in Sources */,
-				F0A10000000000000000010F /* NSProcessInfo+Debugging.swift in Sources */,
-				F0A100000000000000000001 /* SwiftMigrationMarker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,7 +343,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Enjoyable;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Other Sources/Enjoyable-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -594,7 +372,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = Enjoyable;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Other Sources/Enjoyable-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -710,6 +487,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F8B32D740C75F7C0EF7763D0 /* XCLocalSwiftPackageReference "EnjoyableCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/EnjoyableCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2715054C463ED9F0DCA9BBB3 /* EnjoyableCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F8B32D740C75F7C0EF7763D0 /* XCLocalSwiftPackageReference "EnjoyableCore" */;
+			productName = EnjoyableCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
 }
