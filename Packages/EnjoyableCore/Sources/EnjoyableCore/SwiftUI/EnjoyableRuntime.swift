@@ -132,6 +132,12 @@ public final class EnjoyableStore: NSObject, ObservableObject, NJInputController
         controller.load()
         simulatingEvents = controller.simulatingEvents
         refreshAll()
+
+        // In SwiftUI lifecycle, app active notifications may not replay for newly
+        // created controller instances. Start HID once when already active.
+        if NSApplication.shared.isActive || simulatingEvents {
+            controller.startHid()
+        }
     }
 
     deinit {
