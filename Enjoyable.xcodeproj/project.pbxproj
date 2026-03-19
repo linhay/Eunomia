@@ -10,6 +10,7 @@
 		42C272A5A9A9416D127DCAF2 /* EnjoyableApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91655265DE502E7079722EA1 /* EnjoyableApp.swift */; };
 		638A77A311F492A534369AAE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D1DD957EB57C694E8BFAB57 /* Cocoa.framework */; };
 		8CCF42AFB5F75CDF88D5CE4D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A8A95A942B5E0C288B3F94E /* ContentView.swift */; };
+		F9553CA8F3ECD88BFF5025D3 /* EnjoyableCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA335BECD911AC4B6ED6575C /* EnjoyableCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				638A77A311F492A534369AAE /* Cocoa.framework in Frameworks */,
+				F9553CA8F3ECD88BFF5025D3 /* EnjoyableCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +100,9 @@
 			dependencies = (
 			);
 			name = Enjoyable;
+			packageProductDependencies = (
+				DA335BECD911AC4B6ED6575C /* EnjoyableCore */,
+			);
 			productName = Enjoyable;
 			productReference = DBB0F44C860252587AD0E938 /* Enjoyable.app */;
 			productType = "com.apple.product-type.application";
@@ -121,6 +126,9 @@
 			);
 			mainGroup = 11FAE9DFAD06C1D5886F8E40;
 			minimizedProjectReferenceProxies = 0;
+			packageReferences = (
+				94AD789E245C9CA7C3241F4E /* XCLocalSwiftPackageReference "EnjoyableCore" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AEB9947DB3465BA16B873451 /* Products */;
 			projectDirPath = "";
@@ -333,6 +341,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		94AD789E245C9CA7C3241F4E /* XCLocalSwiftPackageReference "EnjoyableCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/EnjoyableCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DA335BECD911AC4B6ED6575C /* EnjoyableCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94AD789E245C9CA7C3241F4E /* XCLocalSwiftPackageReference "EnjoyableCore" */;
+			productName = EnjoyableCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A8A6CC9891807029D82AA58E /* Project object */;
 }
