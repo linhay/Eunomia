@@ -2,7 +2,6 @@ import Foundation
 import Darwin
 
 extension ProcessInfo {
-    @objc(isBeingDebugged)
     func isBeingDebuggedCompat() -> Bool {
         #if DEBUG
         var mib: [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, Int32(processIdentifier)]

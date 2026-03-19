@@ -1,14 +1,12 @@
 import Foundation
 
-@objc(NJInputPathElement)
 class NJInputPathElement: NSObject {
-    @objc weak var parent: NJInputPathElement?
-    @objc var name: String
-    @objc var children: [NJInputPathElement]?
+    weak var parent: NJInputPathElement?
+    var name: String
+    var children: [NJInputPathElement]?
 
     private let eid: String?
 
-    @objc(initWithName:eid:parent:)
     init(name: String, eid: String?, parent: NJInputPathElement?) {
         self.name = name
         self.eid = eid
@@ -16,7 +14,7 @@ class NJInputPathElement: NSObject {
         super.init()
     }
 
-    @objc var uid: String {
+    var uid: String {
         "\(parent?.uid ?? "")~\(eid ?? "")"
     }
 
@@ -29,7 +27,6 @@ class NJInputPathElement: NSObject {
         uid.hashValue
     }
 
-    @objc(elementForUID:)
     func element(forUID wantedUID: String) -> NJInputPathElement? {
         if wantedUID == uid { return self }
         if !wantedUID.hasPrefix(uid) { return nil }

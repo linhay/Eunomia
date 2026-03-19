@@ -8,10 +8,9 @@ private enum NJOutputMappingActivationHub {
     static weak var delegate: NJOutputMappingActivationDelegate?
 }
 
-@objc(NJOutputMapping)
 class NJOutputMapping: NJOutput {
-    @objc weak var mapping: NJMapping?
-    @objc var mappingName: String?
+    weak var mapping: NJMapping?
+    var mappingName: String?
 
     override class func serializationCode() -> String {
         "mapping"
@@ -34,8 +33,6 @@ class NJOutputMapping: NJOutput {
         if let mapping {
             if let delegate = NJOutputMappingActivationHub.delegate {
                 delegate.outputMapping(self, activate: mapping)
-            } else if let ctrl = NSApplication.shared.delegate as? EnjoyableApplicationDelegate {
-                ctrl.ic.activateMapping(mapping)
             }
             mappingName = mapping.name
         }

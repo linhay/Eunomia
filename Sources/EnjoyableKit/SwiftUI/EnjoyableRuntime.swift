@@ -102,7 +102,7 @@ struct InputNode: Identifiable, Hashable {
 }
 
 @MainActor
-public final class EnjoyableStore: NSObject, ObservableObject, NJInputControllerDelegate, NJOutputMappingActivationDelegate {
+public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency NJInputControllerDelegate, @preconcurrency NJOutputMappingActivationDelegate {
     @Published var selectedInputID: String?
     @Published var simulatingEvents = false {
         didSet {
@@ -118,9 +118,12 @@ public final class EnjoyableStore: NSObject, ObservableObject, NJInputController
     @Published private(set) var deviceTree: [InputNode] = []
     @Published private(set) var draft = OutputDraft()
     @Published private(set) var activeInputPath = ""
+    @Published private(set) var highlightedControls: Set<GamepadControl> = []
 
     private let controller: NJInputController
     private var selectedInput: NJInput?
+    private var highlightTracker = ControlHighlightTracker()
+    private var highlightCleanupTimer: Timer?
 
     public override init() {
         controller = NJInputController()
@@ -142,6 +145,7 @@ public final class EnjoyableStore: NSObject, ObservableObject, NJInputController
 
     deinit {
         NJOutputMapping.setActivationDelegate(nil)
+        highlightCleanupTimer?.invalidate()
     }
 
     var hasDevices: Bool {
@@ -269,14 +273,45 @@ public final class EnjoyableStore: NSObject, ObservableObject, NJInputController
 
     func inputControllerDidStopHID(_ ic: NJInputController) {
         hidRunning = false
+        highlightTracker = ControlHighlightTracker()
+        highlightedControls = []
+        highlightCleanupTimer?.invalidate()
+        highlightCleanupTimer = nil
     }
 
     func inputController(_ ic: NJInputController, didInput input: NJInput) {
+        updateControlHighlight(from: input)
         setSelectedInput(id: input.uid)
     }
 
     func inputController(_ ic: NJInputController, didError error: NSError) {
         NSLog("Enjoyable error: %@", error.localizedDescription)
+    }
+
+    private func updateControlHighlight(from input: NJInput) {
+        guard let control = GamepadLayoutMapper.control(for: input.uid) else { return }
+        let isActive = input.active || abs(input.magnitude) > 0.001
+        highlightTracker.handle(control: control, isActive: isActive)
+        refreshHighlightedControls(now: Date())
+        ensureHighlightCleanupTimer()
+    }
+
+    private func ensureHighlightCleanupTimer() {
+        if highlightCleanupTimer != nil { return }
+        highlightCleanupTimer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.refreshHighlightedControls(now: Date())
+                if self.highlightedControls.isEmpty {
+                    self.highlightCleanupTimer?.invalidate()
+                    self.highlightCleanupTimer = nil
+                }
+            }
+        }
+    }
+
+    private func refreshHighlightedControls(now: Date) {
+        highlightedControls = highlightTracker.visibleControls(now: now)
     }
 }
 
@@ -393,6 +428,10 @@ public struct EnjoyableRootView: View {
             VStack(alignment: .leading, spacing: 16) {
                 Text(store.activeInputPath)
                     .font(.headline)
+
+                Text("Controller Layout")
+                    .font(.headline)
+                GamepadLayoutView(highlightedControls: store.highlightedControls)
 
                 outputEditor
                     .disabled(!store.canEditOutput)

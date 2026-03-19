@@ -6,10 +6,9 @@ private func pointRectSquaredDistance(_ p: NSPoint, _ r: NSRect) -> CGFloat {
     return dx * dx + dy * dy
 }
 
-@objc(NJOutputMouseMove)
 class NJOutputMouseMove: NJOutput {
-    @objc var axis: Int32 = 0
-    @objc var speed: Float = 10
+    var axis: Int32 = 0
+    var speed: Float = 10
 
     override class func serializationCode() -> String {
         "mouse move"

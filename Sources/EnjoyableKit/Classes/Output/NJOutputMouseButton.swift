@@ -1,8 +1,7 @@
 import AppKit
 
-@objc(NJOutputMouseButton)
 class NJOutputMouseButton: NJOutput {
-    @objc var button: CGMouseButton = .left
+    var button: CGMouseButton = .left
 
     private var upTime: Date?
     private var clickCount = 0

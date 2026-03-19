@@ -4,23 +4,22 @@ import ServiceManagement
 // Ensures the target is configured for Swift compilation during migration.
 enum SwiftMigrationMarker {}
 
-@objcMembers
 final class NJLoginItemService: NSObject {
-    @objc class func isSMAppServiceAvailable() -> Bool {
+    class func isSMAppServiceAvailable() -> Bool {
         if #available(macOS 13.0, *) {
             return true
         }
         return false
     }
 
-    @objc class func isLoginItemEnabled() -> Bool {
+    class func isLoginItemEnabled() -> Bool {
         if #available(macOS 13.0, *) {
             return SMAppService.mainApp.status == .enabled
         }
         return false
     }
 
-    @objc class func registerLoginItem(_ error: NSErrorPointer) -> Bool {
+    class func registerLoginItem(_ error: NSErrorPointer) -> Bool {
         if #available(macOS 13.0, *) {
             do {
                 try SMAppService.mainApp.register()
@@ -33,7 +32,7 @@ final class NJLoginItemService: NSObject {
         return false
     }
 
-    @objc class func unregisterLoginItem(_ error: NSErrorPointer) -> Bool {
+    class func unregisterLoginItem(_ error: NSErrorPointer) -> Bool {
         if #available(macOS 13.0, *) {
             do {
                 try SMAppService.mainApp.unregister()

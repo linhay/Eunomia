@@ -7,12 +7,10 @@ private func normalize(_ p: CFIndex, _ min: CFIndex, _ max: CFIndex) -> Float {
     return 2 * Float(p - min) / Float(max - min) - 1
 }
 
-@objc(NJInputAnalog)
 class NJInputAnalog: NJInput {
     private let rawMin: CFIndex
     private let rawMax: CFIndex
 
-    @objc(initWithElement:index:parent:)
     init(element: IOHIDElement, index: Int32, parent: NJInputPathElement?) {
         rawMax = IOHIDElementGetPhysicalMax(element)
         rawMin = IOHIDElementGetPhysicalMin(element)
@@ -25,14 +23,14 @@ class NJInputAnalog: NJInput {
         ]
     }
 
-    @objc override func findSubInput(for value: IOHIDValue) -> Any? {
+    override func findSubInput(for value: IOHIDValue) -> Any? {
         let mag = normalize(IOHIDValueGetIntegerValue(value), rawMin, rawMax)
         if mag < -deadZone { return children?[0] }
         if mag > deadZone { return children?[1] }
         return nil
     }
 
-    @objc override func notifyEvent(_ value: IOHIDValue) {
+    override func notifyEvent(_ value: IOHIDValue) {
         var m = normalize(IOHIDValueGetIntegerValue(value), rawMin, rawMax)
         if fabsf(m) < deadZone { m = 0 }
         magnitude = m

@@ -1,7 +1,6 @@
 import Foundation
 
 extension FileManager {
-    @objc(generateUniqueURLWithBase:)
     func generateUniqueURL(withBase canonical: URL) -> URL {
         guard canonical.isFileURL else { return canonical }
 

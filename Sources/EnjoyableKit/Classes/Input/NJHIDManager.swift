@@ -1,19 +1,18 @@
 import Foundation
 import IOKit.hid
 
-@objc protocol NJHIDManagerDelegate {
-    @objc(HIDManagerDidStart:) func HIDManagerDidStart(_ manager: NJHIDManager)
-    @objc(HIDManagerDidStop:) func HIDManagerDidStop(_ manager: NJHIDManager)
-    @objc(HIDManager:deviceAdded:) func HIDManager(_ manager: NJHIDManager, deviceAdded device: IOHIDDevice)
-    @objc(HIDManager:deviceRemoved:) func HIDManager(_ manager: NJHIDManager, deviceRemoved device: IOHIDDevice)
-    @objc(HIDManager:valueChanged:) func HIDManager(_ manager: NJHIDManager, valueChanged value: IOHIDValue)
-    @objc(HIDManager:didError:) func HIDManager(_ manager: NJHIDManager, didError error: NSError)
+protocol NJHIDManagerDelegate: AnyObject {
+    func HIDManagerDidStart(_ manager: NJHIDManager)
+    func HIDManagerDidStop(_ manager: NJHIDManager)
+    func HIDManager(_ manager: NJHIDManager, deviceAdded device: IOHIDDevice)
+    func HIDManager(_ manager: NJHIDManager, deviceRemoved device: IOHIDDevice)
+    func HIDManager(_ manager: NJHIDManager, valueChanged value: IOHIDValue)
+    func HIDManager(_ manager: NJHIDManager, didError error: NSError)
 }
 
-@objc(NJHIDManager)
 class NJHIDManager: NSObject {
-    @objc weak var delegate: NJHIDManagerDelegate?
-    @objc var criteria: [Any] = [] {
+    weak var delegate: NJHIDManagerDelegate?
+    var criteria: [Any] = [] {
         didSet {
             if oldValue as NSArray != criteria as NSArray {
                 let wasRunning = running
@@ -25,7 +24,6 @@ class NJHIDManager: NSObject {
 
     private var manager: IOHIDManager?
 
-    @objc(initWithCriteria:delegate:)
     init(criteria: [Any], delegate: NJHIDManagerDelegate?) {
         self.criteria = criteria
         self.delegate = delegate
@@ -35,12 +33,12 @@ class NJHIDManager: NSObject {
         stop()
     }
 
-    @objc var running: Bool {
+    var running: Bool {
         get { manager != nil }
         set { newValue ? start() : stop() }
     }
 
-    @objc func start() {
+    func start() {
         if running { return }
         let mgr = IOHIDManagerCreate(kCFAllocatorDefault, IOOptionBits(kIOHIDOptionsTypeNone))
         IOHIDManagerSetDeviceMatchingMultiple(mgr, criteria as CFArray)
@@ -79,7 +77,7 @@ class NJHIDManager: NSObject {
         NSLog("Started HID manager.")
     }
 
-    @objc func stop() {
+    func stop() {
         guard let mgr = manager else { return }
         IOHIDManagerUnscheduleFromRunLoop(mgr, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
         IOHIDManagerClose(mgr, IOOptionBits(kIOHIDOptionsTypeNone))

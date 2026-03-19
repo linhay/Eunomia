@@ -1,12 +1,8 @@
 import AppKit
-import CoreServices
 import Darwin
 import ServiceManagement
 
 extension NSRunningApplication {
-    private static let resolveFlags: UInt32 =
-        UInt32(kLSSharedFileListNoUserInteraction | kLSSharedFileListDoNotMountVolumes)
-
     private static let processInformationCopyDictionary: (@convention(c) (UnsafePointer<ProcessSerialNumber>?, UInt32) -> Unmanaged<CFDictionary>?)? = {
         guard let symbol = dlsym(nil, "ProcessInformationCopyDictionary") else {
             return nil
@@ -16,113 +12,26 @@ extension NSRunningApplication {
             to: (@convention(c) (UnsafePointer<ProcessSerialNumber>?, UInt32) -> Unmanaged<CFDictionary>?).self
         )
     }()
-
-    @objc(isLoginItem)
     func isLoginItem() -> Bool {
-        if #available(macOS 13.0, *) {
-            return SMAppService.mainApp.status == .enabled
-        }
-
-        guard
-            let myURL = bundleURL as NSURL?,
-            let listType = Optional(kLSSharedFileListSessionLoginItems.takeUnretainedValue()),
-            let loginItems = LSSharedFileListCreate(nil, listType, nil)?.takeRetainedValue()
-        else {
-            return false
-        }
-        var seed: UInt32 = 0
-        guard let snapshot = LSSharedFileListCopySnapshot(loginItems, &seed)?.takeRetainedValue() as? [AnyObject] else {
-            return false
-        }
-
-        for obj in snapshot {
-            let item = unsafeBitCast(obj, to: LSSharedFileListItem.self)
-            var itemURL: Unmanaged<CFURL>?
-            if LSSharedFileListItemResolve(item, Self.resolveFlags, &itemURL, nil) == noErr,
-               let resolved = itemURL?.takeRetainedValue(),
-               CFEqual(resolved, myURL) {
-                return true
-            }
-        }
-
-        return false
+        guard #available(macOS 13.0, *) else { return false }
+        return SMAppService.mainApp.status == .enabled
     }
-
-    @objc(addToLoginItems)
     func addToLoginItems() {
-        if #available(macOS 13.0, *) {
-            if SMAppService.mainApp.status == .enabled {
-                return
-            }
-
-            do {
-                try SMAppService.mainApp.register()
-                return
-            } catch {
-            }
+        guard #available(macOS 13.0, *) else { return }
+        if SMAppService.mainApp.status == .enabled { return }
+        do {
+            try SMAppService.mainApp.register()
+        } catch {
         }
-
-        guard !isLoginItem() else {
-            return
-        }
-
-        guard
-            let myURL = bundleURL as NSURL?,
-            let listType = Optional(kLSSharedFileListSessionLoginItems.takeUnretainedValue()),
-            let loginItems = LSSharedFileListCreate(nil, listType, nil)?.takeRetainedValue()
-        else {
-            return
-        }
-
-        LSSharedFileListInsertItemURL(
-            loginItems,
-            kLSSharedFileListItemBeforeFirst.takeUnretainedValue(),
-            nil,
-            nil,
-            myURL,
-            nil,
-            nil
-        )
     }
-
-    @objc(removeFromLoginItems)
     func removeFromLoginItems() {
-        if #available(macOS 13.0, *) {
-            if SMAppService.mainApp.status != .enabled {
-                return
-            }
-
-            do {
-                try SMAppService.mainApp.unregister()
-                return
-            } catch {
-            }
-        }
-
-        guard
-            let myURL = bundleURL as NSURL?,
-            let listType = Optional(kLSSharedFileListSessionLoginItems.takeUnretainedValue()),
-            let loginItems = LSSharedFileListCreate(nil, listType, nil)?.takeRetainedValue()
-        else {
-            return
-        }
-        var seed: UInt32 = 0
-        guard let snapshot = LSSharedFileListCopySnapshot(loginItems, &seed)?.takeRetainedValue() as? [AnyObject] else {
-            return
-        }
-
-        for obj in snapshot {
-            let item = unsafeBitCast(obj, to: LSSharedFileListItem.self)
-            var itemURL: Unmanaged<CFURL>?
-            if LSSharedFileListItemResolve(item, Self.resolveFlags, &itemURL, nil) == noErr,
-               let resolved = itemURL?.takeRetainedValue(),
-               CFEqual(resolved, myURL) {
-                LSSharedFileListItemRemove(loginItems, item)
-            }
+        guard #available(macOS 13.0, *) else { return }
+        if SMAppService.mainApp.status != .enabled { return }
+        do {
+            try SMAppService.mainApp.unregister()
+        } catch {
         }
     }
-
-    @objc(wasLaunchedAsLoginItemOrResume)
     func wasLaunchedAsLoginItemOrResume() -> Bool {
         guard let processInfoFn = Self.processInformationCopyDictionary else {
             return false

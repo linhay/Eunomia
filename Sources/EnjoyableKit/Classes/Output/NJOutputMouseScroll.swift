@@ -1,10 +1,9 @@
 import AppKit
 
-@objc(NJOutputMouseScroll)
 class NJOutputMouseScroll: NJOutput {
-    @objc var direction: Int32 = 0
-    @objc var speed: Float = 0
-    @objc var smooth: Bool = false
+    var direction: Int32 = 0
+    var speed: Float = 0
+    var smooth: Bool = false
 
     override class func serializationCode() -> String {
         "mouse scroll"

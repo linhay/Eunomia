@@ -1,22 +1,19 @@
 import Foundation
 
-@objc(NJOutput)
 class NJOutput: NSObject {
-    @objc var magnitude: Float = 0
+    var magnitude: Float = 0
     private var _running = false
 
     required override init() {
         super.init()
     }
 
-    @objc class func serializationCode() -> String {
-        self.init().doesNotRecognizeSelector(#selector(serializationCode))
-        return ""
+    class func serializationCode() -> String {
+        fatalError("Subclasses must override serializationCode()")
     }
 
-    @objc func serialize() -> [String: Any]? {
-        doesNotRecognizeSelector(#selector(serialize))
-        return nil
+    func serialize() -> [String: Any]? {
+        fatalError("Subclasses must override serialize()")
     }
 
     override func isEqual(_ object: Any?) -> Bool {
@@ -28,7 +25,6 @@ class NJOutput: NSObject {
         (serialize() as NSDictionary?)?.hash ?? 0
     }
 
-    @objc(outputWithSerialization:)
     class func output(withSerialization serialization: [String: Any]?) -> NJOutput? {
         guard let serialization, let type = serialization["type"] as? String else { return nil }
         for cls in [NJOutputKeyPress.self, NJOutputMapping.self, NJOutputMouseMove.self, NJOutputMouseButton.self, NJOutputMouseScroll.self] {
@@ -39,17 +35,16 @@ class NJOutput: NSObject {
         return nil
     }
 
-    @objc func trigger() {}
-    @objc func untrigger() {}
+    func trigger() {}
+    func untrigger() {}
 
-    @objc(update:)
     func update(_ ic: NJInputController) -> Bool {
         false
     }
 
-    @objc var isContinuous: Bool { false }
+    var isContinuous: Bool { false }
 
-    @objc var running: Bool {
+    var running: Bool {
         get { _running }
         set {
             if _running != newValue {
@@ -59,6 +54,5 @@ class NJOutput: NSObject {
         }
     }
 
-    @objc(postLoadProcess:)
     func postLoadProcess(_ allMappings: NSFastEnumeration) {}
 }

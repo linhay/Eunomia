@@ -3,22 +3,21 @@ import Carbon
 
 let NJKeyInputFieldEmpty: CGKeyCode = 0xFFFF
 
-@objc protocol NJKeyInputFieldDelegate {
-    @objc(keyInputField:didChangeKey:) func keyInputField(_ keyInput: NJKeyInputField, didChangeKey keyCode: CGKeyCode)
-    @objc(keyInputFieldDidClear:) func keyInputFieldDidClear(_ keyInput: NJKeyInputField)
+protocol NJKeyInputFieldDelegate: AnyObject {
+    func keyInputField(_ keyInput: NJKeyInputField, didChangeKey keyCode: CGKeyCode)
+    func keyInputFieldDidClear(_ keyInput: NJKeyInputField)
 }
 
-@objc(NJKeyInputField)
 class NJKeyInputField: NSControl, NSTextFieldDelegate {
-    @objc weak var delegate: NJKeyInputFieldDelegate?
+    weak var delegate: NJKeyInputFieldDelegate?
 
-    @objc var keyCode: CGKeyCode = NJKeyInputFieldEmpty {
+    var keyCode: CGKeyCode = NJKeyInputFieldEmpty {
         didSet {
             field.stringValue = Self.displayName(forKeyCode: keyCode)
         }
     }
 
-    @objc var hasKeyCode: Bool {
+    var hasKeyCode: Bool {
         keyCode != NJKeyInputFieldEmpty
     }
 
@@ -56,13 +55,12 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
         addSubview(warning)
     }
 
-    @objc func clear() {
+    func clear() {
         keyCode = NJKeyInputFieldEmpty
         delegate?.keyInputFieldDidClear(self)
         _ = resignFirstResponder()
     }
 
-    @objc(displayNameForKeyCode:)
     class func displayName(forKeyCode keyCode: CGKeyCode) -> String {
         switch keyCode {
         case CGKeyCode(kVK_F1): return "F1"

@@ -1,14 +1,12 @@
 import Foundation
 
 extension NSCharacterSet {
-    @objc(invalidPathComponentCharacterSet)
     class func invalidPathComponentCharacterSetCompat() -> NSCharacterSet {
         NSCharacterSet(charactersIn: "\"\\/:*?<>|")
     }
 }
 
 extension NSString {
-    @objc(stringByFixingPathComponent)
     func stringByFixingPathComponentCompat() -> String {
         let invalid = NSCharacterSet.invalidPathComponentCharacterSetCompat() as CharacterSet
         let whitespace = CharacterSet.whitespacesAndNewlines

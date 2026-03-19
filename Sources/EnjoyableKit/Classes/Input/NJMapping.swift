@@ -1,22 +1,19 @@
 import Foundation
 
-@objc(NJMapping)
 class NJMapping: NSObject {
-    @objc var name: String
+    var name: String
     private var entries: [String: NJOutput] = [:]
 
-    @objc override init() {
+    override init() {
         name = NSLocalizedString("Untitled", comment: "name for new mappings")
         super.init()
     }
 
-    @objc(initWithName:)
     init(name: String?) {
         self.name = name ?? NSLocalizedString("Untitled", comment: "name for new mappings")
         super.init()
     }
 
-    @objc(initWithSerialization:)
     init(serialization: [String: Any]) {
         name = (serialization["name"] as? String) ?? NSLocalizedString("Untitled", comment: "name for new mappings")
         super.init()
@@ -29,7 +26,6 @@ class NJMapping: NSObject {
         }
     }
 
-    @objc(mappingWithContentsOfURL:error:)
     class func mapping(withContentsOf url: URL, error: NSErrorPointer) -> Any? {
         do {
             let data = try Data(contentsOf: url)
@@ -47,7 +43,7 @@ class NJMapping: NSObject {
         }
     }
 
-    @objc var count: UInt {
+    var count: UInt {
         UInt(entries.count)
     }
 
@@ -66,17 +62,15 @@ class NJMapping: NSObject {
         }
     }
 
-    @objc(objectForKeyedSubscript:)
     func object(forKeyedSubscript input: NJInput?) -> NJOutput? {
         self[input]
     }
 
-    @objc(setObject:forKeyedSubscript:)
     func setObject(_ output: NJOutput?, forKeyedSubscript input: NJInput?) {
         self[input] = output
     }
 
-    @objc func serialize() -> [String: Any] {
+    func serialize() -> [String: Any] {
         var serializedEntries: [String: Any] = [:]
         for (key, value) in entries {
             if let serialized = value.serialize() {
@@ -86,7 +80,6 @@ class NJMapping: NSObject {
         return ["name": name, "entries": serializedEntries]
     }
 
-    @objc(writeToURL:error:)
     func write(to url: URL, error: NSErrorPointer) -> Bool {
         ProcessInfo.processInfo.disableSuddenTermination()
         defer { ProcessInfo.processInfo.enableSuddenTermination() }
@@ -100,7 +93,6 @@ class NJMapping: NSObject {
         }
     }
 
-    @objc(hasConflictWith:)
     func hasConflict(with other: NJMapping) -> Bool {
         if other.count < count {
             return other.hasConflict(with: self)
@@ -113,13 +105,11 @@ class NJMapping: NSObject {
         return false
     }
 
-    @objc(mergeEntriesFrom:)
     func mergeEntries(from other: NJMapping?) {
         guard let other else { return }
         entries.merge(other.entries) { _, new in new }
     }
 
-    @objc(postLoadProcess:)
     func postLoadProcess(_ allMappings: NSFastEnumeration) {
         for output in entries.values {
             output.postLoadProcess(allMappings)

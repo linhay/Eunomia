@@ -41,15 +41,13 @@ private func inputsForDevice(_ device: IOHIDDevice, parent: NJInputPathElement) 
     return children
 }
 
-@objc(NJDevice)
 class NJDevice: NJInputPathElement {
-    @objc var index: Int32 = 1
-    @objc var device: IOHIDDevice
+    var index: Int32 = 1
+    var device: IOHIDDevice
 
     private let vendorId: Int32
     private let productId: Int32
 
-    @objc(initWithDevice:)
     init(device dev: IOHIDDevice) {
         device = dev
         let rawName = IOHIDDeviceGetProperty(dev, kIOHIDProductKey as CFString) as? String ?? ""
@@ -73,19 +71,17 @@ class NJDevice: NJInputPathElement {
         return other.name == name
     }
 
-    @objc func findInput(byCookie cookie: IOHIDElementCookie) -> NJInput? {
+    func findInput(byCookie cookie: IOHIDElementCookie) -> NJInput? {
         for case let child as NJInput in children ?? [] {
             if child.cookie == cookie { return child }
         }
         return nil
     }
 
-    @objc(handlerForEvent:)
     func handler(for value: IOHIDValue) -> NJInput? {
         input(forEvent: value)?.findSubInput(for: value) as? NJInput
     }
 
-    @objc(inputForEvent:)
     func input(forEvent value: IOHIDValue) -> NJInput? {
         let elt = IOHIDValueGetElement(value)
         let cookie = IOHIDElementGetCookie(elt)

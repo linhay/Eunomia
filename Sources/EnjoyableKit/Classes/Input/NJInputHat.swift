@@ -21,11 +21,28 @@ private let activeFourWay: [Bool] = [
     false, false, true, false,
 ]
 
-@objc(NJInputHat)
+func hatActiveStates(parsed rawParsed: CFIndex, maxValue rawMaxValue: CFIndex) -> [Bool] {
+    var parsed = rawParsed
+    var size = rawMaxValue
+
+    if size & 1 == 1 {
+        parsed += 1
+        size += 1
+    }
+
+    let activeChildren = size == 8 ? activeEightWay : activeFourWay
+    let base = Int(parsed) * 4
+
+    guard base >= 0, base + 3 < activeChildren.count else {
+        return [false, false, false, false]
+    }
+
+    return Array(activeChildren[base..<(base + 4)])
+}
+
 class NJInputHat: NJInput {
     private let maxValue: CFIndex
 
-    @objc(initWithElement:index:parent:)
     init(element: IOHIDElement, index: Int32, parent: NJInputPathElement?) {
         maxValue = IOHIDElementGetLogicalMax(element)
         let name = String(format: NSLocalizedString("hat switch %d", comment: "hat switch name"), Int(index))
@@ -39,7 +56,7 @@ class NJInputHat: NJInput {
         ]
     }
 
-    @objc override func findSubInput(for value: IOHIDValue) -> Any? {
+    override func findSubInput(for value: IOHIDValue) -> Any? {
         let parsed = IOHIDValueGetIntegerValue(value)
         switch maxValue {
         case 7:
@@ -55,16 +72,10 @@ class NJInputHat: NJInput {
         }
     }
 
-    @objc override func notifyEvent(_ value: IOHIDValue) {
-        var parsed = IOHIDValueGetIntegerValue(value)
-        var size = maxValue
-        if size & 1 == 1 {
-            parsed += 1
-            size += 1
-        }
-        let activeChildren = size == 8 ? activeEightWay : activeFourWay
+    override func notifyEvent(_ value: IOHIDValue) {
+        let states = hatActiveStates(parsed: IOHIDValueGetIntegerValue(value), maxValue: maxValue)
         for i in 0..<4 {
-            let active = activeChildren[Int(parsed) * 4 + i]
+            let active = states[i]
             let child = children?[i] as? NJInput
             child?.active = active
             child?.magnitude = active ? 1 : 0

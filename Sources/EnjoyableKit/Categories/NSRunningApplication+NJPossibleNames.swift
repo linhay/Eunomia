@@ -1,7 +1,6 @@
 import AppKit
 
 extension NSRunningApplication {
-    @objc(windowTitles)
     func windowTitlesCompat() -> [String] {
         let options: CGWindowListOption = [.optionOnScreenOnly, .excludeDesktopElements]
         guard let windows = CGWindowListCopyWindowInfo(options, kCGNullWindowID) as? [[String: Any]] else {
@@ -17,13 +16,9 @@ extension NSRunningApplication {
         }
         return titles
     }
-
-    @objc(frontWindowTitle)
     func frontWindowTitleCompat() -> String? {
         windowTitlesCompat().first
     }
-
-    @objc(possibleMappingNames)
     func possibleMappingNamesCompat() -> [String] {
         var names: [String] = []
         if let bundleIdentifier { names.append(bundleIdentifier) }
@@ -33,8 +28,6 @@ extension NSRunningApplication {
         if let frontWindowTitle = frontWindowTitleCompat() { names.append(frontWindowTitle) }
         return names
     }
-
-    @objc(bestMappingName)
     func bestMappingNameCompat() -> String {
         let genericBundles = ["com.macromedia.Flash Player Debugger.app", "com.macromedia.Flash Player.app"]
         let genericExecutables = ["wine.bin"]

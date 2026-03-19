@@ -2,24 +2,23 @@ import AppKit
 import CoreVideo
 import IOKit.hid
 
-@objc protocol NJInputControllerDelegate {
-    @objc(inputController:didAddDevice:) func inputController(_ ic: NJInputController, didAddDevice device: NJDevice)
-    @objc(inputController:didRemoveDeviceAtIndex:) func inputController(_ ic: NJInputController, didRemoveDeviceAtIndex idx: Int)
-    @objc(inputController:didInput:) func inputController(_ ic: NJInputController, didInput input: NJInput)
-    @objc(inputControllerDidStartHID:) func inputControllerDidStartHID(_ ic: NJInputController)
-    @objc(inputControllerDidStopHID:) func inputControllerDidStopHID(_ ic: NJInputController)
-    @objc(inputController:didError:) func inputController(_ ic: NJInputController, didError error: NSError)
+protocol NJInputControllerDelegate: AnyObject {
+    func inputController(_ ic: NJInputController, didAddDevice device: NJDevice)
+    func inputController(_ ic: NJInputController, didRemoveDeviceAtIndex idx: Int)
+    func inputController(_ ic: NJInputController, didInput input: NJInput)
+    func inputControllerDidStartHID(_ ic: NJInputController)
+    func inputControllerDidStopHID(_ ic: NJInputController)
+    func inputController(_ ic: NJInputController, didError error: NSError)
 }
 
 private let ioStrDeviceUsagePageKey = kIOHIDDeviceUsagePageKey as String
 private let ioStrDeviceUsageKey = kIOHIDDeviceUsageKey as String
 
-@objc(NJInputController)
 class NJInputController: NSObject, NJHIDManagerDelegate {
-    @objc weak var delegate: NJInputControllerDelegate?
+    weak var delegate: NJInputControllerDelegate?
 
-    @objc var mouseLoc: NSPoint = .zero
-    @objc var simulatingEvents: Bool = false {
+    var mouseLoc: NSPoint = .zero
+    var simulatingEvents: Bool = false {
         didSet {
             if simulatingEvents == oldValue { return }
             let name = simulatingEvents ? NJEventSimulationStarted : NJEventSimulationStopped
@@ -33,14 +32,16 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         }
     }
 
-    @objc private(set) var devices: [NJDevice] = []
-    @objc private(set) var currentMapping: NJMapping
-    @objc private(set) var mappings: [NJMapping]
+    private(set) var devices: [NJDevice] = []
+    private(set) var currentMapping: NJMapping
+    private(set) var mappings: [NJMapping]
 
     private let hidManager: NJHIDManager
     private var continuousOutputs: [NJOutput] = []
     private var manualMapping: NJMapping
     private var displayLink: CVDisplayLink?
+    private var didResignObserver: NSObjectProtocol?
+    private var didBecomeActiveObserver: NSObjectProtocol?
 
     override init() {
         let defaultMapping = NJMapping(name: NSLocalizedString("(default)", comment: "default name for first the mapping"))
@@ -66,7 +67,9 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
                 CVDisplayLinkSetOutputCallback(displayLink, { _, _, _, _, _, ctx in
                     guard let ctx else { return kCVReturnError }
                     let me = Unmanaged<NJInputController>.fromOpaque(ctx).takeUnretainedValue()
-                    me.performSelector(onMainThread: #selector(NJInputController.updateContinuousOutputs), with: nil, waitUntilDone: false)
+                    DispatchQueue.main.async {
+                        me.updateContinuousOutputs()
+                    }
                     return kCVReturnSuccess
                 }, Unmanaged.passUnretained(self).toOpaque())
             }
@@ -74,12 +77,30 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
             delegate?.inputController(self, didError: NSError(domain: NSCocoaErrorDomain, code: Int(cvErr)))
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(stopHidIfDisabled(_:)), name: NSApplication.didResignActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(startHid), name: NSApplication.didBecomeActiveNotification, object: nil)
+        didResignObserver = NotificationCenter.default.addObserver(
+            forName: NSApplication.didResignActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.stopHidIfDisabled()
+        }
+
+        didBecomeActiveObserver = NotificationCenter.default.addObserver(
+            forName: NSApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.startHid()
+        }
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        if let didResignObserver {
+            NotificationCenter.default.removeObserver(didResignObserver)
+        }
+        if let didBecomeActiveObserver {
+            NotificationCenter.default.removeObserver(didBecomeActiveObserver)
+        }
         if let displayLink {
             CVDisplayLinkStop(displayLink)
         }
@@ -121,11 +142,19 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
     private func showOutput(for value: IOHIDValue) {
         let element = IOHIDValueGetElement(value)
         let deviceRef = IOHIDElementGetDevice(element)
-        guard let dev = findDevice(by: deviceRef), let handler = dev.handler(for: value) else { return }
-        delegate?.inputController(self, didInput: handler)
+        guard let dev = findDevice(by: deviceRef), let mainInput = dev.input(forEvent: value) else { return }
+
+        mainInput.notifyEvent(value)
+
+        if let children = mainInput.children as? [NJInput], !children.isEmpty {
+            for child in children {
+                delegate?.inputController(self, didInput: child)
+            }
+        } else {
+            delegate?.inputController(self, didInput: mainInput)
+        }
     }
 
-    @objc(updateContinuousOutputs)
     func updateContinuousOutputs() {
         mouseLoc = NSEvent.mouseLocation
         for output in continuousOutputs {
@@ -139,7 +168,7 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
     }
 
     private func addDevice(_ device: NJDevice) {
-        var candidate = device
+        let candidate = device
         while devices.contains(where: { $0.isEqual(candidate) }) {
             candidate.index += 1
         }
@@ -150,24 +179,20 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         devices.first { $0.device == ref }
     }
 
-    @objc(startHid)
     func startHid() {
         hidManager.start()
     }
 
-    @objc(stopHid)
     func stopHid() {
         hidManager.stop()
     }
 
-    @objc(stopHidIfDisabled:)
-    func stopHidIfDisabled(_ note: Notification) {
+    func stopHidIfDisabled() {
         if !simulatingEvents && !ProcessInfo.processInfo.isBeingDebuggedCompat() {
             stopHid()
         }
     }
 
-    @objc(elementForUID:)
     func element(forUID uid: String) -> NJInputPathElement? {
         for dev in devices {
             if let item = dev.element(forUID: uid) {
@@ -177,7 +202,6 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         return nil
     }
 
-    @objc(mappingForKey:)
     func mapping(forKey name: String) -> NJMapping? {
         mappings.first { $0.name == name }
     }
@@ -196,7 +220,6 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         mappingsSet()
     }
 
-    @objc(activateMappingForProcess:)
     func activateMapping(forProcess app: NSRunningApplication) {
         let oldMapping = manualMapping
         let names = app.possibleMappingNamesCompat()
@@ -230,7 +253,6 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         )
     }
 
-    @objc(activateMapping:)
     func activateMapping(_ mapping: NJMapping?) {
         let target = mapping ?? manualMapping
         if target === currentMapping { return }
@@ -238,7 +260,6 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         activateMappingForcibly(target)
     }
 
-    @objc(save)
     func save() {
         NSLog("Saving mappings to defaults.")
         let ary = mappings.map { $0.serialize() }
@@ -251,7 +272,6 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         }
     }
 
-    @objc(load)
     func load() {
         var selected = UserDefaults.standard.integer(forKey: "selected")
         let storedMappings = UserDefaults.standard.array(forKey: "mappings") as? [[String: Any]] ?? []
@@ -265,12 +285,10 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         }
     }
 
-    @objc(indexOfMapping:)
     func indexOfMapping(_ mapping: NJMapping) -> Int {
         mappings.firstIndex(where: { $0 === mapping }) ?? NSNotFound
     }
 
-    @objc(mergeMapping:intoMapping:)
     func mergeMapping(_ mapping: NJMapping, into existing: NJMapping) {
         existing.mergeEntries(from: mapping)
         mappingsChanged()
@@ -279,7 +297,6 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         }
     }
 
-    @objc(renameMapping:to:)
     func renameMapping(_ mapping: NJMapping, to name: String) {
         mapping.name = name
         mappingsChanged()
@@ -288,18 +305,15 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         }
     }
 
-    @objc(addMapping:)
     func addMapping(_ mapping: NJMapping) {
         insertMapping(mapping, at: mappings.count)
     }
 
-    @objc(insertMapping:atIndex:)
     func insertMapping(_ mapping: NJMapping, at idx: Int) {
         mappings.insert(mapping, at: idx)
         mappingsChanged()
     }
 
-    @objc(removeMappingAtIndex:)
     func removeMapping(at idx: Int) {
         let currentIdx = indexOfMapping(currentMapping)
         mappings.remove(at: idx)
@@ -308,7 +322,6 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         mappingsChanged()
     }
 
-    @objc(moveMoveMappingFromIndex:toIndex:)
     func moveMoveMapping(fromIndex: Int, toIndex: Int) {
         let item = mappings.remove(at: fromIndex)
         mappings.insert(item, at: toIndex)
@@ -317,7 +330,6 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
 
     // MARK: NJHIDManagerDelegate
 
-    @objc(HIDManager:valueChanged:)
     func HIDManager(_ manager: NJHIDManager, valueChanged value: IOHIDValue) {
         if simulatingEvents && !NSApplication.shared.isActive {
             runOutput(for: value)
@@ -326,21 +338,18 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         }
     }
 
-    @objc(HIDManager:deviceAdded:)
     func HIDManager(_ manager: NJHIDManager, deviceAdded device: IOHIDDevice) {
         let match = NJDevice(device: device)
         addDevice(match)
         delegate?.inputController(self, didAddDevice: match)
     }
 
-    @objc(HIDManager:deviceRemoved:)
     func HIDManager(_ manager: NJHIDManager, deviceRemoved device: IOHIDDevice) {
         guard let match = findDevice(by: device), let idx = devices.firstIndex(where: { $0 === match }) else { return }
         devices.remove(at: idx)
         delegate?.inputController(self, didRemoveDeviceAtIndex: idx)
     }
 
-    @objc(HIDManager:didError:)
     func HIDManager(_ manager: NJHIDManager, didError error: NSError) {
         delegate?.inputController(self, didError: error)
         simulatingEvents = false
@@ -349,12 +358,10 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         }
     }
 
-    @objc(HIDManagerDidStart:)
     func HIDManagerDidStart(_ manager: NJHIDManager) {
         delegate?.inputControllerDidStartHID(self)
     }
 
-    @objc(HIDManagerDidStop:)
     func HIDManagerDidStop(_ manager: NJHIDManager) {
         devices.removeAll()
         if let displayLink {

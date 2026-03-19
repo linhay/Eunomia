@@ -1,8 +1,7 @@
 import AppKit
 
-@objc(NJOutputKeyPress)
 class NJOutputKeyPress: NJOutput {
-    @objc var keyCode: CGKeyCode = NJKeyInputFieldEmpty
+    var keyCode: CGKeyCode = NJKeyInputFieldEmpty
 
     override class func serializationCode() -> String {
         "key press"
