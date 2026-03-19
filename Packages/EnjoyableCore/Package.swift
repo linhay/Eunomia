@@ -7,12 +7,18 @@ let package = Package(
         .macOS(.v11)
     ],
     products: [
-        .library(name: "EnjoyableCore", type: .dynamic, targets: ["EnjoyableCore"])
+        .library(name: "EnjoyableCore", type: .dynamic, targets: ["EnjoyableCore"]),
+        .executable(name: "Enjoyable", targets: ["EnjoyableApp"])
     ],
     targets: [
         .target(
             name: "EnjoyableCore",
             path: "Sources/EnjoyableCore"
+        ),
+        .executableTarget(
+            name: "EnjoyableApp",
+            dependencies: ["EnjoyableCore"],
+            path: "Sources/EnjoyableApp"
         ),
         .testTarget(
             name: "EnjoyableCoreTests",
