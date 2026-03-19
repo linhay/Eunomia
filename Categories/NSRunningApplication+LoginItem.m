@@ -7,6 +7,7 @@
 //
 
 #import "NSRunningApplication+LoginItem.h"
+#import "Enjoyable-Swift.h"
 
 #import <CoreServices/CoreServices.h>
 
@@ -15,7 +16,14 @@ static const UInt32 RESOLVE_FLAGS = kLSSharedFileListNoUserInteraction
 
 @implementation NSRunningApplication (LoginItem)
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 - (BOOL)isLoginItem {
+    if ([NJLoginItemService isSMAppServiceAvailable]) {
+        return [NJLoginItemService isLoginItemEnabled];
+    }
+
     LSSharedFileListRef loginItems = LSSharedFileListCreate(
         NULL, kLSSharedFileListSessionLoginItems, NULL);
     NSURL *myURL = self.bundleURL;
@@ -38,6 +46,17 @@ static const UInt32 RESOLVE_FLAGS = kLSSharedFileListNoUserInteraction
 }
 
 - (void)addToLoginItems {
+    if ([NJLoginItemService isSMAppServiceAvailable]) {
+        if ([NJLoginItemService isLoginItemEnabled]) {
+            return;
+        }
+
+        NSError *error = nil;
+        if ([NJLoginItemService registerLoginItem:&error]) {
+            return;
+        }
+    }
+
     if (!self.isLoginItem) {
         NSURL *myURL = self.bundleURL;
         LSSharedFileListRef loginItems = LSSharedFileListCreate(
@@ -50,6 +69,17 @@ static const UInt32 RESOLVE_FLAGS = kLSSharedFileListNoUserInteraction
 }
 
 - (void)removeFromLoginItems {
+    if ([NJLoginItemService isSMAppServiceAvailable]) {
+        if (![NJLoginItemService isLoginItemEnabled]) {
+            return;
+        }
+
+        NSError *error = nil;
+        if ([NJLoginItemService unregisterLoginItem:&error]) {
+            return;
+        }
+    }
+
     LSSharedFileListRef loginItems = LSSharedFileListCreate(
         NULL, kLSSharedFileListSessionLoginItems, NULL);
     NSURL *myURL = self.bundleURL;
@@ -85,5 +115,6 @@ static const UInt32 RESOLVE_FLAGS = kLSSharedFileListNoUserInteraction
     return [parentInfo[@"FileCreator"] isEqualToString:@"lgnw"];
 }
 
+#pragma clang diagnostic pop
 
 @end

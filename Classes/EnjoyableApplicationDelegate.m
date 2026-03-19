@@ -208,7 +208,7 @@
     panel.allowedFileTypes = @[ @"enjoyable", @"json", @"txt" ];
     [panel beginSheetModalForWindow:self.window
                   completionHandler:^(NSInteger result) {
-                      if (result != NSFileHandlingPanelOKButton)
+                      if (result != NSModalResponseOK)
                           return;
                       [panel close];
                       NSError *error;
@@ -234,7 +234,7 @@
     panel.nameFieldStringValue = [mapping.name stringByFixingPathComponent];
     [panel beginSheetModalForWindow:self.window
                   completionHandler:^(NSInteger result) {
-                      if (result != NSFileHandlingPanelOKButton)
+                      if (result != NSModalResponseOK)
                           return;
                       [panel close];
                       NSError *error;
@@ -246,26 +246,20 @@
 
 - (void)mappingConflictDidResolve:(NSAlert *)alert
                        returnCode:(NSInteger)returnCode
-                      contextInfo:(void *)contextInfo {
-    NSDictionary *userInfo = CFBridgingRelease(contextInfo);
+                         userInfo:(NSDictionary *)userInfo {
     NJMapping *oldMapping = userInfo[@"old mapping"];
     NJMapping *newMapping = userInfo[@"new mapping"];
     NSInteger idx = [userInfo[@"index"] intValue];
     [alert.window orderOut:nil];
-    switch (returnCode) {
-        case NSAlertFirstButtonReturn: // Merge
-            [self.ic mergeMapping:newMapping intoMapping:oldMapping];
-            [self.ic activateMapping:oldMapping];
-            break;
-        case NSAlertThirdButtonReturn: // New Mapping
-            [self.mvc beginUpdates];
-            [self.ic addMapping:newMapping];
-            [self.mvc addedMappingAtIndex:idx startEditing:YES];
-            [self.mvc endUpdates];
-            [self.ic activateMapping:newMapping];
-            break;
-        default: // Cancel, other.
-            break;
+    if (returnCode == NSAlertFirstButtonReturn) { // Merge
+        [self.ic mergeMapping:newMapping intoMapping:oldMapping];
+        [self.ic activateMapping:oldMapping];
+    } else if (returnCode == NSAlertThirdButtonReturn) { // New Mapping
+        [self.mvc beginUpdates];
+        [self.ic addMapping:newMapping];
+        [self.mvc addedMappingAtIndex:idx startEditing:YES];
+        [self.mvc endUpdates];
+        [self.ic activateMapping:newMapping];
     }
 }
 
@@ -279,12 +273,15 @@
     [conflictAlert addButtonWithTitle:NSLocalizedString(@"import and merge", @"button to merge imported mappings")];
     [conflictAlert addButtonWithTitle:NSLocalizedString(@"cancel import", @"button to cancel import")];
     [conflictAlert addButtonWithTitle:NSLocalizedString(@"import new mapping", @"button to import as new mapping")];
+    NSDictionary *userInfo = @{ @"index": @(idx),
+                                @"old mapping": mergeInto,
+                                @"new mapping": mapping };
     [conflictAlert beginSheetModalForWindow:self.window
-                              modalDelegate:self
-                             didEndSelector:@selector(mappingConflictDidResolve:returnCode:contextInfo:)
-                                contextInfo:(void *)CFBridgingRetain(@{ @"index": @(idx),
-                                                                        @"old mapping": mergeInto,
-                                                                        @"new mapping": mapping })];
+                          completionHandler:^(NSModalResponse returnCode) {
+                              [self mappingConflictDidResolve:conflictAlert
+                                                   returnCode:returnCode
+                                                     userInfo:userInfo];
+                          }];
 }
 
 - (NSInteger)numberOfMappings:(NJMappingsViewController *)mvc {

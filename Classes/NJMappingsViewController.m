@@ -185,6 +185,8 @@
     }
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (NSArray *)tableView:(NSTableView *)tableView
 namesOfPromisedFilesDroppedAtDestination:(NSURL *)dropDestination
 forDraggedRowsWithIndexes:(NSIndexSet *)indexSet {
@@ -202,6 +204,7 @@ forDraggedRowsWithIndexes:(NSIndexSet *)indexSet {
         return @[dst.lastPathComponent];
     }
 }
+#pragma clang diagnostic pop
 
 - (BOOL)tableView:(NSTableView *)tableView
 writeRowsWithIndexes:(NSIndexSet *)rowIndexes
@@ -225,4 +228,3 @@ writeRowsWithIndexes:(NSIndexSet *)rowIndexes
 }
 
 @end
-
