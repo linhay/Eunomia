@@ -2,28 +2,28 @@
 import PackageDescription
 
 let package = Package(
-    name: "EnjoyableCore",
+    name: "EnjoyableKit",
     platforms: [
         .macOS(.v11)
     ],
     products: [
-        .library(name: "EnjoyableCore", type: .dynamic, targets: ["EnjoyableCore"]),
+        .library(name: "EnjoyableKit", type: .dynamic, targets: ["EnjoyableKit"]),
         .executable(name: "Enjoyable", targets: ["EnjoyableApp"])
     ],
     targets: [
         .target(
-            name: "EnjoyableCore",
-            path: "Sources/EnjoyableCore"
+            name: "EnjoyableKit",
+            path: "Sources/EnjoyableKit"
         ),
         .executableTarget(
             name: "EnjoyableApp",
-            dependencies: ["EnjoyableCore"],
+            dependencies: ["EnjoyableKit"],
             path: "Sources/EnjoyableApp"
         ),
         .testTarget(
-            name: "EnjoyableCoreTests",
-            dependencies: ["EnjoyableCore"],
-            path: "Tests/EnjoyableCoreTests"
+            name: "EnjoyableKitTests",
+            dependencies: ["EnjoyableKit"],
+            path: "Tests/EnjoyableKitTests"
         )
     ]
 )

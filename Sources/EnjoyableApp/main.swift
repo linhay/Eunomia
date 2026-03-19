@@ -1,5 +1,5 @@
 import AppKit
-import EnjoyableCore
+import EnjoyableKit
 import SwiftUI
 
 final class EnjoyableSPMAppDelegate: NSObject, NSApplicationDelegate {

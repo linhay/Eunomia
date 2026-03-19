@@ -17,3 +17,6 @@ profile
 *.helpindex
 *~
 
+# SwiftPM
+.build/
+.swiftpm/

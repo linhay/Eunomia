@@ -1,5 +1,5 @@
 import XCTest
-@testable import EnjoyableCore
+@testable import EnjoyableKit
 
 final class OutputDraftTests: XCTestCase {
     func testFromKeyOutput() {
