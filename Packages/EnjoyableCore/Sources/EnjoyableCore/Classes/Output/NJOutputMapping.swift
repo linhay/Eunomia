@@ -1,5 +1,13 @@
 import AppKit
 
+protocol NJOutputMappingActivationDelegate: AnyObject {
+    func outputMapping(_ output: NJOutputMapping, activate mapping: NJMapping)
+}
+
+private enum NJOutputMappingActivationHub {
+    static weak var delegate: NJOutputMappingActivationDelegate?
+}
+
 @objc(NJOutputMapping)
 class NJOutputMapping: NJOutput {
     @objc weak var mapping: NJMapping?
@@ -23,11 +31,18 @@ class NJOutputMapping: NJOutput {
     }
 
     override func trigger() {
-        guard let ctrl = NSApplication.shared.delegate as? EnjoyableApplicationDelegate else { return }
         if let mapping {
-            ctrl.ic.activateMapping(mapping)
+            if let delegate = NJOutputMappingActivationHub.delegate {
+                delegate.outputMapping(self, activate: mapping)
+            } else if let ctrl = NSApplication.shared.delegate as? EnjoyableApplicationDelegate {
+                ctrl.ic.activateMapping(mapping)
+            }
             mappingName = mapping.name
         }
+    }
+
+    class func setActivationDelegate(_ delegate: NJOutputMappingActivationDelegate?) {
+        NJOutputMappingActivationHub.delegate = delegate
     }
 
     override func postLoadProcess(_ allMappings: NSFastEnumeration) {

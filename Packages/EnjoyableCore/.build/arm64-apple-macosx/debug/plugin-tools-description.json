@@ -1,0 +1,1388 @@
+{
+  "builtTestProducts" : [
+    {
+      "binaryPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.xctest/Contents/MacOS/EnjoyableCorePackageTests",
+      "packagePath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore",
+      "productName" : "EnjoyableCorePackageTests"
+    }
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.EnjoyableCore-arm64-apple-macosx26.0-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/sources",
+      "importPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSError+Description.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSFileManager+UniqueNames.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSMenu+RepresentedObjectAccessors.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSMutableArray+MoveObject.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSOutlineView+ItemAccessors.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSProcessInfo+Debugging.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSRunningApplication+LoginItem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSRunningApplication+NJPossibleNames.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSString+FixFilename.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSView+FirstResponder.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/EnjoyableApplicationDelegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJDevice.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJHIDManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInput.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputAnalog.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputButton.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputHat.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputPathElement.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJMapping.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutput.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputKeyPress.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMapping.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseButton.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseMove.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseScroll.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/SwiftMigrationMarker.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJDeviceViewController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJMappingMenuController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJMappingsViewController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJOutputViewController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Views/NJKeyInputField.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/SwiftUI/EnjoyableRuntime.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "EnjoyableCore",
+      "moduleOutputPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules/EnjoyableCore.swiftmodule",
+      "objects" : [
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSError+Description.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSFileManager+UniqueNames.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSMenu+RepresentedObjectAccessors.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSMutableArray+MoveObject.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSOutlineView+ItemAccessors.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSProcessInfo+Debugging.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSRunningApplication+LoginItem.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSRunningApplication+NJPossibleNames.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSString+FixFilename.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSView+FirstResponder.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/EnjoyableApplicationDelegate.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJDevice.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJHIDManager.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInput.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputAnalog.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputButton.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputController.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputHat.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputPathElement.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMapping.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutput.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputKeyPress.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMapping.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseButton.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseMove.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseScroll.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/SwiftMigrationMarker.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJDeviceViewController.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMappingMenuController.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMappingsViewController.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputViewController.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJKeyInputField.swift.o",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/EnjoyableRuntime.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx11.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j10",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/include/EnjoyableCore-Swift.h",
+        "-swift-version",
+        "5",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "enjoyablecore"
+      ],
+      "outputFileMapPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSError+Description.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSFileManager+UniqueNames.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSMenu+RepresentedObjectAccessors.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSMutableArray+MoveObject.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSOutlineView+ItemAccessors.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSProcessInfo+Debugging.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSRunningApplication+LoginItem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSRunningApplication+NJPossibleNames.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSString+FixFilename.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSView+FirstResponder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/EnjoyableApplicationDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJDevice.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJHIDManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInput.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputAnalog.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputButton.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputHat.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputPathElement.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMapping.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutput.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputKeyPress.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMapping.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseButton.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseMove.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseScroll.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/SwiftMigrationMarker.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJDeviceViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMappingMenuController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMappingsViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJKeyInputField.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/EnjoyableRuntime.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules/EnjoyableCore.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSError+Description.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSFileManager+UniqueNames.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSMenu+RepresentedObjectAccessors.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSMutableArray+MoveObject.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSOutlineView+ItemAccessors.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSProcessInfo+Debugging.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSRunningApplication+LoginItem.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSRunningApplication+NJPossibleNames.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSString+FixFilename.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSView+FirstResponder.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/EnjoyableApplicationDelegate.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJDevice.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJHIDManager.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInput.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputAnalog.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputButton.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputController.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputHat.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputPathElement.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJMapping.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutput.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputKeyPress.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMapping.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseButton.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseMove.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseScroll.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/SwiftMigrationMarker.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJDeviceViewController.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJMappingMenuController.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJMappingsViewController.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJOutputViewController.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Views/NJKeyInputField.swift",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/SwiftUI/EnjoyableRuntime.swift"
+      ],
+      "tempsPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.EnjoyableCorePackageTests-arm64-apple-macosx26.0-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/sources",
+      "importPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.derived/runner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules/EnjoyableCoreTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "EnjoyableCorePackageTests",
+      "moduleOutputPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules/EnjoyableCorePackageTests.swiftmodule",
+      "objects" : [
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/runner.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx11.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j10",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/include/EnjoyableCorePackageTests-Swift.h",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "enjoyablecore"
+      ],
+      "outputFileMapPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules/EnjoyableCorePackageTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.derived/runner.swift"
+      ],
+      "tempsPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.EnjoyableCoreTests-arm64-apple-macosx26.0-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build/sources",
+      "importPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Tests/EnjoyableCoreTests/OutputDraftTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules/EnjoyableCore.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "EnjoyableCoreTests",
+      "moduleOutputPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules/EnjoyableCoreTests.swiftmodule",
+      "objects" : [
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build/OutputDraftTests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j10",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "5",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "enjoyablecore"
+      ],
+      "outputFileMapPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build/OutputDraftTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules/EnjoyableCoreTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Tests/EnjoyableCoreTests/OutputDraftTests.swift"
+      ],
+      "tempsPath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "EnjoyableCore" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "EnjoyableCore",
+      "-package-name",
+      "enjoyablecore",
+      "-c",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSError+Description.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSFileManager+UniqueNames.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSMenu+RepresentedObjectAccessors.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSMutableArray+MoveObject.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSOutlineView+ItemAccessors.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSProcessInfo+Debugging.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSRunningApplication+LoginItem.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSRunningApplication+NJPossibleNames.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSString+FixFilename.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSView+FirstResponder.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/EnjoyableApplicationDelegate.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJDevice.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJHIDManager.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInput.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputAnalog.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputButton.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputController.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputHat.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputPathElement.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJMapping.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutput.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputKeyPress.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMapping.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseButton.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseMove.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseScroll.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/SwiftMigrationMarker.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJDeviceViewController.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJMappingMenuController.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJMappingsViewController.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJOutputViewController.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Views/NJKeyInputField.swift",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/SwiftUI/EnjoyableRuntime.swift",
+      "-I",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx11.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j10",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/include/EnjoyableCore-Swift.h",
+      "-swift-version",
+      "5",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "enjoyablecore",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "EnjoyableCorePackageTests" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "EnjoyableCorePackageTests",
+      "-package-name",
+      "enjoyablecore",
+      "-c",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.derived/runner.swift",
+      "-I",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx11.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j10",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/include/EnjoyableCorePackageTests-Swift.h",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "enjoyablecore",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "EnjoyableCoreTests" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "EnjoyableCoreTests",
+      "-package-name",
+      "enjoyablecore",
+      "-c",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Tests/EnjoyableCoreTests/OutputDraftTests.swift",
+      "-I",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j10",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "5",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "enjoyablecore",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "EnjoyableCore" : [
+
+    ],
+    "EnjoyableCorePackageTests" : [
+      "EnjoyableCoreTests",
+      "EnjoyableCore"
+    ],
+    "EnjoyableCoreTests" : [
+      "EnjoyableCore"
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+    "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.derived/runner.swift" : {
+      "inputs" : [
+
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.derived/runner.swift"
+        }
+      ]
+    }
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSError+Description.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSFileManager+UniqueNames.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSMenu+RepresentedObjectAccessors.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSMutableArray+MoveObject.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSOutlineView+ItemAccessors.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSProcessInfo+Debugging.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSRunningApplication+LoginItem.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSRunningApplication+NJPossibleNames.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSString+FixFilename.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Categories/NSView+FirstResponder.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/EnjoyableApplicationDelegate.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJDevice.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJHIDManager.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInput.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputAnalog.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputButton.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputHat.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJInputPathElement.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Input/NJMapping.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutput.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputKeyPress.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMapping.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseButton.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseMove.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Output/NJOutputMouseScroll.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/SwiftMigrationMarker.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJDeviceViewController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJMappingMenuController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJMappingsViewController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/View Controllers/NJOutputViewController.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/Classes/Views/NJKeyInputField.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Sources/EnjoyableCore/SwiftUI/EnjoyableRuntime.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/sources"
+    },
+    "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/EnjoyableApplicationDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/EnjoyableRuntime.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJDevice.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJDeviceViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJHIDManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInput.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputAnalog.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputButton.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputHat.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputPathElement.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJKeyInputField.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMapping.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMappingMenuController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMappingsViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutput.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputKeyPress.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMapping.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseButton.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseMove.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseScroll.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSError+Description.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSFileManager+UniqueNames.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSMenu+RepresentedObjectAccessors.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSMutableArray+MoveObject.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSOutlineView+ItemAccessors.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSProcessInfo+Debugging.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSRunningApplication+LoginItem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSRunningApplication+NJPossibleNames.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSString+FixFilename.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSView+FirstResponder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/SwiftMigrationMarker.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.product/Objects.LinkFileList"
+    },
+    "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.derived/runner.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/sources"
+    },
+    "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/EnjoyableApplicationDelegate.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/EnjoyableRuntime.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJDevice.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJDeviceViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJHIDManager.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInput.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputAnalog.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputButton.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputHat.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJInputPathElement.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJKeyInputField.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMapping.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMappingMenuController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJMappingsViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutput.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputKeyPress.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMapping.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseButton.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseMove.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputMouseScroll.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NJOutputViewController.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSError+Description.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSFileManager+UniqueNames.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSMenu+RepresentedObjectAccessors.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSMutableArray+MoveObject.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSOutlineView+ItemAccessors.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSProcessInfo+Debugging.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSRunningApplication+LoginItem.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSRunningApplication+NJPossibleNames.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSString+FixFilename.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/NSView+FirstResponder.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCore.build/SwiftMigrationMarker.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build/OutputDraftTests.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCorePackageTests.product/Objects.LinkFileList"
+    },
+    "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/Tests/EnjoyableCoreTests/OutputDraftTests.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/EnjoyableCoreTests.build/sources"
+    },
+    "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/linhey/Desktop/临时需求/enjoyable/Packages/EnjoyableCore/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+    }
+  }
+}
