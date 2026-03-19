@@ -24,4 +24,17 @@ final class ControlHighlightTrackerTests: XCTestCase {
         let expired = tracker.visibleControls(now: now.addingTimeInterval(0.5))
         XCTAssertFalse(expired.contains(.faceEast))
     }
+
+    func testRepeatedInactiveEventsDoNotKeepControlAlive() {
+        var tracker = ControlHighlightTracker(releaseDecay: 0.2)
+        let now = Date()
+
+        tracker.handle(control: .dpadUp, isActive: true, now: now)
+        tracker.handle(control: .dpadUp, isActive: false, now: now.addingTimeInterval(0.01))
+        tracker.handle(control: .dpadUp, isActive: false, now: now.addingTimeInterval(0.19))
+        tracker.handle(control: .dpadUp, isActive: false, now: now.addingTimeInterval(0.39))
+
+        let expired = tracker.visibleControls(now: now.addingTimeInterval(0.5))
+        XCTAssertFalse(expired.contains(.dpadUp))
+    }
 }

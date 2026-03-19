@@ -7,6 +7,15 @@ final class GamepadLayoutTests: XCTestCase {
         XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Button 4"), .faceNorth)
         XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Button 10"), .start)
         XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Button 12"), .rightStickPress)
+        XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Button 13"), .home)
+        XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Button 14"), .touchpad)
+    }
+
+    func testSonyFaceButtonMapping() {
+        XCTAssertEqual(GamepadLayoutMapper.control(for: "1356:3302:1~Button 1"), .faceWest)
+        XCTAssertEqual(GamepadLayoutMapper.control(for: "1356:3302:1~Button 2"), .faceSouth)
+        XCTAssertEqual(GamepadLayoutMapper.control(for: "1356:3302:1~Button 3"), .faceEast)
+        XCTAssertEqual(GamepadLayoutMapper.control(for: "1356:3302:1~Button 4"), .faceNorth)
     }
 
     func testAxisMapping() {

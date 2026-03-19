@@ -25,6 +25,8 @@ enum GamepadControl: String, CaseIterable, Hashable {
     case rightTrigger
     case start
     case select
+    case home
+    case touchpad
 
     var title: String {
         switch self {
@@ -52,11 +54,18 @@ enum GamepadControl: String, CaseIterable, Hashable {
         case .rightTrigger: return "RT"
         case .start: return "ST"
         case .select: return "SE"
+        case .home: return "PS"
+        case .touchpad: return "TP"
         }
     }
 }
 
 enum GamepadLayoutMapper {
+    private enum ButtonProfile {
+        case standard
+        case playStation
+    }
+
     static func control(for inputUID: String) -> GamepadControl? {
         let parts = inputUID.split(separator: "~").map(String.init)
         guard parts.count >= 2 else { return nil }
@@ -78,11 +87,17 @@ enum GamepadLayoutMapper {
               let index = Int(item.dropFirst("Button ".count))
         else { return nil }
 
+        let profile = buttonProfile(deviceUID: parts[0])
+
         switch index {
-        case 1: return .faceSouth
-        case 2: return .faceEast
-        case 3: return .faceWest
-        case 4: return .faceNorth
+        case 1:
+            return profile == .playStation ? .faceWest : .faceSouth
+        case 2:
+            return profile == .playStation ? .faceSouth : .faceEast
+        case 3:
+            return profile == .playStation ? .faceEast : .faceWest
+        case 4:
+            return .faceNorth
         case 5: return .leftShoulder
         case 6: return .rightShoulder
         case 7: return .leftTrigger
@@ -91,8 +106,22 @@ enum GamepadLayoutMapper {
         case 10: return .start
         case 11: return .leftStickPress
         case 12: return .rightStickPress
+        case 13: return .home
+        case 14: return .touchpad
         default: return nil
         }
+    }
+
+    private static func buttonProfile(deviceUID: String) -> ButtonProfile {
+        let pieces = deviceUID.split(separator: ":")
+        guard pieces.count >= 2, let vendorID = Int(pieces[0]) else {
+            return .standard
+        }
+        // Sony controllers (DualShock/DualSense) report face button order as □ × ○ △.
+        if vendorID == 1356 {
+            return .playStation
+        }
+        return .standard
     }
 
     private static func parseAxis(_ parts: [String]) -> GamepadControl? {
@@ -143,8 +172,9 @@ struct ControlHighlightTracker {
             activeControls.insert(control)
             releaseDecayDeadline.removeValue(forKey: control)
         } else {
-            activeControls.remove(control)
-            releaseDecayDeadline[control] = now.addingTimeInterval(releaseDecay)
+            if activeControls.remove(control) != nil {
+                releaseDecayDeadline[control] = now.addingTimeInterval(releaseDecay)
+            }
         }
     }
 
@@ -349,6 +379,8 @@ struct GamepadLayoutView: View {
 
         case .start: return point(0.55, 0.45)
         case .select: return point(0.45, 0.45)
+        case .home: return point(0.50, 0.52)
+        case .touchpad: return point(0.50, 0.33)
         }
     }
 }

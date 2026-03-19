@@ -101,6 +101,27 @@ struct InputNode: Identifiable, Hashable {
     }
 }
 
+enum LiveAxisParser {
+    enum Direction {
+        case low
+        case high
+    }
+
+    static func parse(_ uid: String) -> (index: Int, direction: Direction?)? {
+        let parts = uid.split(separator: "~").map(String.init)
+        guard let axisPart = parts.first(where: { $0.hasPrefix("Axis ") }),
+              let index = Int(axisPart.dropFirst("Axis ".count)) else {
+            return nil
+        }
+
+        if let last = parts.last {
+            if last == "Low" { return (index, .low) }
+            if last == "High" { return (index, .high) }
+        }
+        return (index, nil)
+    }
+}
+
 @MainActor
 public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency NJInputControllerDelegate, @preconcurrency NJOutputMappingActivationDelegate {
     @Published var selectedInputID: String?
@@ -119,6 +140,8 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
     @Published private(set) var draft = OutputDraft()
     @Published private(set) var activeInputPath = ""
     @Published private(set) var highlightedControls: Set<GamepadControl> = []
+    @Published private(set) var liveAxisValues: [Int: Float] = [:]
+    @Published private(set) var liveAxisLabels: [Int: String] = [:]
 
     private let controller: NJInputController
     private var selectedInput: NJInput?
@@ -275,12 +298,15 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
         hidRunning = false
         highlightTracker = ControlHighlightTracker()
         highlightedControls = []
+        liveAxisValues = [:]
+        liveAxisLabels = [:]
         highlightCleanupTimer?.invalidate()
         highlightCleanupTimer = nil
     }
 
     func inputController(_ ic: NJInputController, didInput input: NJInput) {
         updateControlHighlight(from: input)
+        updateLiveAxis(from: input)
         setSelectedInput(id: input.uid)
     }
 
@@ -312,6 +338,32 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
 
     private func refreshHighlightedControls(now: Date) {
         highlightedControls = highlightTracker.visibleControls(now: now)
+    }
+
+    private func updateLiveAxis(from input: NJInput) {
+        guard let parsed = LiveAxisParser.parse(input.uid) else { return }
+        liveAxisLabels[parsed.index] = "Axis \(parsed.index)"
+
+        let magnitude = min(max(abs(input.magnitude), 0), 1)
+        let epsilon: Float = 0.001
+        let current = liveAxisValues[parsed.index] ?? 0
+
+        switch parsed.direction {
+        case .low:
+            if magnitude > epsilon {
+                liveAxisValues[parsed.index] = -magnitude
+            } else if current < 0 {
+                liveAxisValues[parsed.index] = 0
+            }
+        case .high:
+            if magnitude > epsilon {
+                liveAxisValues[parsed.index] = magnitude
+            } else if current > 0 {
+                liveAxisValues[parsed.index] = 0
+            }
+        case nil:
+            liveAxisValues[parsed.index] = input.magnitude
+        }
     }
 }
 
@@ -432,6 +484,27 @@ public struct EnjoyableRootView: View {
                 Text("Controller Layout")
                     .font(.headline)
                 GamepadLayoutView(highlightedControls: store.highlightedControls)
+
+                if !store.liveAxisValues.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Live Axes")
+                            .font(.headline)
+                        ForEach(store.liveAxisValues.keys.sorted(), id: \.self) { axis in
+                            let value = store.liveAxisValues[axis] ?? 0
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Text(store.liveAxisLabels[axis] ?? "Axis \(axis)")
+                                        .font(.subheadline.weight(.medium))
+                                    Spacer()
+                                    Text(String(format: "%.3f", value))
+                                        .font(.system(.subheadline, design: .monospaced))
+                                        .foregroundColor(.secondary)
+                                }
+                                ProgressView(value: Double((value + 1) / 2))
+                            }
+                        }
+                    }
+                }
 
                 outputEditor
                     .disabled(!store.canEditOutput)
