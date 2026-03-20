@@ -23,6 +23,8 @@ final class GamepadLayoutTests: XCTestCase {
         XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Axis 1~High"), .leftStickRight)
         XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Axis 2~Low"), .leftStickUp)
         XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Axis 4~High"), .rightStickDown)
+        XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Axis 5~High"), .leftTrigger)
+        XCTAssertEqual(GamepadLayoutMapper.control(for: "123:456:1~Axis 6~Low"), .rightTrigger)
     }
 
     func testHatMapping() {

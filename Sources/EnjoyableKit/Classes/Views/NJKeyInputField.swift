@@ -3,6 +3,14 @@ import Carbon
 
 let NJKeyInputFieldEmpty: CGKeyCode = 0xFFFF
 
+private final class ClickForwardingTextField: NSTextField {
+    weak var forwardingTarget: NJKeyInputField?
+
+    override func mouseDown(with event: NSEvent) {
+        forwardingTarget?.mouseDown(with: event)
+    }
+}
+
 protocol NJKeyInputFieldDelegate: AnyObject {
     func keyInputField(_ keyInput: NJKeyInputField, didChangeKey keyCode: CGKeyCode)
     func keyInputFieldDidClear(_ keyInput: NJKeyInputField)
@@ -21,25 +29,28 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
         keyCode != NJKeyInputFieldEmpty
     }
 
-    private let field: NSTextField
+    private let field: ClickForwardingTextField
     private let warning: NSImageView
+    private var keyMonitor: Any?
 
     required init?(coder: NSCoder) {
-        field = NSTextField(frame: .zero)
+        field = ClickForwardingTextField(frame: .zero)
         warning = NSImageView(frame: .zero)
         super.init(coder: coder)
         commonInit()
     }
 
     override init(frame frameRect: NSRect) {
-        field = NSTextField(frame: frameRect)
+        field = ClickForwardingTextField(frame: frameRect)
         warning = NSImageView(frame: .zero)
         super.init(frame: frameRect)
         commonInit()
     }
 
     private func commonInit() {
+        field.forwardingTarget = self
         field.frame = bounds
+        field.autoresizingMask = [.width, .height]
         field.alignment = .center
         field.isEditable = false
         field.isSelectable = false
@@ -55,9 +66,22 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
         addSubview(warning)
     }
 
+    override func layout() {
+        super.layout()
+        field.frame = bounds
+        let imgSize = warning.image?.size ?? .zero
+        warning.frame = CGRect(
+            x: bounds.size.width - (imgSize.width + 4),
+            y: (bounds.size.height - imgSize.height) / 2,
+            width: imgSize.width,
+            height: imgSize.height
+        )
+    }
+
     func clear() {
         keyCode = NJKeyInputFieldEmpty
         delegate?.keyInputFieldDidClear(self)
+        stopKeyCapture()
         _ = resignFirstResponder()
     }
 
@@ -132,11 +156,13 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
 
     override func becomeFirstResponder() -> Bool {
         field.backgroundColor = .selectedTextBackgroundColor
+        startKeyCaptureIfNeeded()
         return super.becomeFirstResponder()
     }
 
     override func resignFirstResponder() -> Bool {
         field.backgroundColor = .textBackgroundColor
+        stopKeyCapture()
         return super.resignFirstResponder()
     }
 
@@ -181,17 +207,15 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
     override func mouseDown(with event: NSEvent) {
         if isEnabled {
             if event.modifierFlags.contains(.command) {
+                stopKeyCapture()
                 field.isEditable = true
                 field.isSelectable = true
                 field.stringValue = ""
                 (field.cell as? NSTextFieldCell)?.placeholderString = NSLocalizedString("enter key code", comment: "shown when user must enter a key code to map to")
                 window?.makeFirstResponder(field)
             } else {
-                if window?.firstResponder === self {
-                    window?.makeFirstResponder(nil)
-                } else if acceptsFirstResponder {
-                    window?.makeFirstResponder(self)
-                }
+                _ = window?.makeFirstResponder(self)
+                startKeyCaptureIfNeeded()
             }
         }
     }
@@ -201,5 +225,48 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
             keyCode = event.keyCode
             delegate?.keyInputField(self, didChangeKey: keyCode)
         }
+    }
+
+    private func startKeyCaptureIfNeeded() {
+        guard keyMonitor == nil else { return }
+        keyMonitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .flagsChanged]) { [weak self] event in
+            guard let self else { return event }
+            guard self.window?.firstResponder === self else { return event }
+            guard self.field.isEditable == false else { return event }
+
+            if event.type == .keyDown {
+                let ignore: NSEvent.ModifierFlags = [.option, .command]
+                if event.isARepeat { return nil }
+                if event.modifierFlags.intersection(ignore).isEmpty == false && event.keyCode == UInt16(kVK_Delete) {
+                    self.keyCode = NJKeyInputFieldEmpty
+                    self.delegate?.keyInputFieldDidClear(self)
+                } else if event.modifierFlags.intersection(ignore).isEmpty {
+                    self.keyCode = event.keyCode
+                    self.delegate?.keyInputField(self, didChangeKey: self.keyCode)
+                }
+                _ = self.resignFirstResponder()
+                return nil
+            }
+
+            if event.type == .flagsChanged,
+               event.modifierFlags.intersection(.deviceIndependentFlagsMask).isEmpty {
+                self.keyCode = event.keyCode
+                self.delegate?.keyInputField(self, didChangeKey: self.keyCode)
+                _ = self.resignFirstResponder()
+                return nil
+            }
+            return event
+        }
+    }
+
+    private func stopKeyCapture() {
+        if let keyMonitor {
+            NSEvent.removeMonitor(keyMonitor)
+            self.keyMonitor = nil
+        }
+    }
+
+    deinit {
+        stopKeyCapture()
     }
 }

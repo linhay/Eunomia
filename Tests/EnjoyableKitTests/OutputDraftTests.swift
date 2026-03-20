@@ -5,10 +5,40 @@ final class OutputDraftTests: XCTestCase {
     func testFromKeyOutput() {
         let output = NJOutputKeyPress()
         output.keyCode = 42
+        output.activationThreshold = 0.7
+        output.keySequence = [
+            NJKeySequenceStep(keyCode: 42, delayMilliseconds: 0),
+            NJKeySequenceStep(keyCode: 13, delayMilliseconds: 90)
+        ]
 
         let draft = OutputDraft.from(output: output, mappings: [])
         XCTAssertEqual(draft.type, .keyPress)
         XCTAssertEqual(draft.keyCode, 42)
+        XCTAssertEqual(draft.keySequenceSteps, [
+            .init(keyCode: 42, delayMilliseconds: 0),
+            .init(keyCode: 13, delayMilliseconds: 90)
+        ])
+        XCTAssertEqual(draft.keyActivationThreshold, 0.7, accuracy: 0.0001)
+    }
+
+    func testBuildKeyOutputIncludesThreshold() {
+        var draft = OutputDraft()
+        draft.type = .keyPress
+        draft.keyCode = 36
+        draft.keySequenceSteps = [
+            .init(keyCode: 36, delayMilliseconds: 0),
+            .init(keyCode: 53, delayMilliseconds: 140)
+        ]
+        draft.keyActivationThreshold = 0.65
+
+        let built = draft.buildOutput(mappings: []) as? NJOutputKeyPress
+        XCTAssertEqual(built?.keyCode, 36)
+        XCTAssertNotNil(built)
+        XCTAssertEqual(built?.keySequence, [
+            .init(keyCode: 36, delayMilliseconds: 0),
+            .init(keyCode: 53, delayMilliseconds: 140)
+        ])
+        XCTAssertEqual(built!.activationThreshold, 0.65, accuracy: 0.0001)
     }
 
     func testBuildMouseMoveOutput() {
@@ -46,5 +76,17 @@ final class OutputDraftTests: XCTestCase {
         XCTAssertNotNil(built)
         XCTAssertEqual(built?.smooth, false)
         XCTAssertEqual(built?.speed, 0)
+    }
+
+    func testQuickKeyPressConfigurationKeepsExistingKeyAndThreshold() {
+        var draft = OutputDraft()
+        draft.type = .none
+        draft.keyCode = 40
+        draft.keyActivationThreshold = 0.66
+
+        let configured = draft.configuredForQuickKeyPress()
+        XCTAssertEqual(configured.type, .keyPress)
+        XCTAssertEqual(configured.keyCode, 40)
+        XCTAssertEqual(configured.keyActivationThreshold, 0.66, accuracy: 0.0001)
     }
 }

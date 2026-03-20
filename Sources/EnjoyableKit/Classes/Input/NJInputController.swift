@@ -14,6 +14,18 @@ protocol NJInputControllerDelegate: AnyObject {
 private let ioStrDeviceUsagePageKey = kIOHIDDeviceUsagePageKey as String
 private let ioStrDeviceUsageKey = kIOHIDDeviceUsageKey as String
 
+func isAxisLeafInput(_ input: NJInput) -> Bool {
+    let uid = input.uid
+    return uid.contains("~Axis ") && (uid.hasSuffix("~Low") || uid.hasSuffix("~High"))
+}
+
+func shouldRunOutput(_ output: NJOutput, with input: NJInput) -> Bool {
+    if let keyOutput = output as? NJOutputKeyPress, isAxisLeafInput(input) {
+        return input.magnitude >= keyOutput.activationThreshold
+    }
+    return input.active
+}
+
 class NJInputController: NSObject, NJHIDManagerDelegate {
     weak var delegate: NJInputControllerDelegate?
 
@@ -132,10 +144,14 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         for subInput in children {
             guard let output = currentMapping[subInput] else { continue }
             output.magnitude = subInput.magnitude
-            output.running = subInput.active
+            output.running = shouldRunOutput(output, with: subInput)
             if (output.running || output.magnitude != 0) && output.isContinuous {
                 addRunningOutput(output)
             }
+        }
+
+        if NSApplication.shared.isActive {
+            emitInputNotifications(for: mainInput)
         }
     }
 
@@ -145,7 +161,10 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
         guard let dev = findDevice(by: deviceRef), let mainInput = dev.input(forEvent: value) else { return }
 
         mainInput.notifyEvent(value)
+        emitInputNotifications(for: mainInput)
+    }
 
+    private func emitInputNotifications(for mainInput: NJInput) {
         if let children = mainInput.children as? [NJInput], !children.isEmpty {
             for child in children {
                 delegate?.inputController(self, didInput: child)
@@ -331,7 +350,7 @@ class NJInputController: NSObject, NJHIDManagerDelegate {
     // MARK: NJHIDManagerDelegate
 
     func HIDManager(_ manager: NJHIDManager, valueChanged value: IOHIDValue) {
-        if simulatingEvents && !NSApplication.shared.isActive {
+        if simulatingEvents {
             runOutput(for: value)
         } else {
             showOutput(for: value)
