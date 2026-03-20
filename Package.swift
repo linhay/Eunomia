@@ -3,22 +3,20 @@ import PackageDescription
 
 let package = Package(
     name: "EnjoyableKit",
+    defaultLocalization: "en",
     platforms: [
         .macOS(.v11)
     ],
     products: [
-        .library(name: "EnjoyableKit", type: .dynamic, targets: ["EnjoyableKit"]),
-        .executable(name: "Enjoyable", targets: ["EnjoyableApp"])
+        .library(name: "EnjoyableKit", type: .dynamic, targets: ["EnjoyableKit"])
     ],
     targets: [
         .target(
             name: "EnjoyableKit",
-            path: "Sources/EnjoyableKit"
-        ),
-        .executableTarget(
-            name: "EnjoyableApp",
-            dependencies: ["EnjoyableKit"],
-            path: "Sources/EnjoyableApp"
+            path: "Sources/EnjoyableKit",
+            resources: [
+                .process("Resources")
+            ]
         ),
         .testTarget(
             name: "EnjoyableKitTests",

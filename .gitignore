@@ -8,7 +8,6 @@ build/*
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-*.xcworkspace
 !default.xcworkspace
 xcuserdata
 profile
@@ -16,6 +15,8 @@ profile
 .DS_Store
 *.helpindex
 *~
+Derived/
+*.app
 
 # SwiftPM
 .build/
