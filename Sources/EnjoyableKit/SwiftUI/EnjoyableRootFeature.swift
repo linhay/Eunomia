@@ -178,11 +178,14 @@ struct EnjoyableRootFeature {
         var liveAxisLabels: [Int: String] = [:]
         var configurableControls: Set<GamepadControl> = []
         var hasAccessibilityPermission = false
-        var keyMappingEditorState: KeyMappingEditorState?
+        var keyMappingEditor: AppleKeyMappingEditorFeature.State?
         var mappingName = ""
+        var mappingRenameDraftName = ""
+        var inspectorExpandedRoles: Set<RootInspectorRole> = Set(RootPanelLayout.current.inspectorRoles)
 
         init(mappingName: String = "") {
             self.mappingName = mappingName
+            self.mappingRenameDraftName = mappingName
         }
 
         var hasDevices: Bool {
@@ -194,6 +197,7 @@ struct EnjoyableRootFeature {
         }
 
         mutating func apply(snapshot: EnjoyableRuntimeSnapshot) {
+            let hadPendingRename = mappingRenamePanelState.hasPendingChanges
             selectedInputID = snapshot.selectedInputID
             simulatingEvents = snapshot.simulatingEvents
             hidRunning = snapshot.hidRunning
@@ -207,8 +211,24 @@ struct EnjoyableRootFeature {
             liveAxisLabels = snapshot.liveAxisLabels
             configurableControls = snapshot.configurableControls
             hasAccessibilityPermission = snapshot.hasAccessibilityPermission
-            keyMappingEditorState = snapshot.keyMappingEditorState
+            if let editorSnapshot = snapshot.keyMappingEditorState {
+                if keyMappingEditor == nil {
+                    keyMappingEditor = AppleKeyMappingEditorFeature.State(initialState: editorSnapshot)
+                }
+            } else {
+                keyMappingEditor = nil
+            }
             mappingName = snapshot.mappingNames[safe: snapshot.activeMappingIndex] ?? ""
+            if !hadPendingRename {
+                mappingRenameDraftName = mappingName
+            }
+        }
+
+        var mappingRenamePanelState: MappingRenamePanelState {
+            MappingRenamePanelState(
+                currentName: mappingName,
+                draftName: mappingRenameDraftName
+            )
         }
     }
 
@@ -217,7 +237,7 @@ struct EnjoyableRootFeature {
         case observeRuntime
         case runtimeUpdated(EnjoyableRuntimeSnapshot)
         case dismissKeyMappingEditor
-        case saveKeyMappingEditor(KeyMappingEditorState)
+        case keyMappingEditor(AppleKeyMappingEditorFeature.Action)
     }
 
     enum View: Equatable {
@@ -228,6 +248,8 @@ struct EnjoyableRootFeature {
         case openKeyMappingEditorForInput(String, forceEnable: Bool)
         case activateMapping(Int)
         case setMappingName(String)
+        case setMappingRenameDraftName(String)
+        case resetMappingRenameDraftName
         case commitRename
         case addMapping
         case removeActiveMapping
@@ -249,6 +271,7 @@ struct EnjoyableRootFeature {
         case setScrollDirection(Int32)
         case setScrollSmooth(Bool)
         case setScrollSpeed(Double)
+        case setInspectorSectionExpanded(role: RootInspectorRole, isExpanded: Bool)
     }
 
     private enum CancelID {
@@ -304,10 +327,19 @@ struct EnjoyableRootFeature {
                 state.mappingName = name
                 return .none
 
+            case let .view(.setMappingRenameDraftName(name)):
+                state.mappingRenameDraftName = name
+                return .none
+
+            case .view(.resetMappingRenameDraftName):
+                state.mappingRenameDraftName = state.mappingName
+                return .none
+
             case .view(.commitRename):
                 let trimmed = state.mappingName.trimmingCharacters(in: .whitespacesAndNewlines)
                 guard !trimmed.isEmpty else {
                     state.mappingName = state.mappingNames[safe: state.activeMappingIndex] ?? ""
+                    state.mappingRenameDraftName = state.mappingName
                     return .none
                 }
                 return runAndRefresh(trimmed, keyPath: \.renameActiveMapping)
@@ -397,12 +429,34 @@ struct EnjoyableRootFeature {
             case let .view(.setScrollSpeed(value)):
                 return updateDraftFloat(&state, keyPath: \.scrollSpeed, value: value)
 
+            case let .view(.setInspectorSectionExpanded(role, isExpanded)):
+                var next = state.inspectorExpandedRoles
+                if isExpanded {
+                    next.insert(role)
+                } else {
+                    next.remove(role)
+                }
+                state.inspectorExpandedRoles = InspectorPanelExpansionState(
+                    roles: RootPanelLayout.current.inspectorRoles,
+                    expandedRoles: next
+                ).normalizedExpandedRoles
+                return .none
+
             case .dismissKeyMappingEditor:
                 return runAndRefresh(keyPath: \.dismissKeyMappingEditor)
 
-            case let .saveKeyMappingEditor(editorState):
+            case .keyMappingEditor(.delegate(.cancel)):
+                return .send(.dismissKeyMappingEditor)
+
+            case let .keyMappingEditor(.delegate(.save(editorState))):
                 return runAndRefresh(editorState, keyPath: \.applyKeyMappingEditorState)
+
+            case .keyMappingEditor:
+                return .none
             }
+        }
+        .ifLet(\.keyMappingEditor, action: \.keyMappingEditor) {
+            AppleKeyMappingEditorFeature()
         }
     }
 

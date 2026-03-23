@@ -117,6 +117,7 @@ final class EnjoyableRootFeatureTests: XCTestCase {
             $0.activeInputPath = "Device ▸ Button 1"
             $0.hasAccessibilityPermission = true
             $0.mappingName = "Default"
+            $0.mappingRenameDraftName = "Default"
         }
     }
 
@@ -162,6 +163,36 @@ final class EnjoyableRootFeatureTests: XCTestCase {
         XCTAssertEqual(calls.value, ["Arcade"])
     }
 
+    func testRuntimeUpdateSyncsRenameDraftWhenNoPendingChanges() async {
+        var state = EnjoyableRootFeature.State(mappingName: "Default")
+        state.mappingRenameDraftName = "Default"
+
+        let snapshot = EnjoyableRuntimeSnapshot(
+            mappingNames: ["Arcade"],
+            activeMappingIndex: 0
+        )
+
+        state.apply(snapshot: snapshot)
+
+        XCTAssertEqual(state.mappingName, "Arcade")
+        XCTAssertEqual(state.mappingRenameDraftName, "Arcade")
+    }
+
+    func testRuntimeUpdateKeepsRenameDraftWhenPendingChangesExist() async {
+        var state = EnjoyableRootFeature.State(mappingName: "Default")
+        state.mappingRenameDraftName = "My Draft"
+
+        let snapshot = EnjoyableRuntimeSnapshot(
+            mappingNames: ["Arcade"],
+            activeMappingIndex: 0
+        )
+
+        state.apply(snapshot: snapshot)
+
+        XCTAssertEqual(state.mappingName, "Arcade")
+        XCTAssertEqual(state.mappingRenameDraftName, "My Draft")
+    }
+
     func testDismissKeyMappingEditorClearsEditorState() async {
         let dismissCalls = LockIsolated(0)
         let snapshot = LockIsolated(
@@ -191,7 +222,7 @@ final class EnjoyableRootFeatureTests: XCTestCase {
         )
 
         var featureState = EnjoyableRootFeature.State()
-        featureState.keyMappingEditorState = initialState
+        featureState.keyMappingEditor = AppleKeyMappingEditorFeature.State(initialState: initialState)
 
         let store = TestStore(initialState: featureState) {
             EnjoyableRootFeature(
@@ -214,10 +245,51 @@ final class EnjoyableRootFeatureTests: XCTestCase {
 
         await store.send(.dismissKeyMappingEditor)
         await store.receive(.runtimeUpdated(snapshot.value)) {
-            $0.keyMappingEditorState = nil
+            $0.keyMappingEditor = nil
         }
 
         XCTAssertEqual(dismissCalls.value, 1)
+    }
+
+    func testSetInspectorSectionExpandedCollapsesRole() async {
+        let store = TestStore(initialState: EnjoyableRootFeature.State()) {
+            EnjoyableRootFeature(
+                runtime: makeRuntime(
+                    snapshot: { EnjoyableRuntimeSnapshot() },
+                    updates: {
+                        AsyncStream { continuation in
+                            continuation.finish()
+                        }
+                    }
+                )
+            )
+        }
+
+        await store.send(.view(.setInspectorSectionExpanded(role: .mappingManager, isExpanded: false))) {
+            $0.inspectorExpandedRoles = [.status, .outputEditor]
+        }
+    }
+
+    func testSetInspectorSectionExpandedFallsBackToAllWhenEmpty() async {
+        var initialState = EnjoyableRootFeature.State()
+        initialState.inspectorExpandedRoles = [.status]
+
+        let store = TestStore(initialState: initialState) {
+            EnjoyableRootFeature(
+                runtime: makeRuntime(
+                    snapshot: { EnjoyableRuntimeSnapshot() },
+                    updates: {
+                        AsyncStream { continuation in
+                            continuation.finish()
+                        }
+                    }
+                )
+            )
+        }
+
+        await store.send(.view(.setInspectorSectionExpanded(role: .status, isExpanded: false))) {
+            $0.inspectorExpandedRoles = Set(RootPanelLayout.current.inspectorRoles)
+        }
     }
 
     func testSetKeySequenceDelayClampsToZero() async {
@@ -235,13 +307,13 @@ final class EnjoyableRootFeatureTests: XCTestCase {
 
         let store = makeStoreWithDraftSnapshot(snapshot)
 
-        await store.send(.view(.setKeySequenceDelay(index: 0, value: -1)))
-        await store.receive(.runtimeUpdated(snapshot.value)) {
+        await store.send(.view(.setKeySequenceDelay(index: 0, value: -1))) {
             $0.draft.keySequenceSteps[0] = NJKeySequenceStep(
                 keyCode: 12,
                 delayMilliseconds: 0
             )
         }
+        await store.receive(.runtimeUpdated(snapshot.value))
     }
 
     func testSetKeyCodeSyncsFirstSequenceStep() async {
@@ -259,14 +331,14 @@ final class EnjoyableRootFeatureTests: XCTestCase {
 
         let store = makeStoreWithDraftSnapshot(snapshot)
 
-        await store.send(.view(.setKeyCode(23)))
-        await store.receive(.runtimeUpdated(snapshot.value)) {
+        await store.send(.view(.setKeyCode(23))) {
             $0.draft.keyCode = 23
             $0.draft.keySequenceSteps[0] = NJKeySequenceStep(
                 keyCode: 23,
                 delayMilliseconds: 120
             )
         }
+        await store.receive(.runtimeUpdated(snapshot.value))
     }
 
     func testSetKeyCodeCreatesFirstSequenceStepWhenMissing() async {
@@ -282,13 +354,13 @@ final class EnjoyableRootFeatureTests: XCTestCase {
 
         let store = makeStoreWithDraftSnapshot(snapshot)
 
-        await store.send(.view(.setKeyCode(31)))
-        await store.receive(.runtimeUpdated(snapshot.value)) {
+        await store.send(.view(.setKeyCode(31))) {
             $0.draft.keyCode = 31
             $0.draft.keySequenceSteps = [
                 NJKeySequenceStep(keyCode: 31, delayMilliseconds: 0)
             ]
         }
+        await store.receive(.runtimeUpdated(snapshot.value))
     }
 
     func testSetKeySequenceDelayOutOfBoundsKeepsDraftUnchanged() async {
@@ -308,9 +380,8 @@ final class EnjoyableRootFeatureTests: XCTestCase {
         let store = makeStoreWithDraftSnapshot(snapshot)
 
         await store.send(.view(.setKeySequenceDelay(index: 9, value: 250)))
-        await store.receive(.runtimeUpdated(snapshot.value)) {
-            $0.draft = previous
-        }
+        await store.receive(.runtimeUpdated(snapshot.value))
+        XCTAssertEqual(store.state.draft, previous)
     }
 
     func testSetEmptyKeyCodeDoesNotCreateFirstSequenceStep() async {
@@ -327,9 +398,54 @@ final class EnjoyableRootFeatureTests: XCTestCase {
         let store = makeStoreWithDraftSnapshot(snapshot)
 
         await store.send(.view(.setKeyCode(NJKeyInputFieldEmpty)))
-        await store.receive(.runtimeUpdated(snapshot.value)) {
-            $0.draft.keyCode = NJKeyInputFieldEmpty
-            $0.draft.keySequenceSteps = []
+        await store.receive(.runtimeUpdated(snapshot.value))
+    }
+
+    func testKeyMappingEditorDelegateSaveCallsRuntime() async {
+        let calls = LockIsolated([KeyMappingEditorState]())
+        let initialEditor = KeyMappingEditorState(
+            inputID: "dev~Button 1",
+            inputPath: "Device ▸ Button 1",
+            enabled: true,
+            keyCode: 12,
+            keySequenceSteps: [NJKeySequenceStep(keys: [12], delayMilliseconds: 0)],
+            activationThreshold: 0.3,
+            isResolvable: true,
+            unavailableReason: nil
+        )
+        let snapshot = LockIsolated(
+            EnjoyableRuntimeSnapshot(
+                keyMappingEditorState: nil
+            )
+        )
+
+        var initialState = EnjoyableRootFeature.State()
+        initialState.keyMappingEditor = AppleKeyMappingEditorFeature.State(initialState: initialEditor)
+
+        let store = TestStore(initialState: initialState) {
+            EnjoyableRootFeature(
+                runtime: makeRuntime(
+                    snapshot: { snapshot.value },
+                    updates: {
+                        AsyncStream { continuation in
+                            continuation.finish()
+                        }
+                    },
+                    applyKeyMappingEditorState: { state in
+                        calls.withValue { $0.append(state) }
+                        snapshot.withValue { value in
+                            value.keyMappingEditorState = nil
+                        }
+                    }
+                )
+            )
         }
+
+        await store.send(.keyMappingEditor(.delegate(.save(initialEditor))))
+        await store.receive(.runtimeUpdated(snapshot.value)) {
+            $0.keyMappingEditor = nil
+        }
+
+        XCTAssertEqual(calls.value, [initialEditor])
     }
 }

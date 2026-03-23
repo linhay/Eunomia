@@ -54,16 +54,10 @@ public struct EnjoyableRootView: View {
     public var body: some View {
         rootNavigation
             .frame(minWidth: 1080, minHeight: 720)
-            .sheet(item: keyMappingEditorBinding) { state in
-                AppleKeyMappingEditorSheet(
-                    initialState: state,
-                    onCancel: {
-                        send(.dismissKeyMappingEditor)
-                    },
-                    onSave: { next in
-                        send(.saveKeyMappingEditor(next))
-                    }
-                )
+            .sheet(isPresented: isKeyMappingEditorPresentedBinding) {
+                if let keyMappingEditorStore {
+                    AppleKeyMappingEditorSheet(store: keyMappingEditorStore)
+                }
             }
             .onAppear {
                 sendView(.onAppear)
@@ -85,15 +79,19 @@ public struct EnjoyableRootView: View {
         .navigationSplitViewStyle(.balanced)
     }
 
-    private var keyMappingEditorBinding: Binding<KeyMappingEditorState?> {
+    private var isKeyMappingEditorPresentedBinding: Binding<Bool> {
         Binding(
-            get: { store.keyMappingEditorState },
+            get: { store.keyMappingEditor != nil },
             set: { next in
-                if next == nil {
+                if !next {
                     send(.dismissKeyMappingEditor)
                 }
             }
         )
+    }
+
+    private var keyMappingEditorStore: StoreOf<AppleKeyMappingEditorFeature>? {
+        store.scope(state: \.keyMappingEditor, action: \.keyMappingEditor)
     }
 
     private var statusKind: DashboardStatusKind {
@@ -141,6 +139,10 @@ public struct EnjoyableRootView: View {
     private var inspectorPanel: some View {
         EnjoyableInspectorPanelView(
             inspectorRoles: panelLayout.inspectorRoles,
+            expandedRoles: store.inspectorExpandedRoles,
+            onSetExpanded: { role, isExpanded in
+                sendView(.setInspectorSectionExpanded(role: role, isExpanded: isExpanded))
+            },
             statusCard: {
                 statusCard
             },
@@ -184,6 +186,10 @@ public struct EnjoyableRootView: View {
                 mappingName: binding(
                     get: { store.mappingName },
                     send: EnjoyableRootFeature.View.setMappingName
+                ),
+                renameDraftName: binding(
+                    get: { store.mappingRenameDraftName },
+                    send: EnjoyableRootFeature.View.setMappingRenameDraftName
                 ),
                 showsTitle: false,
                 usesSidebarBackground: false,

@@ -1,3 +1,4 @@
+import ComposableArchitecture
 import SwiftUI
 
 struct AppleKeyMappingEditorSheet: View {
@@ -8,26 +9,8 @@ struct AppleKeyMappingEditorSheet: View {
         static let labelColumnWidth: CGFloat = 118
     }
     
-    let initialState: KeyMappingEditorState
-    let onCancel: () -> Void
-    let onSave: (KeyMappingEditorState) -> Void
-    
-    @State var state: KeyMappingEditorState
-    @State var showsDiscardConfirmation = false
-    @State var selectedStepIndex: Int?
-    
-    init(
-        initialState: KeyMappingEditorState,
-        onCancel: @escaping () -> Void,
-        onSave: @escaping (KeyMappingEditorState) -> Void
-    ) {
-        self.initialState = initialState
-        self.onCancel = onCancel
-        self.onSave = onSave
-        _state = State(initialValue: initialState)
-        _selectedStepIndex = State(initialValue: initialState.keySequenceSteps.isEmpty ? nil : 0)
-    }
-    
+    let store: StoreOf<AppleKeyMappingEditorFeature>
+
     var body: some View {
         NavigationSplitView(sidebar: {
             sourceAndDiagnosticsPanel
@@ -48,11 +31,11 @@ struct AppleKeyMappingEditorSheet: View {
         .frame(minWidth: 860, minHeight: 560)
         .confirmationDialog(
             L10n.text("discard_changes_title"),
-            isPresented: $showsDiscardConfirmation,
+            isPresented: showsDiscardConfirmationBinding,
             titleVisibility: .visible
         ) {
             Button(L10n.text("discard_changes_confirm")) {
-                onCancel()
+                store.send(.discardConfirmed)
             }
             Button(L10n.text("discard_changes_keep_editing"), role: .cancel) {}
         } message: {

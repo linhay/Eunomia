@@ -1,10 +1,13 @@
 import SwiftUI
+import ComposableArchitecture
 
 #if DEBUG
 struct AppleKeyMappingEditorSheet_Previews: PreviewProvider {
     static var previews: some View {
         AppleKeyMappingEditorSheet(
-            initialState: .init(
+            store: Store(
+                initialState: AppleKeyMappingEditorFeature.State(
+                    initialState: .init(
                 inputID: "preview~button~1",
                 inputPath: "DualSense 5 / Button 1",
                 enabled: true,
@@ -16,9 +19,11 @@ struct AppleKeyMappingEditorSheet_Previews: PreviewProvider {
                 activationThreshold: 0.55,
                 isResolvable: true,
                 unavailableReason: nil
-            ),
-            onCancel: {},
-            onSave: { _ in }
+                )
+            )
+            ) {
+                AppleKeyMappingEditorFeature()
+            }
         )
         .frame(width: 1000, height: 560)
     }

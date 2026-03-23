@@ -67,6 +67,7 @@ struct EnjoyableMappingSidebarView: View {
     let activeMappingIndex: Int
     let mappingSelection: Binding<Int?>
     let mappingName: Binding<String>
+    let renameDraftName: Binding<String>
     let showsTitle: Bool
     let usesSidebarBackground: Bool
     let usesSidebarListStyle: Bool
@@ -75,13 +76,13 @@ struct EnjoyableMappingSidebarView: View {
     let onRemoveActiveMapping: () -> Void
     let onMoveActiveMappingUp: () -> Void
     let onMoveActiveMappingDown: () -> Void
-    @State private var renameDraftName = ""
 
     init(
         mappingNames: [String],
         activeMappingIndex: Int,
         mappingSelection: Binding<Int?>,
         mappingName: Binding<String>,
+        renameDraftName: Binding<String>,
         showsTitle: Bool = true,
         usesSidebarBackground: Bool = true,
         usesSidebarListStyle: Bool = true,
@@ -95,6 +96,7 @@ struct EnjoyableMappingSidebarView: View {
         self.activeMappingIndex = activeMappingIndex
         self.mappingSelection = mappingSelection
         self.mappingName = mappingName
+        self.renameDraftName = renameDraftName
         self.showsTitle = showsTitle
         self.usesSidebarBackground = usesSidebarBackground
         self.usesSidebarListStyle = usesSidebarListStyle
@@ -163,7 +165,7 @@ struct EnjoyableMappingSidebarView: View {
     private var renamePanelState: MappingRenamePanelState {
         MappingRenamePanelState(
             currentName: mappingName.wrappedValue,
-            draftName: renameDraftName
+            draftName: renameDraftName.wrappedValue
         )
     }
 
@@ -238,7 +240,7 @@ struct EnjoyableMappingSidebarView: View {
 
                 TextField(
                     L10n.text("rename_mapping_placeholder"),
-                    text: $renameDraftName
+                    text: renameDraftName
                 )
                 .textFieldStyle(.roundedBorder)
                 .onSubmit {
@@ -267,12 +269,12 @@ struct EnjoyableMappingSidebarView: View {
         .onAppear {
             resetRenameDraft()
         }
-        .onChange(of: selectionState.effectiveSelectedIndex) { _ in
+        .onChange(of: selectionState.effectiveSelectedIndex) {
             resetRenameDraft()
         }
-        .onChange(of: mappingName.wrappedValue) { newValue in
+        .onChange(of: mappingName.wrappedValue) { _, newValue in
             if !renamePanelState.hasPendingChanges {
-                renameDraftName = newValue
+                renameDraftName.wrappedValue = newValue
             }
         }
     }
@@ -323,13 +325,13 @@ struct EnjoyableMappingSidebarView: View {
     }
 
     private func resetRenameDraft() {
-        renameDraftName = mappingName.wrappedValue
+        renameDraftName.wrappedValue = mappingName.wrappedValue
     }
 
     private func saveRenameFromDetailPanel() {
         guard renamePanelState.canSave else { return }
-        mappingName.wrappedValue = renameDraftName
+        mappingName.wrappedValue = renameDraftName.wrappedValue
         onRenameCommit()
-        renameDraftName = mappingName.wrappedValue
+        renameDraftName.wrappedValue = mappingName.wrappedValue
     }
 }

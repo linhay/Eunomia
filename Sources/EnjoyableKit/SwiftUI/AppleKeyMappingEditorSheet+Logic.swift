@@ -2,19 +2,23 @@ import SwiftUI
 
 extension AppleKeyMappingEditorSheet {
     static func normalizedSelectedStepIndex(_ selectedIndex: Int?, stepCount: Int) -> Int? {
-        guard stepCount > 0 else { return nil }
-        guard let selectedIndex else { return 0 }
-        return min(max(0, selectedIndex), stepCount - 1)
+        AppleKeyMappingEditorFeature.State.normalizedSelectedStepIndex(selectedIndex, stepCount: stepCount)
+    }
+
+    var initialState: KeyMappingEditorState {
+        store.initialState
+    }
+
+    var state: KeyMappingEditorState {
+        store.draft
     }
 
     var hasUnsavedChanges: Bool {
-        !state.hasSameEditingPayload(as: initialState)
+        !state.hasSameEditingPayload(as: store.initialState)
     }
 
-    var stateForSaving: KeyMappingEditorState {
-        var next = state
-        next.keyCode = next.resolvedPrimaryKeyCode
-        return next
+    var selectedStepIndex: Int? {
+        store.selectedStepIndex
     }
 
     var isBindingControlEnabled: Binding<Bool> {
@@ -25,7 +29,10 @@ extension AppleKeyMappingEditorSheet {
     }
 
     var effectiveSelectedStepIndex: Int? {
-        Self.normalizedSelectedStepIndex(selectedStepIndex, stepCount: state.keySequenceSteps.count)
+        AppleKeyMappingEditorFeature.State.normalizedSelectedStepIndex(
+            selectedStepIndex,
+            stepCount: state.keySequenceSteps.count
+        )
     }
 
     func isStepSelected(index: Int) -> Bool {
@@ -33,28 +40,34 @@ extension AppleKeyMappingEditorSheet {
     }
 
     func selectStep(index: Int) {
-        selectedStepIndex = Self.normalizedSelectedStepIndex(index, stepCount: state.keySequenceSteps.count)
+        store.send(.setSelectedStepIndex(index))
     }
 
-    func normalizeSelectedStepIndex() {
-        selectedStepIndex = effectiveSelectedStepIndex
+    var showsDiscardConfirmationBinding: Binding<Bool> {
+        Binding(
+            get: { store.showsDiscardConfirmation },
+            set: { store.send(.setShowsDiscardConfirmation($0)) }
+        )
+    }
+
+    var enabledBinding: Binding<Bool> {
+        Binding(
+            get: { state.enabled },
+            set: { store.send(.setEnabled($0)) }
+        )
     }
 }
 
 extension AppleKeyMappingEditorSheet {
     func handleCancelTapped() {
-        if hasUnsavedChanges {
-            showsDiscardConfirmation = true
-            return
-        }
-        onCancel()
+        store.send(.cancelTapped)
     }
 
     var thresholdBinding: Binding<Double> {
         Binding(
             get: { Double(state.activationThreshold) },
             set: { value in
-                state.activationThreshold = Float(value)
+                store.send(.setActivationThreshold(value))
             }
         )
     }
@@ -66,16 +79,7 @@ extension AppleKeyMappingEditorSheet {
                 return state.keySequenceSteps[index].keys.filter { $0 != NJKeyInputFieldEmpty }
             },
             set: { keys in
-                guard state.keySequenceSteps.indices.contains(index) else { return }
-                var normalized: [UInt16] = []
-                for key in keys where key != NJKeyInputFieldEmpty {
-                    if !normalized.contains(key) {
-                        normalized.append(key)
-                    }
-                }
-                let delay = state.keySequenceSteps[index].delayMilliseconds
-                state.keySequenceSteps[index] = NJKeySequenceStep(keys: normalized, delayMilliseconds: delay)
-                syncPrimaryKeyFromSequence()
+                store.send(.setKeySequenceKeys(index: index, keys: keys))
             }
         )
     }
@@ -87,48 +91,21 @@ extension AppleKeyMappingEditorSheet {
                 return Int(state.keySequenceSteps[index].delayMilliseconds)
             },
             set: { value in
-                guard state.keySequenceSteps.indices.contains(index) else { return }
-                let keys = state.keySequenceSteps[index].keys
-                state.keySequenceSteps[index] = NJKeySequenceStep(
-                    keys: keys,
-                    delayMilliseconds: max(0, value)
-                )
+                store.send(.setKeySequenceDelay(index: index, value: value))
             }
         )
     }
 
     func moveStep(from source: IndexSet, to destination: Int) {
-        state.keySequenceSteps.move(fromOffsets: source, toOffset: destination)
-        normalizeSelectedStepIndex()
-        syncPrimaryKeyFromSequence()
+        store.send(.moveStep(from: source, to: destination))
     }
 
     func appendStep() {
-        let fallbackCode = state.resolvedPrimaryKeyCode
-        let nextCode = fallbackCode == NJKeyInputFieldEmpty ? NJKeyInputFieldEmpty : fallbackCode
-        state.keySequenceSteps.append(.init(
-            keys: nextCode == NJKeyInputFieldEmpty ? [] : [nextCode],
-            delayMilliseconds: 80
-        ))
-        let newIndex = state.keySequenceSteps.count - 1
-        selectedStepIndex = newIndex
+        store.send(.appendStep)
     }
 
     func removeStep() {
-        guard state.keySequenceSteps.count > 1 else { return }
-        state.keySequenceSteps.removeLast()
-        normalizeSelectedStepIndex()
-        syncPrimaryKeyFromSequence()
-    }
-
-    func syncPrimaryKeyFromSequence() {
-        if let first = state.keySequenceSteps
-            .compactMap({ $0.keys.first(where: { $0 != NJKeyInputFieldEmpty }) })
-            .first {
-            state.keyCode = first
-            return
-        }
-        state.keyCode = NJKeyInputFieldEmpty
+        store.send(.removeStep)
     }
 }
 
@@ -150,7 +127,7 @@ extension AppleKeyMappingEditorSheet {
 
             Button(L10n.text("cancel"), action: handleCancelTapped)
             Button(L10n.text("save")) {
-                onSave(stateForSaving)
+                store.send(.saveTapped)
             }
             .keyboardShortcut(.defaultAction)
             .disabled(!state.canSaveChanges)
@@ -265,7 +242,7 @@ extension AppleKeyMappingEditorSheet {
             symbol: "list.bullet.indent",
             surfaceStyle: .solid,
             headerTrailing: {
-            Toggle(L10n.text("key_mapping_editor_enabled"), isOn: $state.enabled)
+            Toggle(L10n.text("key_mapping_editor_enabled"), isOn: enabledBinding)
                 .toggleStyle(.switch)
                 .disabled(!state.isResolvable)
         }
@@ -314,6 +291,7 @@ extension AppleKeyMappingEditorSheet {
             HStack(spacing: 12) {
                 Text("#").frame(width: 24, alignment: .leading)
                 Text(L10n.text("editor_trigger_events_field_keys")).frame(maxWidth: .infinity, alignment: .leading)
+                Text(L10n.text("editor_trigger_events_field_gesture")).frame(width: 52, alignment: .leading)
                 Text(L10n.text("editor_trigger_events_field_delay")).frame(width: 110, alignment: .leading)
                 Spacer().frame(width: 16) // Drag handle column
             }
@@ -328,6 +306,7 @@ extension AppleKeyMappingEditorSheet {
             VStack(spacing: 0) {
                 ForEach(Array(state.keySequenceSteps.enumerated()), id: \.offset) { rowIndex, step in
                     let isSelected = isStepSelected(index: rowIndex)
+                    let gestureMode = state.triggerEventGestureMode(forStepAt: rowIndex)
                     
                     HStack(spacing: 12) {
                         // Col 1: Index
@@ -340,7 +319,19 @@ extension AppleKeyMappingEditorSheet {
                         triggerEventsKeysCell(rowIndex: rowIndex)
                             .frame(maxWidth: .infinity, alignment: .leading)
 
-                        // Col 3: Delay
+                        // Col 3: Gesture mode
+                        Text(L10n.text(gestureMode.textKey))
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundStyle(gestureMode == .hold ? .green : .secondary)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 3)
+                            .background(
+                                Capsule()
+                                    .fill(gestureMode == .hold ? Color.green.opacity(0.14) : Color.secondary.opacity(0.14))
+                            )
+                            .frame(width: 52, alignment: .leading)
+
+                        // Col 4: Delay
                         HStack(spacing: 4) {
                             TextField("", value: keySequenceDelayBinding(index: rowIndex), formatter: NumberFormatter())
                                 .textFieldStyle(.plain)
@@ -359,7 +350,7 @@ extension AppleKeyMappingEditorSheet {
                         }
                         .frame(width: 110, alignment: .leading)
 
-                        // Col 4: Drag
+                        // Col 5: Drag
                         Image(systemName: "line.3.horizontal")
                             .font(.caption2)
                             .foregroundStyle(.quaternary)
