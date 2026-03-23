@@ -21,7 +21,36 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
 
     var keyCode: CGKeyCode = NJKeyInputFieldEmpty {
         didSet {
+            updateDisplay()
+        }
+    }
+
+    private var isFocused: Bool = false {
+        didSet {
+            updateDisplay()
+            updateLayerState()
+        }
+    }
+
+    private func updateDisplay() {
+        if keyCode == NJKeyInputFieldEmpty && isFocused {
+            field.stringValue = NSLocalizedString("key_binding_listening", bundle: .module, comment: "")
+            field.textColor = .tertiaryLabelColor
+        } else {
             field.stringValue = Self.displayName(forKeyCode: keyCode)
+            field.textColor = .labelColor
+        }
+    }
+
+    private func updateLayerState() {
+        wantsLayer = true
+        if isFocused {
+            layer?.borderColor = NSColor.controlAccentColor.cgColor
+            layer?.borderWidth = 2.0
+            layer?.cornerRadius = 6
+        } else {
+            layer?.borderColor = NSColor.clear.cgColor
+            layer?.borderWidth = 0
         }
     }
 
@@ -48,13 +77,17 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
     }
 
     private func commonInit() {
+        wantsLayer = true
         field.forwardingTarget = self
         field.frame = bounds
         field.autoresizingMask = [.width, .height]
         field.alignment = .center
         field.isEditable = false
         field.isSelectable = false
+        field.isBordered = false
+        field.drawsBackground = false
         field.delegate = self
+        field.font = .systemFont(ofSize: 14, weight: .medium)
         addSubview(field)
 
         warning.image = NSImage(named: NSImage.Name("NSInvalidDataFreestanding"))
@@ -64,6 +97,8 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
         warning.toolTip = NSLocalizedString("invalid key code", comment: "shown when the user types an invalid key code")
         warning.isHidden = true
         addSubview(warning)
+        
+        updateDisplay()
     }
 
     override func layout() {
@@ -155,13 +190,13 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
     }
 
     override func becomeFirstResponder() -> Bool {
-        field.backgroundColor = .selectedTextBackgroundColor
+        isFocused = true
         startKeyCaptureIfNeeded()
         return super.becomeFirstResponder()
     }
 
     override func resignFirstResponder() -> Bool {
-        field.backgroundColor = .textBackgroundColor
+        isFocused = false
         stopKeyCapture()
         return super.resignFirstResponder()
     }
@@ -200,7 +235,7 @@ class NJKeyInputField: NSControl, NSTextFieldDelegate {
             keyCode = CGKeyCode(code)
             delegate?.keyInputField(self, didChangeKey: keyCode)
         } else {
-            field.stringValue = Self.displayName(forKeyCode: keyCode)
+            updateDisplay()
         }
     }
 

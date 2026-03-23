@@ -37,4 +37,15 @@ final class GamepadLayoutTests: XCTestCase {
         XCTAssertNil(GamepadLayoutMapper.control(for: "123:456:1~Axis 9~Low"))
         XCTAssertNil(GamepadLayoutMapper.control(for: "123:456:1"))
     }
+
+    func testAccessibilityLabelUsesReadableControlName() {
+        XCTAssertEqual(GamepadControl.faceSouth.accessibilityLabel(controlPrefix: "Control"), "Control A")
+        XCTAssertEqual(GamepadControl.dpadUp.accessibilityLabel(controlPrefix: "Control"), "Control D-Pad Up")
+        XCTAssertEqual(GamepadControl.rightTrigger.accessibilityLabel(controlPrefix: "Control"), "Control Right Trigger")
+    }
+
+    func testAccessibilityIdentifiersAreStable() {
+        XCTAssertEqual(GamepadControl.faceSouth.accessibilityIdentifier, "gamepad.control.faceSouth")
+        XCTAssertEqual(GamepadControl.touchpad.accessibilityIdentifier, "gamepad.control.touchpad")
+    }
 }

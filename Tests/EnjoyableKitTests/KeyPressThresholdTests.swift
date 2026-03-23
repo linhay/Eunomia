@@ -21,14 +21,52 @@ final class KeyPressThresholdTests: XCTestCase {
             NJKeySequenceStep(keyCode: 12, delayMilliseconds: 0),
             NJKeySequenceStep(keyCode: 13, delayMilliseconds: 120)
         ])
+        XCTAssertNotNil(serialized?["steps"])
+        XCTAssertNil(serialized?["sequence"])
     }
 
-    func testKeyPressDeserializationDefaultsThresholdForLegacyData() {
-        let legacy: [String: Any] = ["type": "key press", "key": 42]
-        let restored = NJOutputKeyPress.output(withSerialization: legacy) as? NJOutputKeyPress
+    func testKeyPressDeserializationDefaultsThresholdWhenThresholdMissing() {
+        let serializedWithoutThreshold: [String: Any] = ["type": "key press", "key": 42]
+        let restored = NJOutputKeyPress.output(withSerialization: serializedWithoutThreshold) as? NJOutputKeyPress
         XCTAssertNotNil(restored)
         XCTAssertEqual(restored!.activationThreshold, NJOutputKeyPress.defaultActivationThreshold, accuracy: 0.0001)
-        XCTAssertEqual(restored?.keySequence, [])
+        XCTAssertEqual(restored?.keySequence, [
+            NJKeySequenceStep(keyCode: 42, delayMilliseconds: 0)
+        ])
+    }
+
+    func testKeyPressDeserializationReadsLegacySequenceShape() {
+        let legacy: [String: Any] = [
+            "type": "key press",
+            "key": 12,
+            "sequence": [
+                ["key": 12, "delayMs": 0],
+                ["key": 13, "delayMs": 80]
+            ]
+        ]
+
+        let restored = NJOutputKeyPress.output(withSerialization: legacy) as? NJOutputKeyPress
+        XCTAssertNotNil(restored)
+        XCTAssertEqual(restored?.keySequence, [
+            NJKeySequenceStep(keyCode: 12, delayMilliseconds: 0),
+            NJKeySequenceStep(keyCode: 13, delayMilliseconds: 80)
+        ])
+    }
+
+    func testKeyPressSerializationRoundTripWithComboStep() {
+        let output = NJOutputKeyPress()
+        output.activationThreshold = 0.58
+        output.keySequence = [
+            NJKeySequenceStep(keys: [12, 13], delayMilliseconds: 90)
+        ]
+
+        let serialized = output.serialize()
+        let restored = NJOutputKeyPress.output(withSerialization: serialized) as? NJOutputKeyPress
+        XCTAssertNotNil(restored)
+        XCTAssertEqual(restored?.keySequence, [
+            NJKeySequenceStep(keys: [12, 13], delayMilliseconds: 90)
+        ])
+        XCTAssertEqual(restored?.keyCode, 12)
     }
 
     func testThresholdActivationForAxisLowInput() {

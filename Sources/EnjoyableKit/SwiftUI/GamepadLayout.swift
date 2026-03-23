@@ -81,13 +81,52 @@ enum GamepadControl: String, CaseIterable, Hashable {
         case .faceEast: return "b.circle.fill"
         case .leftShoulder: return "l1.rectangle.roundedbottom.fill"
         case .rightShoulder: return "r1.rectangle.roundedbottom.fill"
-        case .leftTrigger: return "l2.rectangle.roundedbottom.fill"
-        case .rightTrigger: return "r2.rectangle.roundedbottom.fill"
+        case .leftTrigger: return "chevron.left.circle.fill"
+        case .rightTrigger: return "chevron.right.circle.fill"
         case .start: return "arrowtriangle.right.fill"
         case .select: return "square.fill"
         case .home: return "house.fill"
         case .touchpad: return "hand.tap.fill"
         }
+    }
+
+    var accessibilityName: String {
+        switch self {
+        case .dpadUp: return "D-Pad Up"
+        case .dpadDown: return "D-Pad Down"
+        case .dpadLeft: return "D-Pad Left"
+        case .dpadRight: return "D-Pad Right"
+        case .leftStickPress: return "Left Stick Press"
+        case .rightStickPress: return "Right Stick Press"
+        case .leftStickUp: return "Left Stick Up"
+        case .leftStickDown: return "Left Stick Down"
+        case .leftStickLeft: return "Left Stick Left"
+        case .leftStickRight: return "Left Stick Right"
+        case .rightStickUp: return "Right Stick Up"
+        case .rightStickDown: return "Right Stick Down"
+        case .rightStickLeft: return "Right Stick Left"
+        case .rightStickRight: return "Right Stick Right"
+        case .faceNorth: return "Y"
+        case .faceSouth: return "A"
+        case .faceWest: return "X"
+        case .faceEast: return "B"
+        case .leftShoulder: return "Left Shoulder"
+        case .rightShoulder: return "Right Shoulder"
+        case .leftTrigger: return "Left Trigger"
+        case .rightTrigger: return "Right Trigger"
+        case .start: return "Start"
+        case .select: return "Select"
+        case .home: return "Home"
+        case .touchpad: return "Touchpad"
+        }
+    }
+
+    func accessibilityLabel(controlPrefix: String = L10n.text("control")) -> String {
+        "\(controlPrefix) \(accessibilityName)"
+    }
+
+    var accessibilityIdentifier: String {
+        "gamepad.control.\(rawValue)"
     }
 }
 
@@ -419,6 +458,9 @@ struct GamepadLayoutView: View {
             .contentShape(Circle())
         }
             .buttonStyle(.plain)
+            .accessibilityLabel(Text(control.accessibilityLabel()))
+            .accessibilityHint(Text(L10n.text("menu_key_detail")))
+            .accessibilityIdentifier(control.accessibilityIdentifier)
             .position(x: p.x, y: p.y)
             .zIndex(isActive ? 2 : 1)
             .contextMenu {
@@ -541,24 +583,3 @@ struct GamepadLayoutView: View {
         }
     }
 }
-
-#if DEBUG
-struct GamepadLayoutView_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack(spacing: 24) {
-            GamepadLayoutView(
-                highlightedControls: [.faceSouth, .rightTrigger, .leftStickRight, .dpadUp]
-            )
-            .frame(width: 760)
-
-            GamepadLayoutView(
-                highlightedControls: [.faceEast, .faceNorth, .rightStickPress]
-            )
-            .frame(width: 760)
-        }
-        .padding(24)
-        .background(Color(NSColor.windowBackgroundColor))
-        .previewLayout(.sizeThatFits)
-    }
-}
-#endif

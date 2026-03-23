@@ -41,6 +41,23 @@ final class OutputDraftTests: XCTestCase {
         XCTAssertEqual(built!.activationThreshold, 0.65, accuracy: 0.0001)
     }
 
+    func testBuildKeyOutputSupportsComboStep() {
+        var draft = OutputDraft()
+        draft.type = .keyPress
+        draft.keyCode = NJKeyInputFieldEmpty
+        draft.keySequenceSteps = [
+            .init(keys: [18, 19], delayMilliseconds: 120)
+        ]
+        draft.keyActivationThreshold = 0.4
+
+        let built = draft.buildOutput(mappings: []) as? NJOutputKeyPress
+        XCTAssertNotNil(built)
+        XCTAssertEqual(built?.keyCode, 18)
+        XCTAssertEqual(built?.keySequence, [
+            .init(keys: [18, 19], delayMilliseconds: 120)
+        ])
+    }
+
     func testBuildMouseMoveOutput() {
         var draft = OutputDraft()
         draft.type = .mouseMove

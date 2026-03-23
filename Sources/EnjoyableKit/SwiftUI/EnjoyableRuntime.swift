@@ -1,5 +1,7 @@
 import AppKit
 import ApplicationServices
+import Combine
+import Carbon
 import SwiftUI
 
 enum OutputType: String, CaseIterable, Identifiable {
@@ -11,17 +13,89 @@ enum OutputType: String, CaseIterable, Identifiable {
     case mouseScroll
 
     var id: String { rawValue }
+    
+    var icon: String {
+        switch self {
+        case .none: return "slash.circle"
+        case .keyPress: return "keyboard"
+        case .mapping: return "tray.2"
+        case .mouseMove: return "cursorarrow.motionlines"
+        case .mouseButton: return "cursorarrow.click"
+        case .mouseScroll: return "scroll"
+        }
+    }
+}
+
+enum StitchPalette {
+    static let primaryBlueHex = "#0072CE"
+    static let accentGlowHex = "#A5C8FF"
+    static let backgroundHex = "#111317"
+
+    static let background = Color(red: 17 / 255, green: 19 / 255, blue: 23 / 255)
+    static let surfaceLowest = Color(red: 12 / 255, green: 14 / 255, blue: 18 / 255)
+    static let surfaceLow = Color(red: 26 / 255, green: 28 / 255, blue: 32 / 255)
+    static let surface = Color(red: 30 / 255, green: 32 / 255, blue: 36 / 255)
+    static let surfaceHigh = Color(red: 40 / 255, green: 42 / 255, blue: 46 / 255)
+    static let stroke = Color(red: 65 / 255, green: 71 / 255, blue: 82 / 255)
+    static let primaryBlue = Color(red: 0 / 255, green: 114 / 255, blue: 206 / 255)
+    static let accentGlow = Color(red: 165 / 255, green: 200 / 255, blue: 255 / 255)
+    static let textPrimary = Color(red: 226 / 255, green: 226 / 255, blue: 232 / 255)
+    static let textSecondary = Color(red: 193 / 255, green: 199 / 255, blue: 212 / 255)
+}
+
+enum DashboardStatusKind: Equatable {
+    case monitoringStopped
+    case noController
+    case liveInput
+
+    var titleKey: String {
+        switch self {
+        case .monitoringStopped: return "input_monitoring_stopped"
+        case .noController: return "no_game_controller_detected"
+        case .liveInput: return "live_input"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .monitoringStopped: return "pause.circle"
+        case .noController: return "exclamationmark.triangle"
+        case .liveInput: return "dot.radiowaves.left.and.right"
+        }
+    }
+
+    var tint: Color {
+        switch self {
+        case .monitoringStopped:
+            return StitchPalette.textSecondary
+        case .noController:
+            return .orange
+        case .liveInput:
+            return StitchPalette.accentGlow
+        }
+    }
+}
+
+enum AccessibilityPermissionNavigator {
+    static var promptOptions: [CFString: Any] {
+        [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as CFString: true]
+    }
+
+    static func openAccessibilitySettingsPrompt() {
+        _ = AXIsProcessTrustedWithOptions(promptOptions as CFDictionary)
+    }
+}
+
+func dashboardStatusKind(hidRunning: Bool, hasDevices: Bool) -> DashboardStatusKind {
+    if !hidRunning { return .monitoringStopped }
+    if !hasDevices { return .noController }
+    return .liveInput
 }
 
 struct OutputDraft: Equatable {
-    struct KeyStep: Equatable {
-        var keyCode: CGKeyCode
-        var delayMilliseconds: Int
-    }
-
     var type: OutputType = .none
     var keyCode: CGKeyCode = NJKeyInputFieldEmpty
-    var keySequenceSteps: [KeyStep] = []
+    var keySequenceSteps: [NJKeySequenceStep] = []
     var keyActivationThreshold: Float = NJOutputKeyPress.defaultActivationThreshold
     var mappingIndex: Int = 0
     var mouseAxis: Int32 = 0
@@ -43,12 +117,7 @@ struct OutputDraft: Equatable {
         if let key = output as? NJOutputKeyPress {
             draft.type = .keyPress
             draft.keyCode = key.keyCode
-            draft.keySequenceSteps = key.keySequence.map {
-                KeyStep(keyCode: $0.keyCode, delayMilliseconds: $0.delayMilliseconds)
-            }
-            if draft.keySequenceSteps.isEmpty, key.keyCode != NJKeyInputFieldEmpty {
-                draft.keySequenceSteps = [KeyStep(keyCode: key.keyCode, delayMilliseconds: 0)]
-            }
+            draft.keySequenceSteps = key.keySequence
             draft.keyActivationThreshold = key.activationThreshold
         } else if let mappingOutput = output as? NJOutputMapping {
             draft.type = .mapping
@@ -78,14 +147,16 @@ struct OutputDraft: Equatable {
         case .none:
             return nil
         case .keyPress:
-            let normalizedSteps = keySequenceSteps
-                .filter { $0.keyCode != NJKeyInputFieldEmpty }
-                .map { NJKeySequenceStep(keyCode: $0.keyCode, delayMilliseconds: max(0, $0.delayMilliseconds)) }
-            let resolvedKey = keyCode != NJKeyInputFieldEmpty ? keyCode : normalizedSteps.first?.keyCode ?? NJKeyInputFieldEmpty
-            guard resolvedKey != NJKeyInputFieldEmpty else { return nil }
+            let sanitizedSequence = keySequenceSteps
+                .map { step in
+                    let keys = step.keys.filter { $0 != NJKeyInputFieldEmpty }
+                    return NJKeySequenceStep(keys: keys, delayMilliseconds: max(0, step.delayMilliseconds))
+                }
+                .filter { !$0.keys.isEmpty }
+            guard keyCode != NJKeyInputFieldEmpty || !sanitizedSequence.isEmpty else { return nil }
             let output = NJOutputKeyPress()
-            output.keyCode = resolvedKey
-            output.keySequence = normalizedSteps
+            output.keyCode = keyCode != NJKeyInputFieldEmpty ? keyCode : (sanitizedSequence.first?.keys.first ?? NJKeyInputFieldEmpty)
+            output.keySequence = sanitizedSequence
             output.activationThreshold = min(max(keyActivationThreshold, 0), 1)
             return output
         case .mapping:
@@ -119,10 +190,114 @@ struct KeyMappingEditorState: Equatable, Identifiable {
     var inputPath: String
     var enabled: Bool
     var keyCode: CGKeyCode
-    var keySequenceSteps: [OutputDraft.KeyStep]
+    var keySequenceSteps: [NJKeySequenceStep]
     var activationThreshold: Float
     var isResolvable: Bool
     var unavailableReason: String?
+}
+
+extension KeyMappingEditorState {
+    var diagnosticsStatusTextKey: String {
+        isResolvable ? "editor_state_resolvable" : "editor_state_unresolvable"
+    }
+
+    var diagnosticsStatusSymbolName: String {
+        isResolvable ? "checkmark.circle.fill" : "exclamationmark.triangle.fill"
+    }
+
+    var hasConfiguredMacroStep: Bool {
+        keySequenceSteps.contains(where: { !$0.keys.filter({ $0 != NJKeyInputFieldEmpty }).isEmpty })
+    }
+
+    var resolvedPrimaryKeyCode: CGKeyCode {
+        if keyCode != NJKeyInputFieldEmpty { return keyCode }
+        return keySequenceSteps
+            .compactMap { $0.keys.first(where: { $0 != NJKeyInputFieldEmpty }) }
+            .first ?? NJKeyInputFieldEmpty
+    }
+
+    func hasSameEditingPayload(as other: Self) -> Bool {
+        inputID == other.inputID &&
+            inputPath == other.inputPath &&
+            enabled == other.enabled &&
+            keyCode == other.keyCode &&
+            keySequenceSteps == other.keySequenceSteps &&
+            activationThreshold == other.activationThreshold &&
+            isResolvable == other.isResolvable &&
+            unavailableReason == other.unavailableReason
+    }
+
+    var canEditBindingControls: Bool {
+        isResolvable && enabled
+    }
+
+    var canRemoveMacroStep: Bool {
+        canEditBindingControls && keySequenceSteps.count > 1
+    }
+
+    var canSaveChanges: Bool {
+        guard isResolvable else { return false }
+        guard enabled else { return true }
+        return resolvedPrimaryKeyCode != NJKeyInputFieldEmpty
+    }
+
+    func displayName(for keyCode: CGKeyCode) -> String? {
+        guard keyCode != NJKeyInputFieldEmpty else { return nil }
+        let name = NJKeyInputField.displayName(forKeyCode: keyCode)
+        return name.isEmpty ? nil : name
+    }
+
+    func triggerEventStepSummary(for step: NJKeySequenceStep, maximumVisibleKeyNames: Int = 3) -> String {
+        let keyNames = triggerEventVisibleKeyNames(for: step, maximumVisibleKeyNames: maximumVisibleKeyNames)
+
+        guard !keyNames.isEmpty else {
+            return L10n.text("editor_trigger_events_empty_summary")
+        }
+
+        let keySummary = keyNames.joined(separator: " + ") + (triggerEventHiddenKeyCount(for: step, maximumVisibleKeyNames: maximumVisibleKeyNames) > 0 ? " + ..." : "")
+        if effectiveKeyNames(for: step).count == 1 {
+            return String(
+                format: L10n.text("editor_trigger_events_single_summary"),
+                keySummary,
+                step.delayMilliseconds
+            )
+        }
+
+        return String(
+            format: L10n.text("editor_trigger_events_combo_summary"),
+            keySummary,
+            step.delayMilliseconds
+        )
+    }
+
+    func effectiveKeyNames(for step: NJKeySequenceStep) -> [String] {
+        step.keys
+            .filter { $0 != NJKeyInputFieldEmpty }
+            .compactMap(displayName(for:))
+    }
+
+    func triggerEventVisibleKeyNames(for step: NJKeySequenceStep, maximumVisibleKeyNames: Int = 3) -> [String] {
+        Array(effectiveKeyNames(for: step).prefix(max(1, maximumVisibleKeyNames)))
+    }
+
+    func triggerEventHiddenKeyCount(for step: NJKeySequenceStep, maximumVisibleKeyNames: Int = 3) -> Int {
+        let all = effectiveKeyNames(for: step)
+        return max(0, all.count - max(1, maximumVisibleKeyNames))
+    }
+
+    func triggerEventPrimaryKeyName(for step: NJKeySequenceStep) -> String? {
+        effectiveKeyNames(for: step).first
+    }
+
+    func triggerEventSecondaryKeyNames(for step: NJKeySequenceStep, maximumVisibleSecondaryKeyNames: Int = 2) -> [String] {
+        let secondary = Array(effectiveKeyNames(for: step).dropFirst())
+        return Array(secondary.prefix(max(0, maximumVisibleSecondaryKeyNames)))
+    }
+
+    func triggerEventAdditionalSecondaryKeyCount(for step: NJKeySequenceStep, maximumVisibleSecondaryKeyNames: Int = 2) -> Int {
+        let secondary = Array(effectiveKeyNames(for: step).dropFirst())
+        return max(0, secondary.count - max(0, maximumVisibleSecondaryKeyNames))
+    }
 }
 
 func makeKeyMappingEditorState(
@@ -136,16 +311,7 @@ func makeKeyMappingEditorState(
         inputPath: inputPath,
         enabled: forceEnable || mappedOutput != nil,
         keyCode: mappedOutput?.keyCode ?? NJKeyInputFieldEmpty,
-        keySequenceSteps: {
-            let steps = mappedOutput?.keySequence.map {
-                OutputDraft.KeyStep(keyCode: $0.keyCode, delayMilliseconds: $0.delayMilliseconds)
-            } ?? []
-            if !steps.isEmpty { return steps }
-            if let mapped = mappedOutput, mapped.keyCode != NJKeyInputFieldEmpty {
-                return [OutputDraft.KeyStep(keyCode: mapped.keyCode, delayMilliseconds: 0)]
-            }
-            return []
-        }(),
+        keySequenceSteps: mappedOutput?.keySequence ?? [],
         activationThreshold: mappedOutput?.activationThreshold ?? NJOutputKeyPress.defaultActivationThreshold,
         isResolvable: true,
         unavailableReason: nil
@@ -164,6 +330,38 @@ struct InputNode: Identifiable, Hashable {
         let subs = element.children ?? []
         children = subs.isEmpty ? nil : subs.map(InputNode.init)
         isLeaf = subs.isEmpty
+    }
+
+    init(
+        id: String,
+        name: String,
+        isLeaf: Bool,
+        children: [InputNode]? = nil
+    ) {
+        self.id = id
+        self.name = name
+        self.isLeaf = isLeaf
+        self.children = children
+    }
+}
+
+enum DeviceTreeNodeStyle {
+    static func symbolName(for node: InputNode) -> String {
+        if node.isLeaf {
+            return "smallcircle.filled.circle"
+        }
+
+        let lowerName = node.name.lowercased()
+        if lowerName.contains("controller") || lowerName.contains("gamepad") {
+            return "gamecontroller"
+        }
+        if lowerName.contains("axis") || lowerName.contains("axes") {
+            return "dial.horizontal"
+        }
+        if lowerName.contains("button") || lowerName.contains("buttons") {
+            return "button.horizontal"
+        }
+        return "list.bullet"
     }
 }
 
@@ -358,8 +556,8 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
     }
 
     func openAccessibilitySettings() {
-        guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") else { return }
-        NSWorkspace.shared.open(url)
+        AccessibilityPermissionNavigator.openAccessibilitySettingsPrompt()
+        refreshAccessibilityPermission()
     }
 
     func quickConfigureKeyPress(forInputID id: String) {
@@ -372,7 +570,6 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
            template.keyCode != NJKeyInputFieldEmpty {
             next.keyCode = template.keyCode
             next.keyActivationThreshold = template.keyActivationThreshold
-            next.keySequenceSteps = template.keySequenceSteps
         }
         updateDraft(next)
     }
@@ -417,15 +614,17 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
 
     func applyKeyMappingEditorState(_ state: KeyMappingEditorState) {
         guard state.isResolvable else { return }
+        // Dismiss first to avoid sheet flicker from intermediate snapshots.
+        keyMappingEditorState = nil
         setSelectedInput(id: state.inputID)
         guard canEditOutput else { return }
 
-        let validSteps = state.keySequenceSteps.filter { $0.keyCode != NJKeyInputFieldEmpty }
-        if state.enabled && (state.keyCode != NJKeyInputFieldEmpty || !validSteps.isEmpty) {
+        let resolvedKeyCode = state.resolvedPrimaryKeyCode
+        if state.enabled && resolvedKeyCode != NJKeyInputFieldEmpty {
             var next = draft
             next.type = .keyPress
-            next.keyCode = state.keyCode != NJKeyInputFieldEmpty ? state.keyCode : (validSteps.first?.keyCode ?? NJKeyInputFieldEmpty)
-            next.keySequenceSteps = validSteps
+            next.keyCode = resolvedKeyCode
+            next.keySequenceSteps = state.keySequenceSteps
             next.keyActivationThreshold = state.activationThreshold
             updateDraft(next)
         } else {
@@ -444,6 +643,42 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
     func clearOutput(for control: GamepadControl) {
         guard let id = preferredInputUIDForControl(control) else { return }
         clearOutput(forInputID: id)
+    }
+
+    func snapshot() -> EnjoyableRuntimeSnapshot {
+        EnjoyableRuntimeSnapshot(
+            selectedInputID: selectedInputID,
+            simulatingEvents: simulatingEvents,
+            hidRunning: hidRunning,
+            mappingNames: mappingNames,
+            activeMappingIndex: activeMappingIndex,
+            deviceTree: deviceTree,
+            draft: draft,
+            activeInputPath: activeInputPath,
+            highlightedControls: highlightedControls,
+            liveAxisValues: liveAxisValues,
+            liveAxisLabels: liveAxisLabels,
+            configurableControls: configurableControls,
+            hasAccessibilityPermission: hasAccessibilityPermission,
+            keyMappingEditorState: keyMappingEditorState
+        )
+    }
+
+    func snapshotStream() -> AsyncStream<EnjoyableRuntimeSnapshot> {
+        AsyncStream { continuation in
+            continuation.yield(snapshot())
+
+            let cancellable = objectWillChange.sink { [weak self] _ in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    continuation.yield(self.snapshot())
+                }
+            }
+
+            continuation.onTermination = { _ in
+                cancellable.cancel()
+            }
+        }
     }
 
     private func refreshAll() {
@@ -487,43 +722,19 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
     }
 
     private func preferredInputUIDForControl(_ control: GamepadControl) -> String? {
-        let deviceUID = selectedInputID?.split(separator: "~").first.map(String.init) ?? controller.devices.first?.uid
-        let preferredEIDs = GamepadLayoutMapper.possibleInputEIDs(for: control, deviceUID: deviceUID)
-
-        func extractEID(from uid: String) -> String {
-            let parts = uid.split(separator: "~").map(String.init)
-            guard parts.count > 1 else { return uid }
-            return parts.dropFirst().joined(separator: "~")
-        }
-
-        func rank(_ uid: String) -> Int {
-            let eid = extractEID(from: uid)
-            return preferredEIDs.firstIndex(of: eid) ?? Int.max
-        }
-
-        func pickBest(from candidates: [String], for deviceUID: String?) -> String? {
-            let scoped: [String]
-            if let deviceUID {
-                scoped = candidates.filter { $0.hasPrefix("\(deviceUID)~") }
-            } else {
-                scoped = candidates
-            }
-            let pool = scoped.isEmpty ? candidates : scoped
-            return pool.min { lhs, rhs in
-                let l = rank(lhs)
-                let r = rank(rhs)
-                if l == r { return lhs < rhs }
-                return l < r
-            }
-        }
-
-        if let candidates = controlInputLookup[control], let resolved = pickBest(from: candidates, for: deviceUID) {
+        if let resolved = preferredInputUID(
+            for: control,
+            from: controlInputLookup,
+            selectedInputID: selectedInputID,
+            firstDeviceUID: controller.devices.first?.uid
+        ) {
             return resolved
         }
 
+        let deviceUID = selectedInputID?.split(separator: "~").first.map(String.init) ?? controller.devices.first?.uid
         guard let deviceUID else { return nil }
 
-        for eid in preferredEIDs {
+        for eid in GamepadLayoutMapper.possibleInputEIDs(for: control, deviceUID: deviceUID) {
             let uid = "\(deviceUID)~\(eid)"
             if let element = controller.element(forUID: uid), element.children == nil {
                 return uid
@@ -638,7 +849,7 @@ public final class EnjoyableStore: NSObject, ObservableObject, @preconcurrency N
     }
 }
 
-private struct KeyCodeField: NSViewRepresentable {
+struct KeyCodeField: NSViewRepresentable {
     @Binding var keyCode: UInt16
     @Binding var isEnabled: Bool
 
@@ -676,750 +887,271 @@ private struct KeyCodeField: NSViewRepresentable {
     }
 }
 
-struct VisualEffectView: NSViewRepresentable {
-    var material: NSVisualEffectView.Material
-    var blendingMode: NSVisualEffectView.BlendingMode
+struct KeyComboField: NSViewRepresentable {
+    @Binding var keyCodes: [UInt16]
+    @Binding var isEnabled: Bool
 
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.material = material
-        view.blendingMode = blendingMode
-        view.state = .active
+    final class Coordinator: NSObject {
+        @Binding var keyCodes: [UInt16]
+
+        init(keyCodes: Binding<[UInt16]>) {
+            _keyCodes = keyCodes
+        }
+
+        func didChangeKeys(_ keys: [UInt16]) {
+            keyCodes = keys
+        }
+
+        func didClearKeys() {
+            keyCodes = []
+        }
+    }
+
+    final class CapturingTextField: NSTextField {
+        weak var forwardingTarget: KeyComboInputView?
+
+        override func mouseDown(with event: NSEvent) {
+            forwardingTarget?.mouseDown(with: event)
+        }
+    }
+
+    final class KeyComboInputView: NSControl {
+        var onChangeKeys: (([UInt16]) -> Void)?
+        var onClearKeys: (() -> Void)?
+
+        var keyCodes: [UInt16] = [] {
+            didSet { updateDisplay() }
+        }
+
+        override var isEnabled: Bool {
+            didSet {
+                field.isEnabled = isEnabled
+                if !isEnabled {
+                    _ = resignFirstResponder()
+                }
+            }
+        }
+
+        private var isFocused = false {
+            didSet { updateDisplay() }
+        }
+
+        private let field: CapturingTextField
+        private var keyMonitor: Any?
+
+        override init(frame frameRect: NSRect) {
+            field = CapturingTextField(frame: frameRect)
+            super.init(frame: frameRect)
+            commonInit()
+        }
+
+        required init?(coder: NSCoder) {
+            field = CapturingTextField(frame: .zero)
+            super.init(coder: coder)
+            commonInit()
+        }
+
+        private func commonInit() {
+            wantsLayer = true
+            field.forwardingTarget = self
+            field.frame = bounds
+            field.autoresizingMask = [.width, .height]
+            field.isEditable = false
+            field.isSelectable = false
+            field.isBordered = false
+            field.drawsBackground = false
+            field.alignment = .center
+            field.font = .systemFont(ofSize: 13, weight: .medium)
+            addSubview(field)
+            updateDisplay()
+        }
+
+        override var acceptsFirstResponder: Bool {
+            isEnabled
+        }
+
+        override func mouseDown(with event: NSEvent) {
+            guard isEnabled else { return }
+            window?.makeFirstResponder(self)
+        }
+
+        override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+            true
+        }
+
+        override func becomeFirstResponder() -> Bool {
+            isFocused = true
+            startKeyCaptureIfNeeded()
+            return super.becomeFirstResponder()
+        }
+
+        override func resignFirstResponder() -> Bool {
+            isFocused = false
+            stopKeyCapture()
+            return super.resignFirstResponder()
+        }
+
+        override func keyDown(with event: NSEvent) {
+            handleKeyDown(event)
+        }
+
+        override func flagsChanged(with event: NSEvent) {
+            guard isEnabled else { return }
+            handleFlagsChanged(event)
+        }
+
+        private func handleKeyDown(_ event: NSEvent) {
+            guard !event.isARepeat else { return }
+
+            let clearMask: NSEvent.ModifierFlags = [.option, .command]
+            if event.modifierFlags.intersection(clearMask).isEmpty == false,
+               event.keyCode == UInt16(kVK_Delete) {
+                keyCodes = []
+                onClearKeys?()
+                _ = resignFirstResponder()
+                return
+            }
+
+            let next = Self.keyCodes(from: event)
+            keyCodes = next
+            onChangeKeys?(next)
+            _ = resignFirstResponder()
+        }
+
+        private func handleFlagsChanged(_ event: NSEvent) {
+            let modifierOnly = Self.modifierKeyCodes(from: event.modifierFlags)
+            if !modifierOnly.isEmpty {
+                keyCodes = modifierOnly
+                onChangeKeys?(modifierOnly)
+                return
+            }
+
+            if Self.isModifierKey(event.keyCode) {
+                let fallback = [event.keyCode]
+                keyCodes = fallback
+                onChangeKeys?(fallback)
+            }
+        }
+
+        private func startKeyCaptureIfNeeded() {
+            guard keyMonitor == nil else { return }
+            keyMonitor = NSEvent.addLocalMonitorForEvents(matching: [.keyDown, .flagsChanged]) { [weak self] event in
+                guard let self else { return event }
+                guard self.window?.firstResponder === self else { return event }
+                guard self.isEnabled else { return event }
+
+                if event.type == .keyDown {
+                    self.handleKeyDown(event)
+                    return nil
+                }
+
+                if event.type == .flagsChanged {
+                    self.handleFlagsChanged(event)
+                    return nil
+                }
+                return event
+            }
+        }
+
+        private func stopKeyCapture() {
+            if let keyMonitor {
+                NSEvent.removeMonitor(keyMonitor)
+                self.keyMonitor = nil
+            }
+        }
+
+        private func updateDisplay() {
+            if isFocused && keyCodes.isEmpty {
+                field.stringValue = NSLocalizedString("key_binding_listening", bundle: .module, comment: "")
+                field.textColor = .tertiaryLabelColor
+                return
+            }
+
+            if keyCodes.isEmpty {
+                field.stringValue = ""
+                field.textColor = .labelColor
+                return
+            }
+
+            let labels = keyCodes.map { NJKeyInputField.displayName(forKeyCode: $0) }
+            field.stringValue = labels.joined(separator: " ")
+            field.textColor = .labelColor
+        }
+
+        private static func keyCodes(from event: NSEvent) -> [UInt16] {
+            var values = modifierKeyCodes(from: event.modifierFlags)
+
+            let main = event.keyCode
+            if !isModifierKey(main) {
+                if !values.contains(main) {
+                    values.append(main)
+                }
+            } else if values.isEmpty {
+                values.append(main)
+            }
+
+            return values
+        }
+
+        private static func modifierKeyCodes(from flags: NSEvent.ModifierFlags) -> [UInt16] {
+            var values: [UInt16] = []
+
+            func appendIfNeeded(_ code: UInt16) {
+                if !values.contains(code) {
+                    values.append(code)
+                }
+            }
+
+            if flags.contains(.control) { appendIfNeeded(UInt16(kVK_Control)) }
+            if flags.contains(.option) { appendIfNeeded(UInt16(kVK_Option)) }
+            if flags.contains(.shift) { appendIfNeeded(UInt16(kVK_Shift)) }
+            if flags.contains(.command) { appendIfNeeded(UInt16(kVK_Command)) }
+            if flags.contains(.function) { appendIfNeeded(UInt16(kVK_Function)) }
+
+            return values
+        }
+
+        private static func isModifierKey(_ code: UInt16) -> Bool {
+            let modifierKeys: Set<UInt16> = [
+                UInt16(kVK_Command),
+                UInt16(kVK_RightCommand),
+                UInt16(kVK_Option),
+                UInt16(kVK_RightOption),
+                UInt16(kVK_Control),
+                UInt16(kVK_RightControl),
+                UInt16(kVK_Shift),
+                UInt16(kVK_RightShift),
+                UInt16(kVK_CapsLock),
+                UInt16(kVK_Function)
+            ]
+            return modifierKeys.contains(code)
+        }
+
+        deinit {
+            stopKeyCapture()
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(keyCodes: $keyCodes)
+    }
+
+    func makeNSView(context: Context) -> KeyComboInputView {
+        let view = KeyComboInputView(frame: .zero)
+        view.onChangeKeys = { keys in
+            context.coordinator.didChangeKeys(keys)
+        }
+        view.onClearKeys = {
+            context.coordinator.didClearKeys()
+        }
         return view
     }
 
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        nsView.material = material
-        nsView.blendingMode = blendingMode
-    }
-}
-
-public struct EnjoyableRootView: View {
-    @StateObject private var store = EnjoyableStore()
-    @State private var mappingName = ""
-
-    public init() {}
-
-    public var body: some View {
-        NavigationView {
-            sidebar
-            detailView
+    func updateNSView(_ nsView: KeyComboInputView, context: Context) {
+        nsView.isEnabled = isEnabled
+        let next = keyCodes
+        if nsView.keyCodes != next {
+            nsView.keyCodes = next
         }
-        .sheet(item: $store.keyMappingEditorState) { state in
-            KeyMappingEditorSheet(
-                initialState: state,
-                onCancel: {
-                    store.keyMappingEditorState = nil
-                },
-                onSave: { next in
-                    store.applyKeyMappingEditorState(next)
-                    store.keyMappingEditorState = nil
-                }
-            )
-        }
-    }
-
-    private var sidebar: some View {
-        VStack(spacing: 0) {
-            List(selection: Binding(get: {
-                store.activeMappingIndex
-            }, set: {
-                if let val = $0 {
-                    store.activateMapping(index: val)
-                }
-            })) {
-                Section(header: Text(L10n.text("mappings_title"))) {
-                    ForEach(Array(store.mappingNames.enumerated()), id: \.offset) { idx, name in
-                        Label(name, systemImage: "tray.full.fill")
-                            .tag(idx)
-                    }
-                }
-            }
-            .listStyle(SidebarListStyle())
-
-            Divider()
-
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    Button { store.addMapping() } label: {
-                        Image(systemName: "plus")
-                    }
-                    .buttonStyle(.plain)
-
-                    Button { store.removeActiveMapping() } label: {
-                        Image(systemName: "minus")
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(store.activeMappingIndex == 0)
-
-                    Spacer()
-
-                    Button { store.moveActiveMappingUp() } label: {
-                        Image(systemName: "chevron.up")
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(store.activeMappingIndex <= 1)
-
-                    Button { store.moveActiveMappingDown() } label: {
-                        Image(systemName: "chevron.down")
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(store.activeMappingIndex <= 0 || store.activeMappingIndex >= store.mappingNames.count - 1)
-                }
-                .padding(.horizontal)
-                .padding(.top, 8)
-
-                Divider()
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Toggle(L10n.text("simulate_events"), isOn: $store.simulatingEvents)
-                        .toggleStyle(.switch)
-                        .controlSize(.small)
-
-                    if store.simulatingEvents && !store.hasAccessibilityPermission {
-                        Button {
-                            store.openAccessibilitySettings()
-                        } label: {
-                            Label(L10n.text("accessibility_permission_required"), systemImage: "exclamationmark.triangle.fill")
-                                .font(.caption2)
-                                .foregroundColor(.orange)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .padding([.horizontal, .bottom])
-            }
-            .background(VisualEffectView(material: .sidebar, blendingMode: .withinWindow))
-        }
-        .frame(minWidth: 200, maxWidth: 300)
-    }
-
-    private var detailView: some View {
-        HStack(spacing: 0) {
-            // Main Content Area
-            VStack(spacing: 0) {
-                // Header / ToolBar
-                HStack {
-                    TextField(L10n.text("rename_mapping_placeholder"), text: $mappingName, onCommit: {
-                        store.renameActiveMapping(mappingName)
-                    })
-                    .textFieldStyle(.plain)
-                    .font(.title2.bold())
-                    .onAppear {
-                        mappingName = store.mappingNames[safe: store.activeMappingIndex] ?? ""
-                    }
-                    .onChange(of: store.activeMappingIndex) { _ in
-                        mappingName = store.mappingNames[safe: store.activeMappingIndex] ?? ""
-                    }
-
-                    Spacer()
-
-                    if !store.hidRunning {
-                        Label(L10n.text("input_monitoring_stopped"), systemImage: "pause.circle.fill")
-                            .foregroundColor(.secondary)
-                    } else if !store.hasDevices {
-                        Label(L10n.text("no_game_controller_detected"), systemImage: "gamecontroller.fill")
-                            .foregroundColor(.secondary)
-                    } else {
-                        Label(L10n.text("live_input"), systemImage: "dot.circle.and.cursorarrow")
-                            .foregroundColor(.accentColor)
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.top, 40)
-                .padding(.bottom, 16)
-                .background(VisualEffectView(material: .headerView, blendingMode: .withinWindow))
-
-                ScrollView {
-                    VStack(spacing: 24) {
-                        // Gamepad Visualization
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(L10n.text("controller_layout_title"))
-                                .font(.headline)
-                                .foregroundColor(.secondary)
-
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color(NSColor.controlBackgroundColor))
-                                    .shadow(color: Color.black.opacity(0.05), radius: 10)
-
-                                GamepadLayoutView(
-                                    highlightedControls: store.highlightedControls,
-                                    canConfigureControl: { store.canConfigure(control: $0) },
-                                    onConfigureKeyPress: { store.quickConfigureKeyPress(for: $0) },
-                                    onClearMapping: { store.clearOutput(for: $0) }
-                                )
-                                .padding()
-                            }
-                            .frame(height: 320)
-                        }
-
-                        // Live Monitors
-                        if !store.liveAxisValues.isEmpty {
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text(L10n.text("live_axes_title"))
-                                    .font(.headline)
-                                    .foregroundColor(.secondary)
-
-                                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                                    ForEach(store.liveAxisValues.keys.sorted(), id: \.self) { axis in
-                                        let value = store.liveAxisValues[axis] ?? 0
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            HStack {
-                                                Text(store.liveAxisLabels[axis] ?? "\(L10n.text("axis_label")) \(axis)")
-                                                    .font(.caption.weight(.medium))
-                                                Spacer()
-                                                Text(String(format: "%.2f", value))
-                                                    .font(.system(.caption, design: .monospaced))
-                                                    .foregroundColor(.secondary)
-                                            }
-                                            GeometryReader { geo in
-                                                ZStack(alignment: .leading) {
-                                                    Capsule().fill(Color.secondary.opacity(0.1))
-                                                    Capsule()
-                                                        .fill(Color.accentColor)
-                                                        .frame(width: geo.size.width * CGFloat((value + 1) / 2))
-                                                }
-                                            }
-                                            .frame(height: 4)
-                                        }
-                                        .padding(8)
-                                        .background(RoundedRectangle(cornerRadius: 8).fill(Color(NSColor.controlBackgroundColor)))
-                                    }
-                                }
-                            }
-                        }
-
-                        // Device Tree (Optional/Advanced)
-                        DisclosureGroup(L10n.text("device_list_title")) {
-                            List(selection: Binding(get: {
-                                store.selectedInputID
-                            }, set: {
-                                store.setSelectedInput(id: $0)
-                            })) {
-                                OutlineGroup(store.deviceTree, children: \.children) { node in
-                                    HStack {
-                                        Image(systemName: node.isLeaf ? "circle.fill" : "folder.fill")
-                                            .font(.system(size: 8))
-                                            .foregroundColor(node.isLeaf ? .accentColor : .secondary)
-                                        Text(node.name)
-                                            .font(.subheadline)
-                                    }
-                                    .tag(node.isLeaf ? Optional(node.id) : nil)
-                                    .contextMenu {
-                                        if node.isLeaf {
-                                            Button(L10n.text("menu_key_detail")) {
-                                                store.openKeyMappingEditor(forInputID: node.id, forceEnable: false)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            .frame(height: 200)
-                            .listStyle(PlainListStyle())
-                            .background(Color(NSColor.controlBackgroundColor))
-                            .cornerRadius(8)
-                        }
-                        .font(.headline)
-                    }
-                    .padding()
-                }
-            }
-            .frame(minWidth: 400)
-
-            Divider()
-
-            // Inspector Area (Configuration Editor)
-            VStack(alignment: .leading, spacing: 0) {
-                Text(L10n.text("output_type"))
-                    .font(.headline)
-                    .padding()
-
-                if store.canEditOutput {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 20) {
-                            Section {
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text(store.activeInputPath.isEmpty ? L10n.text("selected_input_placeholder") : store.activeInputPath)
-                                        .font(.subheadline.bold())
-                                        .foregroundColor(store.activeInputPath.isEmpty ? .secondary : .primary)
-
-                                    outputEditor
-                                }
-                                .padding()
-                                .background(RoundedRectangle(cornerRadius: 12).fill(Color(NSColor.controlBackgroundColor)))
-                            }
-                        }
-                        .padding()
-                    }
-                } else {
-                    Spacer()
-                    VStack(spacing: 12) {
-                        Image(systemName: "hand.tap.fill")
-                            .font(.system(size: 40))
-                            .foregroundColor(.secondary.opacity(0.3))
-                        Text(L10n.text("selected_input_placeholder"))
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .frame(maxWidth: .infinity)
-                    Spacer()
-                }
-            }
-            .frame(width: 280)
-            .background(VisualEffectView(material: .sidebar, blendingMode: .withinWindow))
-        }
-    }
-
-    @ViewBuilder
-    private var outputEditor: some View {
-        Picker(L10n.text("output_type"), selection: Binding(get: {
-            store.draft.type
-        }, set: { value in
-            var next = store.draft
-            next.type = value
-            store.updateDraft(next)
-        })) {
-            Text(L10n.text("output_none")).tag(OutputType.none)
-            Text(L10n.text("output_key_press")).tag(OutputType.keyPress)
-            Text(L10n.text("output_mapping")).tag(OutputType.mapping)
-            Text(L10n.text("output_mouse_move")).tag(OutputType.mouseMove)
-            Text(L10n.text("output_mouse_button")).tag(OutputType.mouseButton)
-            Text(L10n.text("output_mouse_scroll")).tag(OutputType.mouseScroll)
-        }
-        .labelsHidden()
-
-        switch store.draft.type {
-        case .none:
-            EmptyView()
-        case .keyPress:
-            HStack {
-                Text("主键")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                KeyCodeField(keyCode: Binding(get: {
-                    store.draft.keyCode
-                }, set: { value in
-                    var next = store.draft
-                    next.keyCode = value
-                    if next.keySequenceSteps.isEmpty, value != NJKeyInputFieldEmpty {
-                        next.keySequenceSteps = [.init(keyCode: value, delayMilliseconds: 0)]
-                    } else if !next.keySequenceSteps.isEmpty {
-                        next.keySequenceSteps[0].keyCode = value
-                    }
-                    store.updateDraft(next)
-                }), isEnabled: .constant(store.canEditOutput))
-                .frame(width: 140, height: 28)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color.secondary.opacity(0.28), lineWidth: 1)
-                        .allowsHitTesting(false)
-                )
-                Spacer()
-                Button("新增步骤") {
-                    var next = store.draft
-                    let seed = next.keyCode != NJKeyInputFieldEmpty ? next.keyCode : 0
-                    next.keySequenceSteps.append(.init(keyCode: seed, delayMilliseconds: 80))
-                    store.updateDraft(next)
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-            }
-
-            if !store.draft.keySequenceSteps.isEmpty {
-                VStack(alignment: .leading, spacing: 8) {
-                    ForEach(Array(store.draft.keySequenceSteps.enumerated()), id: \.offset) { idx, _ in
-                        HStack(spacing: 8) {
-                            Text("#\(idx + 1)")
-                                .font(.caption2.monospacedDigit())
-                                .foregroundColor(.secondary)
-                                .frame(width: 22)
-
-                            KeyCodeField(
-                                keyCode: Binding(get: {
-                                    store.draft.keySequenceSteps[safe: idx]?.keyCode ?? NJKeyInputFieldEmpty
-                                }, set: { value in
-                                    var next = store.draft
-                                    guard next.keySequenceSteps.indices.contains(idx) else { return }
-                                    next.keySequenceSteps[idx].keyCode = value
-                                    if idx == 0 {
-                                        next.keyCode = value
-                                    }
-                                    store.updateDraft(next)
-                                }),
-                                isEnabled: .constant(store.canEditOutput)
-                            )
-                            .frame(width: 120, height: 28)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .stroke(Color.secondary.opacity(0.22), lineWidth: 1)
-                                    .allowsHitTesting(false)
-                            )
-
-                            Stepper(value: Binding(get: {
-                                store.draft.keySequenceSteps[safe: idx]?.delayMilliseconds ?? 0
-                            }, set: { value in
-                                var next = store.draft
-                                guard next.keySequenceSteps.indices.contains(idx) else { return }
-                                next.keySequenceSteps[idx].delayMilliseconds = max(0, value)
-                                store.updateDraft(next)
-                            }), in: 0...3000, step: 10) {
-                                Text("\(store.draft.keySequenceSteps[safe: idx]?.delayMilliseconds ?? 0)ms")
-                                    .font(.caption.monospacedDigit())
-                            }
-
-                            Button {
-                                var next = store.draft
-                                guard next.keySequenceSteps.indices.contains(idx) else { return }
-                                next.keySequenceSteps.remove(at: idx)
-                                next.keyCode = next.keySequenceSteps.first?.keyCode ?? NJKeyInputFieldEmpty
-                                store.updateDraft(next)
-                            } label: {
-                                Image(systemName: "minus.circle")
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-            }
-
-            HStack {
-                Text(L10n.text("trigger_threshold"))
-                Slider(value: Binding(get: {
-                    Double(store.draft.keyActivationThreshold)
-                }, set: { value in
-                    var next = store.draft
-                    next.keyActivationThreshold = Float(value)
-                    store.updateDraft(next)
-                }), in: 0...1)
-                Text(String(format: "%.2f", store.draft.keyActivationThreshold))
-                    .font(.system(.body, design: .monospaced))
-                    .foregroundColor(.secondary)
-                    .frame(width: 40, alignment: .trailing)
-            }
-        case .mapping:
-            Picker(L10n.text("output_mapping"), selection: Binding(get: {
-                store.draft.mappingIndex
-            }, set: { value in
-                var next = store.draft
-                next.mappingIndex = value
-                store.updateDraft(next)
-            })) {
-                ForEach(Array(store.mappingNames.enumerated()), id: \.offset) { idx, name in
-                    Text(name).tag(idx)
-                }
-            }
-        case .mouseMove:
-            Picker(L10n.text("direction"), selection: Binding(get: {
-                store.draft.mouseAxis
-            }, set: { value in
-                var next = store.draft
-                next.mouseAxis = value
-                store.updateDraft(next)
-            })) {
-                Text(L10n.text("left")).tag(Int32(0))
-                Text(L10n.text("right")).tag(Int32(1))
-                Text(L10n.text("up")).tag(Int32(2))
-                Text(L10n.text("down")).tag(Int32(3))
-            }
-            Slider(value: Binding(get: {
-                Double(store.draft.mouseSpeed)
-            }, set: { value in
-                var next = store.draft
-                next.mouseSpeed = Float(value)
-                store.updateDraft(next)
-            }), in: 1...100)
-        case .mouseButton:
-            Picker(L10n.text("button"), selection: Binding(get: {
-                store.draft.mouseButton
-            }, set: { value in
-                var next = store.draft
-                next.mouseButton = value
-                store.updateDraft(next)
-            })) {
-                Text(L10n.text("left")).tag(UInt32(0))
-                Text(L10n.text("right")).tag(UInt32(1))
-                Text(L10n.text("middle")).tag(UInt32(2))
-            }
-        case .mouseScroll:
-            Picker(L10n.text("direction"), selection: Binding(get: {
-                store.draft.scrollDirection
-            }, set: { value in
-                var next = store.draft
-                next.scrollDirection = value
-                store.updateDraft(next)
-            })) {
-                Text(L10n.text("vertical_plus")).tag(Int32(1))
-                Text(L10n.text("vertical_minus")).tag(Int32(-1))
-                Text(L10n.text("horizontal_plus")).tag(Int32(2))
-                Text(L10n.text("horizontal_minus")).tag(Int32(-2))
-            }
-            Toggle(L10n.text("smooth"), isOn: Binding(get: {
-                store.draft.scrollSmooth
-            }, set: { value in
-                var next = store.draft
-                next.scrollSmooth = value
-                store.updateDraft(next)
-            }))
-            Slider(value: Binding(get: {
-                Double(store.draft.scrollSpeed)
-            }, set: { value in
-                var next = store.draft
-                next.scrollSpeed = Float(value)
-                store.updateDraft(next)
-            }), in: 1...100)
-            .disabled(!store.draft.scrollSmooth)
-        }
-    }
-
-}
-
-private struct KeyMappingEditorSheet: View {
-    @State private var state: KeyMappingEditorState
-    let onCancel: () -> Void
-    let onSave: (KeyMappingEditorState) -> Void
-
-    init(
-        initialState: KeyMappingEditorState,
-        onCancel: @escaping () -> Void,
-        onSave: @escaping (KeyMappingEditorState) -> Void
-    ) {
-        _state = State(initialValue: initialState)
-        self.onCancel = onCancel
-        self.onSave = onSave
-    }
-
-    var body: some View {
-        VStack(spacing: 0) {
-            // Header
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(L10n.text("key_mapping_editor_title"))
-                        .font(.title2.bold())
-                    Text(state.inputPath)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                Spacer()
-                Image(systemName: "keyboard")
-                    .font(.system(size: 32))
-                    .foregroundColor(.accentColor.opacity(0.8))
-            }
-            .padding(24)
-            .background(VisualEffectView(material: .headerView, blendingMode: .withinWindow))
-
-            Divider()
-
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    if let reason = state.unavailableReason {
-                        HStack(spacing: 12) {
-                            Image(systemName: "exclamationmark.circle.fill")
-                                .foregroundColor(.orange)
-                            Text(reason)
-                                .font(.callout)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(RoundedRectangle(cornerRadius: 12).fill(Color.orange.opacity(0.1)))
-                    }
-
-                    // Binding Status & Toggle
-                    HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(L10n.text("binding_status"))
-                                .font(.headline)
-                            Text(state.enabled && (state.keyCode != NJKeyInputFieldEmpty || state.keySequenceSteps.contains(where: { $0.keyCode != NJKeyInputFieldEmpty })) ? L10n.text("binding_exists") : L10n.text("binding_empty"))
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        Spacer()
-                        Toggle("", isOn: $state.enabled)
-                            .toggleStyle(.switch)
-                            .disabled(!state.isResolvable)
-                    }
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color(NSColor.controlBackgroundColor)))
-
-                    // Key Capture Section
-                    VStack(alignment: .leading, spacing: 16) {
-                        HStack {
-                            Label(L10n.text("key_binding_title"), systemImage: "record.circle")
-                                .font(.headline)
-                            Spacer()
-                            if state.keyCode != NJKeyInputFieldEmpty || !state.keySequenceSteps.isEmpty {
-                                Button(L10n.text("clear_key")) {
-                                    state.keyCode = NJKeyInputFieldEmpty
-                                    state.keySequenceSteps = []
-                                }
-                                .buttonStyle(.bordered)
-                                .controlSize(.small)
-                            }
-                        }
-
-                        VStack(spacing: 12) {
-                            KeyCodeField(
-                                keyCode: $state.keyCode,
-                                isEnabled: .constant(state.enabled)
-                            )
-                            .frame(height: 48)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color(NSColor.textBackgroundColor))
-                                    .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(state.enabled ? Color.accentColor.opacity(0.5) : Color.secondary.opacity(0.2), lineWidth: 1.5)
-                            )
-                            .onChange(of: state.keyCode) { value in
-                                if state.keySequenceSteps.isEmpty, value != NJKeyInputFieldEmpty {
-                                    state.keySequenceSteps = [.init(keyCode: value, delayMilliseconds: 0)]
-                                } else if !state.keySequenceSteps.isEmpty {
-                                    state.keySequenceSteps[0].keyCode = value
-                                }
-                            }
-
-                            Text(L10n.text("key_binding_hint"))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-
-                        HStack {
-                            Text("顺序触发")
-                                .font(.subheadline.weight(.medium))
-                            Spacer()
-                            Button("新增步骤") {
-                                let seed = state.keyCode != NJKeyInputFieldEmpty ? state.keyCode : NJKeyInputFieldEmpty
-                                state.keySequenceSteps.append(.init(keyCode: seed, delayMilliseconds: 80))
-                            }
-                            .buttonStyle(.bordered)
-                            .controlSize(.small)
-                            .disabled(!state.enabled)
-                        }
-
-                        if !state.keySequenceSteps.isEmpty {
-                            VStack(alignment: .leading, spacing: 8) {
-                                ForEach(Array(state.keySequenceSteps.enumerated()), id: \.offset) { idx, _ in
-                                    HStack(spacing: 8) {
-                                        Text("#\(idx + 1)")
-                                            .font(.caption.monospacedDigit())
-                                            .foregroundColor(.secondary)
-                                            .frame(width: 24)
-
-                                        KeyCodeField(
-                                            keyCode: Binding(get: {
-                                                state.keySequenceSteps[safe: idx]?.keyCode ?? NJKeyInputFieldEmpty
-                                            }, set: { value in
-                                                guard state.keySequenceSteps.indices.contains(idx) else { return }
-                                                state.keySequenceSteps[idx].keyCode = value
-                                                if idx == 0 {
-                                                    state.keyCode = value
-                                                }
-                                            }),
-                                            isEnabled: .constant(state.enabled)
-                                        )
-                                        .frame(width: 140, height: 32)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .fill(Color(NSColor.textBackgroundColor))
-                                        )
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(state.enabled ? Color.accentColor.opacity(0.3) : Color.secondary.opacity(0.2), lineWidth: 1)
-                                        )
-
-                                        Stepper(value: Binding(get: {
-                                            state.keySequenceSteps[safe: idx]?.delayMilliseconds ?? 0
-                                        }, set: { value in
-                                            guard state.keySequenceSteps.indices.contains(idx) else { return }
-                                            state.keySequenceSteps[idx].delayMilliseconds = max(0, value)
-                                        }), in: 0...3000, step: 10) {
-                                            Text("\(state.keySequenceSteps[safe: idx]?.delayMilliseconds ?? 0)ms")
-                                                .font(.caption.monospacedDigit())
-                                        }
-
-                                        Button {
-                                            guard state.keySequenceSteps.indices.contains(idx) else { return }
-                                            state.keySequenceSteps.remove(at: idx)
-                                            state.keyCode = state.keySequenceSteps.first?.keyCode ?? NJKeyInputFieldEmpty
-                                        } label: {
-                                            Image(systemName: "minus.circle")
-                                        }
-                                        .buttonStyle(.plain)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color(NSColor.controlBackgroundColor)))
-                    .opacity(state.enabled ? 1.0 : 0.6)
-
-                    // Threshold Section
-                    VStack(alignment: .leading, spacing: 16) {
-                        Label(L10n.text("trigger_threshold"), systemImage: "gauge.medium")
-                            .font(.headline)
-
-                        HStack(spacing: 16) {
-                            Slider(value: Binding(get: {
-                                Double(state.activationThreshold)
-                            }, set: { value in
-                                state.activationThreshold = Float(value)
-                            }), in: 0...1)
-                            .disabled(!state.enabled)
-
-                            Text(String(format: "%.2f", state.activationThreshold))
-                                .font(.system(.body, design: .monospaced).bold())
-                                .foregroundColor(state.enabled ? .primary : .secondary)
-                                .frame(width: 48)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Capsule().fill(Color.secondary.opacity(0.1)))
-                        }
-                    }
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color(NSColor.controlBackgroundColor)))
-                    .opacity(state.enabled ? 1.0 : 0.6)
-                }
-                .padding(24)
-            }
-
-            Divider()
-
-            // Footer
-            HStack(spacing: 12) {
-                Spacer()
-                Button(L10n.text("cancel"), action: onCancel)
-                    .buttonStyle(.plain)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(Capsule().stroke(Color.secondary.opacity(0.3), lineWidth: 1))
-
-                Button(action: { onSave(state) }) {
-                    Text(L10n.text("save"))
-                        .bold()
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 8)
-                        .background(state.isResolvable ? Color.accentColor : Color.secondary)
-                        .clipShape(Capsule())
-                }
-                .buttonStyle(.plain)
-                .disabled(!state.isResolvable)
-                .keyboardShortcut(.defaultAction)
-            }
-            .padding(24)
-            .background(VisualEffectView(material: .headerView, blendingMode: .withinWindow))
-        }
-        .frame(width: 480, height: 600)
-        .background(VisualEffectView(material: .sidebar, blendingMode: .withinWindow))
-    }
-}
-
-private extension Array {
-    subscript(safe index: Index) -> Element? {
-        indices.contains(index) ? self[index] : nil
     }
 }
