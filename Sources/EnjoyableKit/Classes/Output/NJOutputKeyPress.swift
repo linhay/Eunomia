@@ -103,15 +103,9 @@ class NJOutputKeyPress: NJOutput {
             return
         }
 
-        // Preserve legacy hold semantics for a single key step with zero delay.
-        if sequence.count == 1, sequence[0].keys.count == 1, sequence[0].delayMilliseconds == 0 {
-            let targetKey = sequence[0].keys[0]
-            guard let keyDown = keyboardEvent(
-                keyCode: targetKey,
-                keyDown: true,
-                containsFunctionKey: targetKey == functionKeyCode
-            ) else { return }
-            keyDown.post(tap: .cghidEventTap)
+        // Preserve hold semantics for a single zero-delay step (single key or combo).
+        if usesHoldSemantics(for: sequence) {
+            press(step: sequence[0])
             return
         }
 
@@ -127,14 +121,8 @@ class NJOutputKeyPress: NJOutput {
             return
         }
 
-        if sequence.count == 1, sequence[0].keys.count == 1, sequence[0].delayMilliseconds == 0 {
-            let targetKey = sequence[0].keys[0]
-            guard let keyUp = keyboardEvent(
-                keyCode: targetKey,
-                keyDown: false,
-                containsFunctionKey: targetKey == functionKeyCode
-            ) else { return }
-            keyUp.post(tap: .cghidEventTap)
+        if usesHoldSemantics(for: sequence) {
+            release(step: sequence[0])
             return
         }
 
@@ -176,27 +164,48 @@ class NJOutputKeyPress: NJOutput {
             accumulatedDelay += TimeInterval(max(0, step.delayMilliseconds)) / 1000.0
             DispatchQueue.main.asyncAfter(deadline: .now() + accumulatedDelay) { [weak self] in
                 guard let self, self.sequenceGeneration == generation else { return }
-                let containsFunctionKey = step.keys.contains(self.functionKeyCode)
-                let keysToEmit = step.keys.filter { $0 != self.functionKeyCode }
-                let effectiveKeys = keysToEmit.isEmpty ? step.keys : keysToEmit
-
-                for key in effectiveKeys {
-                    guard let keyDown = self.keyboardEvent(
-                        keyCode: key,
-                        keyDown: true,
-                        containsFunctionKey: containsFunctionKey
-                    ) else { continue }
-                    keyDown.post(tap: .cghidEventTap)
-                }
-                for key in effectiveKeys.reversed() {
-                    guard let keyUp = self.keyboardEvent(
-                        keyCode: key,
-                        keyDown: false,
-                        containsFunctionKey: containsFunctionKey
-                    ) else { continue }
-                    keyUp.post(tap: .cghidEventTap)
-                }
+                self.press(step: step)
+                self.release(step: step)
             }
+        }
+    }
+
+    func usesHoldSemantics(for sequence: [NJKeySequenceStep]) -> Bool {
+        sequence.count == 1 && sequence[0].delayMilliseconds == 0
+    }
+
+    private func press(step: NJKeySequenceStep) {
+        emit(step: step, keyDown: true)
+    }
+
+    private func release(step: NJKeySequenceStep) {
+        emit(step: step, keyDown: false)
+    }
+
+    private func emit(step: NJKeySequenceStep, keyDown: Bool) {
+        let containsFunctionKey = step.keys.contains(functionKeyCode)
+        let keysToEmit = step.keys.filter { $0 != functionKeyCode }
+        let effectiveKeys = keysToEmit.isEmpty ? step.keys : keysToEmit
+
+        if keyDown {
+            for key in effectiveKeys {
+                guard let event = keyboardEvent(
+                    keyCode: key,
+                    keyDown: true,
+                    containsFunctionKey: containsFunctionKey
+                ) else { continue }
+                event.post(tap: .cghidEventTap)
+            }
+            return
+        }
+
+        for key in effectiveKeys.reversed() {
+            guard let event = keyboardEvent(
+                keyCode: key,
+                keyDown: false,
+                containsFunctionKey: containsFunctionKey
+            ) else { continue }
+            event.post(tap: .cghidEventTap)
         }
     }
 

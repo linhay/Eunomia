@@ -22,6 +22,17 @@ struct InspectorPanelNavigationState: Equatable {
     }
 }
 
+struct InspectorPanelExpansionState: Equatable {
+    let roles: [RootInspectorRole]
+    let expandedRoles: Set<RootInspectorRole>
+
+    var normalizedExpandedRoles: Set<RootInspectorRole> {
+        let availableRoles = Set(roles)
+        let filtered = expandedRoles.intersection(availableRoles)
+        return filtered.isEmpty ? availableRoles : filtered
+    }
+}
+
 struct InspectorPanelSectionDescriptor: Equatable {
     let role: RootInspectorRole
     let titleKey: String
@@ -164,18 +175,23 @@ struct EnjoyableMainWorkspaceView<ControllerCard: View, LiveAxisCard: View>: Vie
 
 struct EnjoyableInspectorPanelView<StatusCard: View, MappingManagerPanel: View, OutputEditorCard: View>: View {
     let inspectorRoles: [RootInspectorRole]
+    let expandedRoles: Set<RootInspectorRole>
+    let onSetExpanded: (RootInspectorRole, Bool) -> Void
     let statusCard: StatusCard
     let mappingManagerPanel: MappingManagerPanel
     let outputEditorCard: OutputEditorCard
-    @State private var selectedRole: RootInspectorRole?
 
     init(
         inspectorRoles: [RootInspectorRole],
+        expandedRoles: Set<RootInspectorRole>,
+        onSetExpanded: @escaping (RootInspectorRole, Bool) -> Void,
         @ViewBuilder statusCard: () -> StatusCard,
         @ViewBuilder mappingManagerPanel: () -> MappingManagerPanel,
         @ViewBuilder outputEditorCard: () -> OutputEditorCard
     ) {
         self.inspectorRoles = inspectorRoles
+        self.expandedRoles = expandedRoles
+        self.onSetExpanded = onSetExpanded
         self.statusCard = statusCard()
         self.mappingManagerPanel = mappingManagerPanel()
         self.outputEditorCard = outputEditorCard()
@@ -185,17 +201,19 @@ struct EnjoyableInspectorPanelView<StatusCard: View, MappingManagerPanel: View, 
         InspectorPanelSectionDescriptor.build(from: inspectorRoles)
     }
 
-    private var navigationState: InspectorPanelNavigationState {
-        InspectorPanelNavigationState(
+    private var expansionState: InspectorPanelExpansionState {
+        InspectorPanelExpansionState(
             roles: sections.map(\.role),
-            selectedRole: selectedRole
+            expandedRoles: expandedRoles
         )
     }
 
-    private var selectedRoleBinding: Binding<RootInspectorRole?> {
+    private func isExpandedBinding(for role: RootInspectorRole) -> Binding<Bool> {
         Binding(
-            get: { navigationState.effectiveRole },
-            set: { selectedRole = $0 }
+            get: { expansionState.normalizedExpandedRoles.contains(role) },
+            set: { isExpanded in
+                onSetExpanded(role, isExpanded)
+            }
         )
     }
 
@@ -211,54 +229,92 @@ struct EnjoyableInspectorPanelView<StatusCard: View, MappingManagerPanel: View, 
         }
     }
 
-    private var sidebarNavigation: some View {
-        List(selection: selectedRoleBinding) {
-            ForEach(sections, id: \.role) { section in
-                Label(L10n.text(section.titleKey), systemImage: section.symbol)
-                    .tag(section.role)
-            }
-        }
-        .listStyle(.sidebar)
-        .frame(minWidth: 160, idealWidth: 188, maxWidth: 220)
-    }
-
     @ViewBuilder
-    private var detailPanel: some View {
-        if let role = navigationState.effectiveRole,
-           let section = sections.first(where: { $0.role == role }) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: AppleNativeDesignMetrics.spacingM) {
-                    Label(L10n.text(section.titleKey), systemImage: section.symbol)
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
-
-                    sectionContent(for: role)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, AppleNativeDesignMetrics.spacingS)
-            }
-            .padding(.leading, AppleNativeDesignMetrics.spacingS)
-        } else {
+    private var inspectorList: some View {
+        if sections.isEmpty {
             ContentUnavailableView(
                 L10n.text("selected_input_placeholder"),
                 systemImage: "sidebar.left"
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            List {
+                ForEach(sections, id: \.role) { section in
+                    Section(isExpanded: isExpandedBinding(for: section.role)) {
+                        VStack(alignment: .leading, spacing: AppleNativeDesignMetrics.spacingS) {
+                            sectionContent(for: section.role)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, AppleNativeDesignMetrics.spacingXS)
+                    } header: {
+                        Label(L10n.text(section.titleKey), systemImage: section.symbol)
+                            .font(.headline)
+                    }
+                }
+            }
+            .listStyle(.sidebar)
+            .defaultMinListRowHeight(32)
         }
     }
 
     var body: some View {
-        HSplitView {
-            sidebarNavigation
-            detailPanel
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        inspectorList
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+}
+
+struct EnjoyableSettingsCardView: View {
+    var body: some View {
+        NativePanelCard(
+            title: L10n.text("settings_title"),
+            symbol: "gearshape",
+            surfaceStyle: .solid
+        ) {
+            VStack(alignment: .leading, spacing: AppleNativeDesignMetrics.spacingM) {
+                VStack(alignment: .leading, spacing: AppleNativeDesignMetrics.spacingXS) {
+                    Text(L10n.text("settings_app_name_title"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(L10n.text("settings_app_name_value"))
+                        .font(.title3.weight(.semibold))
+                }
+
+                Divider()
+
+                VStack(alignment: .leading, spacing: AppleNativeDesignMetrics.spacingXS) {
+                    Text(L10n.text("settings_open_source_notice_title"))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(L10n.text("settings_open_source_notice_body"))
+                        .font(.callout)
+                    Text(L10n.text("settings_upstream_attribution"))
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+
+                    Text(L10n.text("settings_license_name"))
+                        .font(.callout.weight(.semibold))
+
+                    Link(
+                        L10n.text("settings_upstream_link_title"),
+                        destination: URL(string: "https://github.com/joewreschnig/Enjoyable")!
+                    )
+                    .font(.callout)
+                }
+            }
         }
-        .onAppear {
-            selectedRole = navigationState.effectiveRole
+    }
+}
+
+public struct EnjoyableSettingsView: View {
+    public init() {}
+
+    public var body: some View {
+        ScrollView {
+            EnjoyableSettingsCardView()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(AppleNativeDesignMetrics.spacingL)
         }
-        .onChange(of: inspectorRoles) { _, _ in
-            selectedRole = navigationState.effectiveRole
-        }
+        .frame(minWidth: 520, minHeight: 420)
     }
 }
 

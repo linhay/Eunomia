@@ -317,4 +317,53 @@ final class KeyMappingEditorStateTests: XCTestCase {
             1
         )
     }
+
+    func testTriggerEventGestureModeIsHoldForSingleZeroDelayStep() {
+        let state = KeyMappingEditorState(
+            inputID: "1:2:1~Axis 1~High",
+            inputPath: "Device ▸ axis 1 ▸ high",
+            enabled: true,
+            keyCode: 12,
+            keySequenceSteps: [.init(keys: [12, 13], delayMilliseconds: 0)],
+            activationThreshold: 0.55,
+            isResolvable: true,
+            unavailableReason: nil
+        )
+
+        XCTAssertEqual(state.triggerEventGestureMode(forStepAt: 0), .hold)
+    }
+
+    func testTriggerEventGestureModeIsTapWhenDelayIsPositive() {
+        let state = KeyMappingEditorState(
+            inputID: "1:2:1~Axis 1~High",
+            inputPath: "Device ▸ axis 1 ▸ high",
+            enabled: true,
+            keyCode: 12,
+            keySequenceSteps: [.init(keys: [12, 13], delayMilliseconds: 80)],
+            activationThreshold: 0.55,
+            isResolvable: true,
+            unavailableReason: nil
+        )
+
+        XCTAssertEqual(state.triggerEventGestureMode(forStepAt: 0), .tap)
+    }
+
+    func testTriggerEventGestureModeIsTapForMultiStepSequence() {
+        let state = KeyMappingEditorState(
+            inputID: "1:2:1~Axis 1~High",
+            inputPath: "Device ▸ axis 1 ▸ high",
+            enabled: true,
+            keyCode: 12,
+            keySequenceSteps: [
+                .init(keys: [12], delayMilliseconds: 0),
+                .init(keys: [13], delayMilliseconds: 0)
+            ],
+            activationThreshold: 0.55,
+            isResolvable: true,
+            unavailableReason: nil
+        )
+
+        XCTAssertEqual(state.triggerEventGestureMode(forStepAt: 0), .tap)
+        XCTAssertEqual(state.triggerEventGestureMode(forStepAt: 1), .tap)
+    }
 }

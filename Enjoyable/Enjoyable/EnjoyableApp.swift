@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import EnjoyableKit
 
 @main
 struct EnjoyableApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+        }
+
+        Settings {
+            EnjoyableSettingsView()
         }
     }
 }

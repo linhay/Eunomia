@@ -98,17 +98,80 @@ struct EnjoyableRootComponents_Previews: PreviewProvider {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 },
                 inspectorPanel: {
-                    EnjoyableStatusCardView(
-                        statusKind: .monitoringStopped,
-                        activeMappingName: "Default",
-                        activeInputPath: "",
-                        hasDevices: false
+                    EnjoyableInspectorPanelView(
+                        inspectorRoles: [.status, .mappingManager, .outputEditor],
+                        expandedRoles: [.status, .mappingManager, .outputEditor],
+                        onSetExpanded: { _, _ in },
+                        statusCard: {
+                            EnjoyableStatusCardView(
+                                statusKind: .monitoringStopped,
+                                activeMappingName: "Default",
+                                activeInputPath: "",
+                                hasDevices: false
+                            )
+                        },
+                        mappingManagerPanel: {
+                            NativePanelCard(
+                                title: L10n.text("mappings_title"),
+                                symbol: "list.bullet",
+                                surfaceStyle: .solid
+                            ) {
+                                Text("Preview Mapping Manager")
+                                    .foregroundStyle(.secondary)
+                            }
+                        },
+                        outputEditorCard: {
+                            NativePanelCard(
+                                title: L10n.text("output_editor_title"),
+                                symbol: "keyboard.badge.ellipsis",
+                                surfaceStyle: .solid
+                            ) {
+                                Text("Preview Output Editor")
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
                     )
                 }
             )
             .padding()
             .frame(width: 980, height: 420)
             .previewDisplayName("Detail Split")
+
+            EnjoyableInspectorPanelView(
+                inspectorRoles: [.status, .mappingManager, .outputEditor],
+                expandedRoles: [.status, .mappingManager, .outputEditor],
+                onSetExpanded: { _, _ in },
+                statusCard: {
+                    EnjoyableStatusCardView(
+                        statusKind: .liveInput,
+                        activeMappingName: "FPS Layout",
+                        activeInputPath: "DualSense 5 / Button A",
+                        hasDevices: true
+                    )
+                },
+                mappingManagerPanel: {
+                    NativePanelCard(
+                        title: L10n.text("mappings_title"),
+                        symbol: "list.bullet",
+                        surfaceStyle: .solid
+                    ) {
+                        Text("Preview Mapping Manager")
+                            .foregroundStyle(.secondary)
+                    }
+                },
+                outputEditorCard: {
+                    NativePanelCard(
+                        title: L10n.text("output_editor_title"),
+                        symbol: "keyboard.badge.ellipsis",
+                        surfaceStyle: .solid
+                    ) {
+                        Text("Preview Output Editor")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            )
+            .frame(width: 780, height: 520)
+            .previewDisplayName("Inspector Panel")
 
             DeviceRuntimeSidebarPreviewContainer(hasAccessibilityPermission: false)
                 .frame(width: 280, height: 760, alignment: .topLeading)

@@ -4,6 +4,7 @@ import SwiftUI
 private struct EnjoyableMappingManagerPanelPreviewContainer: View {
     @State private var mappingSelection: Int? = 1
     @State private var mappingName = "Racing"
+    @State private var mappingRenameDraftName = "Racing"
 
     var body: some View {
         EnjoyableMappingSidebarView(
@@ -11,6 +12,7 @@ private struct EnjoyableMappingManagerPanelPreviewContainer: View {
             activeMappingIndex: mappingSelection ?? 1,
             mappingSelection: $mappingSelection,
             mappingName: $mappingName,
+            renameDraftName: $mappingRenameDraftName,
             onRenameCommit: {},
             onAddMapping: {},
             onRemoveActiveMapping: {},

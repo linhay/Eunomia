@@ -197,6 +197,20 @@ struct KeyMappingEditorState: Equatable, Identifiable {
 }
 
 extension KeyMappingEditorState {
+    enum TriggerGestureMode {
+        case hold
+        case tap
+
+        var textKey: String {
+            switch self {
+            case .hold:
+                return "editor_trigger_events_mode_hold"
+            case .tap:
+                return "editor_trigger_events_mode_tap"
+            }
+        }
+    }
+
     var diagnosticsStatusTextKey: String {
         isResolvable ? "editor_state_resolvable" : "editor_state_unresolvable"
     }
@@ -297,6 +311,14 @@ extension KeyMappingEditorState {
     func triggerEventAdditionalSecondaryKeyCount(for step: NJKeySequenceStep, maximumVisibleSecondaryKeyNames: Int = 2) -> Int {
         let secondary = Array(effectiveKeyNames(for: step).dropFirst())
         return max(0, secondary.count - max(0, maximumVisibleSecondaryKeyNames))
+    }
+
+    func triggerEventGestureMode(forStepAt index: Int) -> TriggerGestureMode {
+        guard keySequenceSteps.indices.contains(index) else { return .tap }
+        if keySequenceSteps.count == 1 && keySequenceSteps[index].delayMilliseconds == 0 {
+            return .hold
+        }
+        return .tap
     }
 }
 

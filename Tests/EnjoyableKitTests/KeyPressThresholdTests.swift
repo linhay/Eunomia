@@ -96,4 +96,28 @@ final class KeyPressThresholdTests: XCTestCase {
         button.active = true
         XCTAssertTrue(shouldRunOutput(output, with: button))
     }
+
+    func testHoldSemanticsEnabledForSingleZeroDelayComboStep() {
+        let output = NJOutputKeyPress()
+        let sequence = [NJKeySequenceStep(keys: [12, 13], delayMilliseconds: 0)]
+
+        XCTAssertTrue(output.usesHoldSemantics(for: sequence))
+    }
+
+    func testHoldSemanticsDisabledWhenDelayIsPositive() {
+        let output = NJOutputKeyPress()
+        let sequence = [NJKeySequenceStep(keys: [12, 13], delayMilliseconds: 80)]
+
+        XCTAssertFalse(output.usesHoldSemantics(for: sequence))
+    }
+
+    func testHoldSemanticsDisabledForMultipleSteps() {
+        let output = NJOutputKeyPress()
+        let sequence = [
+            NJKeySequenceStep(keys: [12], delayMilliseconds: 0),
+            NJKeySequenceStep(keys: [13], delayMilliseconds: 0)
+        ]
+
+        XCTAssertFalse(output.usesHoldSemantics(for: sequence))
+    }
 }
