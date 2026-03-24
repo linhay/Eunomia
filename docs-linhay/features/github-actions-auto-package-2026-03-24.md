@@ -8,6 +8,7 @@
 1. 在 GitHub Actions 中自动执行基础测试。
 2. 自动构建 `Eunomia.app` 并产出 zip 包作为 artifacts。
 3. 当推送 tag（`v*`）时，自动把 zip 作为 Release 资产发布。
+4. 当在 GitHub UI 手动发布 Release 时，也能自动补充上传 zip 资产。
 
 ## BDD 验收场景
 1. 场景：代码推送触发打包  
@@ -24,3 +25,8 @@ Then 先通过 `swift test`，再执行 App 构建打包。
 Given 推送标签 `vX.Y.Z`  
 When workflow 运行  
 Then 自动创建/更新 GitHub Release，并附带打包 zip 资产。
+
+4. 场景：手动发布 Release  
+Given 在 GitHub 页面发布一个已存在 tag 的 Release  
+When release `published` 事件触发 workflow  
+Then 对应 Release 自动附加 `Eunomia-macOS-<sha>.zip` 资产。
