@@ -1,56 +1,45 @@
-Eunomia is an application for Mac OS X which allows you to use
-controller inputs like a mouse or keyboard.
+# Eunomia
 
-If you've ever played a video game which only supports mouse and
-keyboard input but you want to use a joystick or gamepad, then
-Eunomia will help you do that.
+`Eunomia`（15 Eunomia）是一个 macOS 手柄映射工具：将游戏手柄/摇杆输入映射为键盘与鼠标事件，用于只支持键鼠输入的应用或游戏。
 
-Eunomia supports
+当前仓库已完成项目更名与上游断链迁移，公开仓库地址：<https://github.com/linhay/Eunomia>。
 
- * Mapping gamepad and joystick buttons to keyboard and mouse actions
- * Fine control over mouse movement and scrolling using analog axis
-   inputs
- * Automatic and dynamic switching between different input mappings
- * Downloading and sharing input presets for different applications
- * Modern OS X features like resume and automatic termination
+## 功能概览
 
-Eunomia is free software released under the MIT license.
+- 手柄按键、轴、方向键映射到键盘/鼠标输出
+- 基于 SwiftUI + TCA 的映射管理与编辑界面
+- 映射导入导出、离线读写、运行时控制
+- 中英文本地化（`en` / `zh-Hans`）
 
-## How to Use
+## 项目结构
 
-To start, just press a button on your joystick or gamepad, then press
-the key you want to map it for. Then press the ▶ button and switch
-back to your game. For more details, Eunomia has a in-application
-manual available in Help Viewer via `⌘?`.
+- `Eunomia/`：macOS App（Xcode 工程）
+- `Sources/EunomiaKit/`：核心逻辑与 UI 组件库（Swift Package Target）
+- `Tests/EunomiaKitTests/`：单元测试
+- `docs-linhay/`：项目文档系统（features/dev/plans/memory/references/screenshots/scripts）
 
-## Requirements
+## 开发环境
 
-* Mac OS X 10.7+
-* One or more HID-compatible (e.g. USB or Bluetooth) input devices
+- Xcode 15.4+（建议）
+- Swift 5.9+
+- macOS 14+
+
+## 本地运行
+
+1. 打开 `Eunomia/Eunomia.xcodeproj`
+2. 选择 `Eunomia` Scheme
+3. 运行应用
+
+## 测试
+
+```bash
+swift test
+```
+
+如需在 Xcode 内运行 UI 或集成测试，可使用对应 Test Plan / Scheme。
 
 ## License
 
-Copyright 2013 Joe Wreschnig  
-          2012 Yifeng Huang  
-          2009 Sam McCall, University of Otago
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-The joystick icon is from the Tango icon set and is public domain.
+- Project: [MIT](./LICENSE)
+- Third-party notices: [THIRD_PARTY_NOTICES](./THIRD_PARTY_NOTICES)
+- Dependency licenses: see `.build/checkouts/<package>/LICENSE*`
