@@ -2,13 +2,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "EnjoyableKit",
+    name: "EunomiaKit",
     defaultLocalization: "en",
     platforms: [
         .macOS(.v14)
     ],
     products: [
-        .library(name: "EnjoyableKit", targets: ["EnjoyableKit"])
+        .library(name: "EunomiaKit", targets: ["EunomiaKit"])
     ],
     dependencies: [
         .package(
@@ -18,22 +18,22 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "EnjoyableKit",
+            name: "EunomiaKit",
             dependencies: [
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ],
-            path: "Sources/EnjoyableKit",
+            path: "Sources/EunomiaKit",
             resources: [
                 .process("Resources")
             ]
         ),
         .testTarget(
-            name: "EnjoyableKitTests",
+            name: "EunomiaKitTests",
             dependencies: [
-                "EnjoyableKit",
+                "EunomiaKit",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture")
             ],
-            path: "Tests/EnjoyableKitTests"
+            path: "Tests/EunomiaKitTests"
         )
     ]
 )
